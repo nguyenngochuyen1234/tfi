@@ -1,0 +1,10 @@
+
+.features{
+    display: flex;
+}
+.feature-container_left{
+    width: 200px;
+}
+.feature-container-right{
+    flex: 1 1;
+}

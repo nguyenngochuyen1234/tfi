@@ -1,6 +1,6 @@
 import React from 'react'
-import Loginform from '../compoment/auth/Loginform'
-import Registerform from '../compoment/auth/Registerform'
+import Loginform from '../compoments/auth/Loginform'
+import Registerform from '../compoments/auth/Registerform'
 import "./style.css"
 
 const Auth = ({authRoute}) => {
