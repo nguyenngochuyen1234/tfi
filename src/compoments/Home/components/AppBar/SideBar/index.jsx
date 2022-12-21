@@ -15,9 +15,12 @@ import { Link, Navigate } from "react-router-dom";
 
 SideBar.propTypes = {
   handleClickFeature: PropTypes.func,
+  currentFeature: PropTypes.string
 };
 SideBar.defaultProps = {
   handleClickFeature:null,
+  currentFeature: 'dashboard'
+
 };
 function getItem(label, key, icon, children, type) {
     return {
@@ -28,7 +31,8 @@ function getItem(label, key, icon, children, type) {
         type,
     };
 }
-function SideBar({handleClickFeature}) {
+function SideBar({handleClickFeature,currentFeature}) {
+    console.log(currentFeature)
     const items = [
         getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
         getItem("Chat", "chat", <WechatOutlined />),
@@ -55,8 +59,9 @@ function SideBar({handleClickFeature}) {
             </Button>
             <Menu
                 className={styles.menu}
-                defaultSelectedKeys={["dashboard"]}
-                defaultOpenKeys={["dashboard"]}
+              
+                defaultSelectedKeys={[currentFeature]}
+                defaultOpenKeys={[currentFeature]}
                 mode="inline"
                 theme="light"
                 inlineCollapsed={collapsed}
