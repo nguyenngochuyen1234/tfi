@@ -16,7 +16,7 @@ You may also see any lint errors in the console.
 
 ### `Tree components`
 ```bash
-src
+│──src
     ├───compoments
     │   ├───auth
     │   └───Home
