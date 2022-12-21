@@ -1,7 +1,7 @@
 .auth-body{
     height: 100vh;
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
 }
 .form-container{
     height: 100%;

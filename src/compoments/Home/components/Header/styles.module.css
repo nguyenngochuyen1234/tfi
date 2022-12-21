@@ -1,0 +1,20 @@
+.logo{
+    width: 45px;
+    border-radius: 50%;
+
+}
+.root{
+    padding:5px 20px 5px 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: var(--color--default);
+    border-bottom:1px solid var(--color--border-primary);
+    height: 55px;
+}
+.project{
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 20px;
+}

@@ -1,0 +1,25 @@
+.btnSideBar{
+    position: absolute;
+    top:10px;
+    left: 20px;
+
+}
+.root{
+    height: calc(100vh - 55px);
+
+}
+.root-width{
+    width: 200px;
+}
+.menu {
+    height: 100%;
+    position: relative;
+
+    font-weight: bold;
+
+}
+
+.menu span{
+
+    font-weight: 500;
+}
