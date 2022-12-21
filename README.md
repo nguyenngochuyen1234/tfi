@@ -15,26 +15,27 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ### `Tree components`
-src
-|
-|
-|_Components
-|           |
-|           |_Home
-|           |
-|           |_auth 
-|
-|
-|
-|_features
-          |
-          |_Dashboard
-          |
-          |_Chat
-          |
-          |_Group
-          |
-          |_TaskList
+```bash
+│──src
+    ├───compoments
+    │   ├───auth
+    │   └───Home
+    │       └───components
+    │           ├───AppBar
+    │           │   ├───HomeRight
+    │           │   └───SideBar
+    │           └───Header
+    │               └───components
+    ├───features
+    │   ├───Chat
+    │   ├───Dashboard
+    │   │   └───components
+    │   │       ├───Board
+    │   │       └───Overview
+    │   ├───Group
+    │   └───TaskList
+    └───views
 
+```
             
         
