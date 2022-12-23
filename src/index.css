@@ -3,7 +3,7 @@
     --color--default:#fff;
     --color--text-default:black;
     --color--bg-default:rgb(244,245,247);
-    --color--border-primary:rgba(5, 5, 5, 0.06);
+    --color--border-primary:rgba(5, 5, 5, 0.1);
 }
 *{
     box-sizing: border-box;
@@ -13,4 +13,22 @@
 body{
     font-family: 'Roboto', sans-serif;
     
+}
+.text-md{
+    font-size: 18px;
+}
+.text-md-1{
+    font-size: 20px;
+}
+.text-md-2{
+    font-size: 22px;
+}
+.text-df{
+    font-size: 16px;
+}
+.text-lg{
+    font-size: 24px;
+}
+.text-sm{
+    font-size: 14px;
 }

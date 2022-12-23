@@ -1,0 +1,16 @@
+.root{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+}
+.feature-container_right{
+    flex: 1 1;
+}
+.board{
+    flex: 1 1;
+}
+.overview{
+    width: 270px;
+    padding:10px 30px;
+    background-color: var(--color--default);
+}

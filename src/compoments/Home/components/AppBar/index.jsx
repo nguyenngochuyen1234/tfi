@@ -7,8 +7,8 @@ AppBar.propTypes = {};
 
 function AppBar(props) {
     const { pathname } = useLocation();
-    const newPath = pathname.replace("/home/", "");
-    const [feature, setFeature] = useState(newPath);
+    const newPath = pathname.slice(6);
+    const [feature, setFeature] = useState(newPath===""?"dashboard":newPath);
     const navigate = useNavigate();
     const handleClickFeature = (item) => {
         setFeature(item);
@@ -20,9 +20,9 @@ function AppBar(props) {
             <SideBar
                 currentFeature={feature}
                 handleClickFeature={handleClickFeature}
-                className={styles["feature-container_left"]}
+                
             />
-            <HomeRight className={styles["feature-container_right"]} feature={feature} />
+            <HomeRight  feature={feature} />
         </div>
     );
 }

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import React,{ useContext, useEffect } from 'react'
+=======
+import React from 'react'
+import { Link } from 'react-router-dom'
+>>>>>>> features
 import Loginform from '../compoments/auth/Loginform'
 import Registerform from '../compoments/auth/Registerform'
 import { useDispatch, useSelector } from "react-redux";
@@ -49,7 +54,7 @@ const Auth = ({authRoute}) => {
     }
   return (
     <div className='auth-body'>
-        <img src='../../img/task.png'/>
+        <img src='../../img/task.png' alt="login-img"/>
         <div className='form-container'>
             {body}
         </div>

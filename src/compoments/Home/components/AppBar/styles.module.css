@@ -1,10 +1,7 @@
 
 .features{
     display: flex;
+    height:calc(100vh - 70px);
+    width: 100vw;
 }
-.feature-container_left{
-    width: 200px;
-}
-.feature-container-right{
-    flex: 1 1;
-}
+
