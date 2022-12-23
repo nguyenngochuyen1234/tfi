@@ -124,7 +124,8 @@ const Secondform  = () => {
           },
         ]}
       >
-        <Input.Password />
+       
+      <Input />
       </Form.Item>
 
       <Form.Item
@@ -137,7 +138,8 @@ const Secondform  = () => {
           },
         ]}
       >
-        <Input.Password />
+       
+      <Input />
       </Form.Item>
 
       <Form.Item
@@ -150,7 +152,8 @@ const Secondform  = () => {
           },
         ]}
       >
-        <Input.Password />
+       
+      <Input />
       </Form.Item>
 
       <Form.Item
@@ -163,7 +166,8 @@ const Secondform  = () => {
           },
         ]}
       >
-        <Input.Password />
+       
+      <Input />
       </Form.Item>
 
       <Form.Item
@@ -176,20 +180,8 @@ const Secondform  = () => {
           },
         ]}
       >
-        <Input.Password />
-      </Form.Item>
-
-
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        {/* <Button type="primary" htmlType="submit">
-          Submit
-        </Button> */}
+       
+      <Input />
       </Form.Item>
     </Form>
   );

@@ -3,6 +3,13 @@
     display: flex;
     flex-direction: row;
 }
+a{
+    color: rgb(111, 157, 241);
+}
+a:hover {
+    cursor: pointer;
+    color: rgb(50, 81, 253);
+}
 .form-container{
     height: 100%;
     width: 100%;
