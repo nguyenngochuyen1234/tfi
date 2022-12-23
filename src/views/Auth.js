@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 import React,{ useContext, useEffect } from 'react'
-=======
-import React from 'react'
-import { Link } from 'react-router-dom'
->>>>>>> features
 import Loginform from '../compoments/auth/Loginform'
 import Registerform from '../compoments/auth/Registerform'
 import { useDispatch, useSelector } from "react-redux";
