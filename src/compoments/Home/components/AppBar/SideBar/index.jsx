@@ -1,17 +1,16 @@
 import {
-  AppstoreAddOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  OrderedListOutlined,
-  UsergroupAddOutlined,
-  WechatOutlined
+    AppstoreAddOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    OrderedListOutlined,
+    UsergroupAddOutlined,
+    WechatOutlined
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import classNames from "classnames";
-import React, { useState } from "react";
 import PropTypes from 'prop-types';
+import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { Link, Navigate } from "react-router-dom";
 
 SideBar.propTypes = {
   handleClickFeature: PropTypes.func,
@@ -32,12 +31,11 @@ function getItem(label, key, icon, children, type) {
     };
 }
 function SideBar({handleClickFeature,currentFeature}) {
-    console.log(currentFeature)
     const items = [
         getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
         getItem("Chat", "chat", <WechatOutlined />),
         getItem("Group", "group", <UsergroupAddOutlined />),
-        getItem("TaskList", "tasklist", <OrderedListOutlined />),
+        getItem("Task List", "tasklist", <OrderedListOutlined />),
     ];
     const [collapsed, setCollapsed] = useState(false);
     const toggleCollapsed = () => {
@@ -50,11 +48,12 @@ function SideBar({handleClickFeature,currentFeature}) {
     return (
         <div
             className={classNames({
+               
                 [styles.root]: true,
                 [styles["root-width"]]: !collapsed,
             })}
         >
-            <Button type="text" onClick={toggleCollapsed} className={styles.btnSideBar}>
+            <Button value="large" type="text" onClick={toggleCollapsed} className={styles.btnSideBar}>
                 {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
             <Menu

@@ -7,6 +7,7 @@ import FeatureChat from '../../../../../features/Chat';
 import FeatureGroup from '../../../../../features/Group';
 import FeatureTaskList from '../../../../../features/TaskList';
 
+
 HomeRight.propTypes = {
     feature:PropTypes.string
 };
@@ -16,8 +17,7 @@ HomeRight.defaultProps = {
 
 function HomeRight({feature}) {
     return (
-        <div>
-            
+      
             <Routes>
                 <Route path="/" element={<Navigate to="./dashboard"/>} />
                 <Route path="/dashboard" element={<FeatureDashBoard />} />
@@ -25,7 +25,7 @@ function HomeRight({feature}) {
                 <Route path="/group" element={<FeatureGroup />} />
                 <Route path="/tasklist" element={<FeatureTaskList />} />
             </Routes>
-        </div>
+       
     );
 }
 

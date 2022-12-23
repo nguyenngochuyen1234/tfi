@@ -1,20 +1,40 @@
 .logo{
-    width: 45px;
+    width: 60px;
     border-radius: 50%;
 
 }
-.root{
-    padding:5px 20px 5px 100px;
+.flex-container{
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
+}
+.root{
+    padding:5px 60px 5px 100px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     background-color: var(--color--default);
     border-bottom:1px solid var(--color--border-primary);
-    height: 55px;
+    height: 70px;
 }
 .project{
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     margin-left: 20px;
+}
+.btn-r-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50% !important;
+    width: 43px !important;
+    height: 43px !important;
+    
+}
+.btn-r-container:not(:first-child){
+    margin-left: 20px;
+}
+.btn-r-container img{
+    width: inherit;
+    border-radius: 50%;
 }

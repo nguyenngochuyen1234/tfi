@@ -1,0 +1,10 @@
+
+.count{
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 2px 0px 2px 5px;
+}
+.name{
+    color:rgb(170, 170, 170);
+    font-weight: 500;
+}

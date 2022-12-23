@@ -1,0 +1,12 @@
+.root{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.header{
+    margin-bottom: 60px;
+}
+
+.hello{
+    line-height: 35px;
+}
