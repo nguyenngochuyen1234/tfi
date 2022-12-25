@@ -1,34 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-:root{
-    --color--default:#fff;
-    --color--text-default:black;
-    --color--bg-default:rgb(244,245,247);
-    --color--border-primary:rgba(5, 5, 5, 0.1);
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+:root {
+    --color--default: #fff;
+    --color--text-default: black;
+    --color--bg-default: rgb(245,245,251);
+    --color--border-primary:  rgb(6 24 44 / 65%);
 }
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-body{
-    font-family: 'Roboto', sans-serif;
-    
+body {
+    font-family: "Roboto", sans-serif;
+    overflow: hidden;
 }
-.text-md{
+*::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 8px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 8px;
+}
+.text-md {
     font-size: 18px;
 }
-.text-md-1{
+.text-md-1 {
     font-size: 20px;
 }
-.text-md-2{
+.text-md-2 {
     font-size: 22px;
 }
-.text-df{
+.text-df {
     font-size: 16px;
 }
-.text-lg{
+.text-lg {
     font-size: 24px;
 }
-.text-sm{
+.text-sm {
     font-size: 14px;
 }

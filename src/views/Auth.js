@@ -26,6 +26,7 @@ const Auth = ({authRoute}) => {
             <Spin />
         )
     }
+   
     else if(isAuthenticated) return <Navigate to='/home'/>
     else{
         body = (

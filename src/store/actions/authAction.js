@@ -10,10 +10,10 @@ export const loadUser = () => {
         }
         try{
             const response = await axios.get(`${apiUrl}/auth`)
-            console.log(response)
+            console.log(response.data)
             if(response.data.success){
                 dispatch(authActions.setDataAuth({isAuthenticated: true, user: response.data.user,authLoading: false}))
-            }
+            }else dispatch(authActions.setDataAuth({isAuthenticated: false, user: null,authLoading: false}))
         }catch(err){
             localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME)
             setAuthToken(null)

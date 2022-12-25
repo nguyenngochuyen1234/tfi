@@ -1,0 +1,29 @@
+.item{
+    background-color: var(--color--default);
+    width: 300px;
+    height: 165px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    flex: 0 0 auto;
+    padding:15px;
+    margin-left: 10px;
+    position: relative;
+}
+
+.group{
+    position: absolute;
+    bottom: 15px;
+}
+.name{
+    font-weight: 500;
+}
+.describe{
+    margin-top: 5px;
+    overflow: hidden;
+    color:#555;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}
