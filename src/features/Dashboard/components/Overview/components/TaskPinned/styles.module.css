@@ -1,12 +1,32 @@
 .root{
-    
+    height: calc(100vh - 520px);
+    margin-bottom:20px;
+
 }
 .task-item{
+    display: flex;
+    padding: 15px 5px;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.task-item{
+    margin-bottom: 15px;
+    
+}
+.task-item >*{
+    font-size: 16px !important;
 
 }
 .tasks-list{
     margin-top: 20px;
     display: flex;
+    overflow-y:auto ;
+    height: 80%;
+
+    min-height: 200px;
     width: 100%;
     flex-direction: column;
 }

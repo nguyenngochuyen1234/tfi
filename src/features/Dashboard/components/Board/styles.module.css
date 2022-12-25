@@ -1,0 +1,18 @@
+.group-under{
+    width: calc(100vw - 600px);
+    margin: 15px auto 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+.root{
+    height: 100%;
+}
+@media only screen and (max-width: 1500px) {
+    .group-under {
+        justify-content: center;
+        align-items: flex-start;
+
+    }
+}

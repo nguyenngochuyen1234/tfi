@@ -3,7 +3,7 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     OrderedListOutlined,
-    UsergroupAddOutlined,
+    TeamOutlined,
     WechatOutlined
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
@@ -34,7 +34,7 @@ function SideBar({handleClickFeature,currentFeature}) {
     const items = [
         getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
         getItem("Chat", "chat", <WechatOutlined />),
-        getItem("Group", "group", <UsergroupAddOutlined />),
+        getItem("Group", "group", <TeamOutlined />),
         getItem("Task List", "tasklist", <OrderedListOutlined />),
     ];
     const [collapsed, setCollapsed] = useState(false);

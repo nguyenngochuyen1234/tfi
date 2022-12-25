@@ -1,6 +1,6 @@
-import { BellOutlined } from "@ant-design/icons";
-import { Button, Dropdown } from "antd";
-import React from "react";
+import { BellFilled } from "@ant-design/icons";
+import { Badge, Button, Dropdown } from "antd";
+import React, { useState } from "react";
 import styles from "../../styles.module.css";
 Notification.propTypes = {};
 const items = [
@@ -30,6 +30,7 @@ const items = [
     },
 ];
 function Notification(props) {
+    const [show, setShow] = useState(true);
     return (
         <Dropdown
             menu={{
@@ -39,9 +40,11 @@ function Notification(props) {
             arrow={false}
             trigger={["click"]}
         >
-            <Button type="text" className={styles["btn-r-container"]}>
-                <BellOutlined className="text-md-1" />
-            </Button>
+            <Badge dot={show} offset={[-16, 29]}>
+                <Button type="default" className={styles["btn-r-container"]}>
+                    <BellFilled className="text-md-1" />
+                </Button>
+            </Badge>
         </Dropdown>
     );
 }
