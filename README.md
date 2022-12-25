@@ -19,6 +19,7 @@ You may also see any lint errors in the console.
 │──src
     ├───compoments
     │   ├───auth
+    │   ├───GroupBox
     │   └───Home
     │       └───components
     │           ├───AppBar
@@ -26,14 +27,30 @@ You may also see any lint errors in the console.
     │           │   └───SideBar
     │           └───Header
     │               └───components
+    │                   ├───Notification
+    │                   └───Profile
     ├───features
     │   ├───Chat
     │   ├───Dashboard
     │   │   └───components
     │   │       ├───Board
+    │   │       │   └───components
+    │   │       │       ├───ListRecentGroup
+    │   │       │       │   └───components
+    │   │       │       ├───Stats
+    │   │       │       │   └───components
+    │   │       │       └───TimeLine
     │   │       └───Overview
+    │   │           └───components
+    │   │               ├───DetailOverview
+    │   │               ├───ItemDetail
+    │   │               └───TaskPinned
+    │   │                   └───components
     │   ├───Group
     │   └───TaskList
+    ├───store
+    │   ├───actions
+    │   └───utils
     └───views
 ```
             
