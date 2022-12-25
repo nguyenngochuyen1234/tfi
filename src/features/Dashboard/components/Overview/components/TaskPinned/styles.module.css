@@ -1,5 +1,7 @@
 .root{
-    
+    height: calc(100vh - 520px);
+    margin-bottom:20px;
+
 }
 .task-item{
     display: flex;
@@ -10,8 +12,8 @@
     cursor: pointer;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-.task-item:not(:last-child){
-    margin-bottom: 10px;
+.task-item{
+    margin-bottom: 15px;
     
 }
 .task-item >*{
@@ -22,7 +24,9 @@
     margin-top: 20px;
     display: flex;
     overflow-y:auto ;
-    height: calc(100vh - 520px);
+    height: 80%;
+
+    min-height: 200px;
     width: 100%;
     flex-direction: column;
 }

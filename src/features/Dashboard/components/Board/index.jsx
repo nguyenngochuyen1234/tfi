@@ -17,7 +17,7 @@ function Board(props) {
 
             </div>
             <div className={styles["group-under"]}>
-                <Stats userName='Thang' star={20} totalSubmited={42} groupCreated={4} groupJoin={4} />
+                <Stats  userName='Thang' star={20} totalSubmited={42} groupCreated={4} groupJoin={4} />
                 <TimeLine />
             </div>
         </div>

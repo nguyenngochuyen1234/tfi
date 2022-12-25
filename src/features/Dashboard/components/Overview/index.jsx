@@ -10,7 +10,7 @@ Overview.propTypes = {};
 const { Text } = Typography;
 function Overview(props) {
     return (
-        <div>
+        <div className={styles.root}>
             <div className={styles.header}>
                 <Text
                     className={classNames({
