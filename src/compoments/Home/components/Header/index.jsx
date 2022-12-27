@@ -17,6 +17,7 @@ function Header(props) {
     const handleLogOut=()=>{
         const action=logOut();
         dispatch(action)
+        navigate('/login');
     }
     return (
         <div className={styles.root}>

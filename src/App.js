@@ -8,16 +8,9 @@ import Auth from './features/Auth';
 
 
 function App() {
-  const navigate = useNavigate()
-  const [user, setUser] = useState(useSelector((state) => state.user));
-  useEffect(() => {
-    if (user.current !== {}) {
-      navigate("/home");
-    } else {
-      navigate("/login");
-    }
-  }, [user]);
- 
+
+  const user = useState(useSelector((state) => state.user));
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to='/login' replace />} />

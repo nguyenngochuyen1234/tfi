@@ -6,6 +6,7 @@ import Registerform from "../../compoments/FormAuth/Registerform";
 import "./style.css";
 import { login } from "./userSlice";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 Auth.propTypes = {
     
@@ -18,13 +19,14 @@ Auth.defaultProps = {
 
 function Auth({ authRoute }) {
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const handleOnLogin = async (values) => {
         try {
             const action = login(values);
             const resultAction = await dispatch(action);
             unwrapResult(resultAction);
             alert("Đăng nhập thành công")
+            navigate("/home");
         } catch (e) {
             console.log(e);
             alert("Đăng nhập khong thành công")

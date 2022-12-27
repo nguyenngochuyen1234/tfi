@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import HomeRight from "./HomeRight";
-import SideBar from "./SideBar";
+import HomeRight from "../HomeRight";
+import SideBar from "../SideBar";
 import styles from "./styles.module.css";
 AppBar.propTypes = {};
 

@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import AppBar from "./components/AppBar";
 import Header from "./components/Header";
 import styles from "./styles.module.css";
-Home.propTypes = {};
+import PropTypes from "prop-types"
+Home.propTypes = {
+    user: PropTypes.object.isRequired,
+};
 
-function Home(props) {
+function Home({user}) {
     
     
     return (
