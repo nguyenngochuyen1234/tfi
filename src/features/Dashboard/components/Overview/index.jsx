@@ -18,8 +18,8 @@ function Overview(props) {
                         "text-md-2": true,
                     })}
                 >
-                    Hello,<Text strong={"true"}> Thang </Text>
-                    Welcome to your Dashboard!<br/>
+                    Hello,<Text strong={"true"}> Thang </Text><br/>
+                    Welcome to your Dashboard!
                 </Text>
                 
             </div>

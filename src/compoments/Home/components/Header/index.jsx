@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.module.css';
 import Notification from './components/Notification';
 import Profile from './components/Profile';
+import { logOut } from '../../../../features/Auth/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 Header.propTypes = {
     
 };
 
 function Header(props) {
+    const navigate = useNavigate();
+    const dispatch=useDispatch()
+    const handleLogOut=()=>{
+        const action=logOut();
+        dispatch(action)
+    }
     return (
         <div className={styles.root}>
             <div className={styles["flex-container"]}>
@@ -17,7 +26,7 @@ function Header(props) {
             </div>
             <div className={styles["flex-container"]}>
                 <Notification/>
-                <Profile/>
+                <Profile handleLogOut={handleLogOut}/>
             </div>
         </div>
     );

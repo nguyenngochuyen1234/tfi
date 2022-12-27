@@ -1,0 +1,34 @@
+.btnSideBar{
+    position: absolute;
+    top:20px;
+    left: 25px;
+    scale: 1.2;
+}
+
+.root{
+    height: 100%;
+
+}
+.root-width{
+    width: 250px;
+}
+.menu {
+    height: 100%;
+    position: relative;
+    font-size: 18px;
+    font-weight: bold;
+
+}
+.menu li{
+    height: 50px!important;
+    display: flex!important;
+    align-items: center!important;
+}
+.menu li span:first-child{
+    scale: 1.2;
+}
+
+.menu span{
+    
+    font-weight: 500;
+}

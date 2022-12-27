@@ -23,10 +23,34 @@
 .tasks-list{
     margin-top: 20px;
     display: flex;
-    overflow-y:auto ;
+    overflow-y:scroll ;
     height: 80%;
-
     min-height: 200px;
     width: 100%;
     flex-direction: column;
+}
+.tasks-list::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    position: relative;
+
+    border-radius: 10px;
+}
+/* Track */
+.tasks-list::-webkit-scrollbar-track {
+    background: var(--color--default);
+    border-radius: 10px;
+
+}
+
+/* Handle */
+.tasks-list::-webkit-scrollbar-thumb {
+    background: var(--color--default);
+    transition:all 0.5s;
+
+    border-radius: 10px;
+}
+
+.tasks-list:hover::-webkit-scrollbar-thumb {
+    background: #BCC0C4;
 }

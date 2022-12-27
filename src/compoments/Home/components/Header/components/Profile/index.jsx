@@ -1,40 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "../../styles.module.css";
+import { BulbOutlined, CrownOutlined, IdcardOutlined, LogoutOutlined, SettingOutlined } from "@ant-design/icons";
 import { Button, Dropdown } from "antd";
-
-Profile.propTypes = {};
+import React from "react";
+import styles from "../../styles.module.css";
+import ProfileItem from "../ProfileItem";
+import PropTypes from "prop-types"
+Profile.propTypes = {
+    handleLogOut: PropTypes.func.isRequired,
+};
+Profile.defaultProps = {
+    handleLogOut:null,
+};
 const items = [
     {
         key: "1",
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>
-        ),
+        label: <ProfileItem icon={<IdcardOutlined />} label="Thông tin tài khoản" />,
     },
     {
         key: "2",
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                2nd menu item
-            </a>
-        ),
+        label: <ProfileItem icon={<SettingOutlined />} label="Cài đặt & Quyền riêng tư" />,
     },
     {
         key: "3",
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                3rd menu item
-            </a>
-        ),
+        label: <ProfileItem icon={<CrownOutlined />} label="Màn hình & Trợ lí Doris" />,
+    },
+    {
+        key: "4",
+        label: <ProfileItem icon={<BulbOutlined />} label="Báo lỗi & Đóng góp ý kiến" />,
+    },
+    {
+        key: "LogOut",
+        label: <ProfileItem icon={<LogoutOutlined />}  label="Đăng xuất" />,
     },
 ];
 function Profile(props) {
+    const {handleLogOut}=props;
+    const onClick=({key})=>{
+        if(key==="LogOut"){
+            handleLogOut();
+        }
+    }
     return (
         <Dropdown
+            overlayClassName={styles.main}
             menu={{
                 items,
+                onClick
             }}
             placement="bottomRight"
             arrow={false}

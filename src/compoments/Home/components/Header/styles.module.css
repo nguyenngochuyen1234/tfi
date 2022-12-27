@@ -38,3 +38,29 @@
     width: inherit;
     border-radius: 50%;
 }
+.btn-r-container img:hover{
+    filter: brightness(80%);
+}
+.btn-r-container img:active{
+    transform: scale(0.95);
+}
+.btn-r-container span:active{
+    transform: scale(0.9);
+}
+.item{
+    padding:10px 0px;
+    font-weight: 400;
+}
+.m-l-5{
+    margin-left: 5px;
+}
+.main{
+    padding:5px 10px;
+}
+.main li:hover{
+    background-color: #F0F0F0!important;
+}
+.main{
+    color: var( --color--text-default)!important;
+
+}
