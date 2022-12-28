@@ -1,0 +1,28 @@
+.item {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    background-color: var(--color--default);
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
+    position: relative;
+}
+.item:hover {
+    background-color: #f0f0f0 !important;
+}
+.name {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.item-des {
+    color: rgb(124, 124, 124);
+}
+.status {
+    font-weight: 500;
+    right: 10px;
+    bottom:5px;
+    position: absolute;
+}
