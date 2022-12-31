@@ -13,8 +13,10 @@
 }
 .re-gr-container {
     width: calc(100vw - 600px);
+    
     margin: 15px auto 50px auto;
 }
+
 
 .list-container {
     background-color: var(--color--default);
@@ -34,6 +36,22 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     height: 200px;
     padding-bottom: 2px;
+}
+@media only screen and (min-width: 1700px) {
+    .wrap{
+        max-width: 1000px;
+        margin: 0 auto;
+        border-radius: 10px;
+
+    }
+    .list-container{
+        border-radius: 10px;
+
+    }
+    .title {
+        margin:  0 auto;
+    }
+    
 }
 .list-container::-webkit-scrollbar {
     height: 8px;

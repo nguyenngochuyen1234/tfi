@@ -4,6 +4,8 @@
     --color--text-default: black;
     --color--bg-default: rgb(245,245,251);
     --color--border-primary:  rgb(6 24 44 / 65%);
+    --color--bg-drop:#F0F2F5;
+    --color--df-mess:#0084FF;
 }
 * {
     box-sizing: border-box;
@@ -50,4 +52,53 @@ body {
 }
 .text-sm {
     font-size: 14px;
+}
+.text-ssm{
+    font-size: 12px;
+}
+@media only screen and (min-width: 1700px) {
+    .text-md {
+        font-size: 20px;
+    }
+    .text-md-1 {
+        font-size: 22px;
+    }
+    .text-md-2 {
+        font-size: 24px;
+    }
+    .text-df {
+        font-size: 18px;
+    }
+    .text-lg {
+        font-size: 26px;
+    }
+    .text-sm {
+        font-size: 16px;
+    }
+    .text-ssm{
+        font-size: 14px;
+    }
+}
+@media only screen and (min-width: 1500px) {
+    .text-md {
+        font-size: 19px;
+    }
+    .text-md-1 {
+        font-size: 21px;
+    }
+    .text-md-2 {
+        font-size: 23px;
+    }
+    .text-df {
+        font-size: 17px;
+    }
+    .text-lg {
+        font-size: 25px;
+    }
+    .text-sm {
+        font-size: 15px;
+    }
+    .text-ssm{
+        font-size: 13px;
+    }
 }

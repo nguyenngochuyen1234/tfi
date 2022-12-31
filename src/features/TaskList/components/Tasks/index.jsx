@@ -10,7 +10,7 @@ Tasks.defaultProps = {
 };
 
 function Tasks({ tasks }) {
-    console.log(tasks);
+
     return (
         <ul style={{ listStyleType: "none" }}>
             {tasks.map((task) => {
@@ -19,7 +19,7 @@ function Tasks({ tasks }) {
                         <div
                             className={classNames({
                                 [styles.item]: true,
-                                "text-df": true,
+                                "text-sm": true,
                             })}
                         >
                             <span className={styles.name}>{task.name}</span>

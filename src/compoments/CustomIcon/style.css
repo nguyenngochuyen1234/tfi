@@ -1,0 +1,26 @@
+
+.df{
+    width: 50px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-cursor {
+    cursor: pointer;
+}
+
+.active path {
+    stroke: var(--color--default) !important;
+}
+.active > svg {
+    fill: var(--color--df-mess) !important;
+    width: 33px !important;
+    height: 33px !important;
+}
+.active:hover{
+    transform: scale(1.05);
+}
+.active:active{
+    transform: scale(0.95);
+}

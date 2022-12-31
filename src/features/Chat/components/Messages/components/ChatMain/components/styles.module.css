@@ -1,0 +1,71 @@
+.chatText-mid-r{
+    border-radius: 25px 5px 5px 25px;
+
+}
+.chatText-first-r{
+    border-radius: 25px 25px 5px 25px;
+
+}
+.chatText-last-r{
+    border-radius: 25px 5px 25px 25px;
+
+}
+.chatText-alone-r{
+    border-radius: 25px ;
+}
+.chatText-alone-l{
+    border-radius: 25px ;
+}
+
+.chatText-mid-l{
+    border-radius: 5px 25px 25px 5px;
+}
+.chatText-first-l{
+    border-radius: 25px 25px 25px 5px;
+}
+.chatText-last-l{
+    border-radius: 5px 25px 25px 25px;
+}
+.color-l{
+    color:#000000;
+    background-color: #e6e6e6;
+}
+.color-r{
+    color:#FFFFFF;
+    background-color: var(--color--df-mess);
+}
+.box{
+    flex: 1 1;
+}
+.avt{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.chatRow{
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+
+}
+.text{
+    max-width: 400px;
+    padding:10px 12px;
+    margin: 1px 10px;
+    font-weight: 300;
+    width: fit-content;
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap; 
+}
+.flex-r{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.flex-l{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

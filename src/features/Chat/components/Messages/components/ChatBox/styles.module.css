@@ -1,0 +1,32 @@
+.chatBox {
+    background-color: var(--color--default);
+    width: 100%;
+    padding: 10px 10px;
+ 
+}
+.chat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    position: relative;
+
+}
+.typeMess {
+    flex: 1 1;
+    border: none;
+    outline: none;
+    background-color: var(--color--bg-drop);
+    width: 100%;
+    border-radius: 20px!important;
+    height: 90%;
+}
+.typeMess:focus {
+    box-shadow: none;
+}
+.typeMess::placeholder {
+    color: rgb(124, 124, 124) !important;
+}
+.icon{
+    margin-right: 7px;
+}

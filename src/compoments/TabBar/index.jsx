@@ -18,7 +18,7 @@ function TabBar(props) {
         <Tabs
             className={styles.item}
             tabBarGutter="0px"
-            defaultActiveKey={activeKey}
+            activeKey={activeKey}
             onChange={onChange}
             size="middle"
             items={data}

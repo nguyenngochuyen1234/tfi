@@ -1,0 +1,8 @@
+.feature-container_right {
+    flex: 1 1;
+}
+.ellip-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -5,14 +5,25 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+
 }
 .root{
     height: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
 }
-@media only screen and (max-width: 1500px) {
+@media only screen and (max-width: 1250px) {
     .group-under {
         justify-content: center;
         align-items: flex-start;
 
     }
+    
+}
+@media only screen and (max-width: 1700px) {
+    .root{
+        display: block;
+    }
+    
 }

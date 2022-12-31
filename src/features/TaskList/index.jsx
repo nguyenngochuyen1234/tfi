@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import queryString from "query-string";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import TabBar from "../../compoments/TabBar";
 import BarItem from "./components/BarItem";
 import Tasks from "./components/Tasks";
@@ -56,21 +58,32 @@ const initTasks = [
 ];
 
 function FeatureTaskList(props) {
-    const location = document.location.search.slice(8);
-    if(!location){
-        document.location.search="?status=all";
-    }
-    console.log(location)
-    const [filter, setFilter] = useState(!!location?location:"all");
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const [filter, setFilter] = useState(() => {
+        const param = queryString.parse(location.search);
+        return param.status || "all";
+    });
+
     const [tasks, setTask] = useState(initTasks);
-    console.log()
-    const onChange = (key) => {
+
+    useEffect(() => {
+        const queryParam = queryString.parse(location.search);
+        const key = queryParam.status || "all";
+
+        setFilter(key);
         const myTasks = [...initTasks];
         const filterTasks = myTasks.filter((item) => item.status === key || key === "all");
         setTask(filterTasks);
-        // setLocation(
-        setFilter(key);
+    }, [location.search]);
+
+    const onChange = (key) => {
+        const param = queryString.stringify({ status: key });
+        navigate(`./?${param}`);
+
     };
+
     const item = [
         {
             label: <BarItem label="All Tasks" />,
@@ -95,8 +108,8 @@ function FeatureTaskList(props) {
     ];
 
     return (
-        <div style={{ flex: "1 1", margin: "5px 15px 5px 10px " }}>
-            <TabBar onChange={onChange} activeKey={filter} data={item}/>
+        <div className="feature-container_right" style={{ margin: "5px 15px 5px 10px " }}>
+            <TabBar onChange={onChange} activeKey={filter} data={item} />
         </div>
     );
 }

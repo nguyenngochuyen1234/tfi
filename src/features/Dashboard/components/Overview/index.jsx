@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import styles from "./styles.module.css";
 import classNames from "classnames";
 import DeltailOverview from "./components/DetailOverview";
-import TaskPinned from "./components/TaskPinned";
+import TaskPinned from "./components/Schedule";
 
 Overview.propTypes = {};
 const { Text } = Typography;
@@ -18,8 +18,8 @@ function Overview(props) {
                         "text-md-2": true,
                     })}
                 >
-                    Hello,<Text strong={"true"}> Thang </Text><br/>
-                    Welcome to your Dashboard!
+                    Hello,<Text strong={"true"}> Thang</Text>
+                    . Welcome to your Dashboard!
                 </Text>
                 
             </div>
