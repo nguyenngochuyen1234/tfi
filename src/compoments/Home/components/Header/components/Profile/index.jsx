@@ -52,7 +52,7 @@ function Profile(props) {
         >
             <Button type="default" className={styles["btn-r-container"]}>
                 <img
-                    src="https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-1/316282375_830242631636324_4108120794133707327_n.jpg?stp=dst-jpg_p320x320&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=fs9djFcHcncAX8bbdLm&_nc_ht=scontent.fhan2-4.fna&oh=00_AfB6zz13fZmLd94b4wbv8t1WKHxYirgOhkC_7BIPUqaczg&oe=63A821D8"
+                    src="https://scontent-hkg4-1.xx.fbcdn.net/v/t39.30808-1/316282375_830242631636324_4108120794133707327_n.jpg?stp=dst-jpg_p320x320&_nc_cat=100&ccb=1-7&_nc_sid=7206a8&_nc_ohc=f4GV-Hxai5sAX-5ap-m&_nc_ht=scontent-hkg4-1.xx&oh=00_AfA_fiktTwiQn5lGbqcF5S1lsE0wvQasf2s8aW_Lp49hlQ&oe=63BDE298"
                     alt="avt"
                 />
             </Button>

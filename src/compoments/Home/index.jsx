@@ -4,10 +4,10 @@ import Header from "./components/Header";
 import styles from "./styles.module.css";
 import PropTypes from "prop-types"
 Home.propTypes = {
-    user: PropTypes.object.isRequired,
+   
 };
 
-function Home({user}) {
+function Home() {
     
     
     return (
