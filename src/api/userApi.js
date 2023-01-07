@@ -10,5 +10,9 @@ const userApi ={
         const url='/auth/login'
         return axiosClient.post(url,data)
     },
+    getAllUser(){
+        const url='/auth/allAccount'
+        return axiosClient.get(url)
+    }
 }
 export default userApi;

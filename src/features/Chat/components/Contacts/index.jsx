@@ -28,8 +28,8 @@ function Contacts(props) {
                 </Input.Group>
             </div>
             <ul style={{ padding: "5px 10px", listStyleType: "none" }}>
-                {people.map((x) => (
-                    <li key={x.id}>
+                {people.map((x,idx) => (
+                    <li key={idx}>
                         <ContactItem
                             current={current}
                             handleClickContact={

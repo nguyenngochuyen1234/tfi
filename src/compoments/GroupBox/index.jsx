@@ -3,6 +3,7 @@ import { Avatar, Tooltip } from "antd";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
+import GroupAvatar from "../Avatar/GroupAvatar";
 import styles from "./styles.module.css";
 
 GroupBox.propTypes = {
@@ -44,37 +45,13 @@ function GroupBox(props) {
             >
                 {describe}
             </div>
-            
-            <Avatar.Group className={styles.group}
-                maxCount={2}
-                maxStyle={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                }}
-            >
-                <Avatar src="https://ik.imagekit.io/TLIT/a_VxvE5ClCm.png?ik-sdk-version=javascript-1.4.3&updatedAt=1671827651689" />
-                <Avatar
-                    style={{
-                        backgroundColor: "#f56a00",
-                    }}
-                >
-                    K
-                </Avatar>
-                <Tooltip title="Ant User" placement="top">
-                    <Avatar
-                        style={{
-                            backgroundColor: "#87d068",
-                        }}
-                        icon={<UserOutlined />}
-                    />
-                </Tooltip>
-                <Avatar
-                    style={{
-                        backgroundColor: "#1890ff",
-                    }}
-                    icon={<AntDesignOutlined />}
-                />
-            </Avatar.Group>
+            <div style={{
+                position: "absolute",
+                bottom:"15px"
+            }}>
+            <GroupAvatar arrayId={members} size="large" />
+            </div>
+
         </div>
     );
 }

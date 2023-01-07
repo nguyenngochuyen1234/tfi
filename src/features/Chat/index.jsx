@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
 import classNames from "classnames";
 import Contacts from "./components/Contacts";
 import Messages from "./components/Messages";
+import {io} from 'socket.io-client'
+import { useEffect } from "react";
+import { STATIC_HOST } from "../../constants/common";
+import userApi from "../../api/userApi";
 FeatureChat.propTypes = {};
-const people = [
+
+/* const people = [
     {
         id: "#123",
         name: "Nguyễn Ngọc Huyền",
@@ -27,52 +32,106 @@ const people = [
         lastSend: "You: Ok đợi!",
         active: true,
     },
-];
-const chatData = {
-    "#124": [
-        {
-            id: "c101",
-            idPeople: "#124",
-            data: [
-                { id: "#11312", text: "Hello, I am your girl friend" },
-                { id: "#11313", text: "Nice to meet you 🧡" },
-            ],
-            createAt: 1672434618,
-        },
-    ],
-    "#125": [
-        {
-            id: "c001",
-            idPeople: "#125",
-            data: [
-                { id: "#11342", text: "Làm bài tập giải tích chưa?" },
-                { id: "#11345", text: "Alo" },
-                { id: "#11363", text: "Tí đi sang nhà tao, tao chỉ cho" },
-            ],
-            createAt: 1672434617,
-        },
-        {
-            id: "c002",
-            data: [{ id: "#11313", text: "Ok đợi!" }],
-            createAt: 1672434706,
-        },
-        {
-            id: "c003",
-            idPeople: "#125",
-            data: [{ id: "#113523", text: "Nhanh" }],
-            createAt: 1672434750,
-        },
-    ],
-};
+]; */
+// const chatData = {
+//     "#124": [
+//         {
+//             id: "c101",
+//             idPeople: "#124",
+//             data: [
+//                 { id: "#11312", text: "Hello, I am your girl friend" },
+//                 { id: "#11313", text: "Nice to meet you 🧡" },
+//             ],
+//             createAt: 1672434618,
+//         },
+//     ],
+//     "#125": [
+//         {
+//             id: "c001",
+//             idPeople: "#125",
+//             data: [
+//                 { id: "#11342", text: "Làm bài tập giải tích chưa?" },
+//                 { id: "#11345", text: "Alo" },
+//                 { id: "#11363", text: "Tí đi sang nhà tao, tao chỉ cho" },
+//             ],
+//             createAt: 1672434617,
+//         },
+//         {
+//             id: "c002",
+//             idPeopleSend:"122",
+//             data: [{ id: "#11313", text: "Ok đợi!" }],
+//             createAt: 1672434706,
+//         },
+//         {
+//             id: "c003",
+//             idPeople: "#125",
+//             data: [{ id: "#113523", text: "Nhanh" }],
+//             createAt: 1672434750,
+//         },
+//         {
+//             id: "c004",
+//             idPeople: "#125",
+//             data: [{ id: "#113523", text: "lên!" }],
+//             createAt: 1672434750,
+//         },
+//     ],
+// };
 function FeatureChat(props) {
-    const [currentPeople, setCurrentPeople] = useState(people[0]);
+
+    const chatData = [{
+        "63ad79c3723874d6ee9ad68c":[],
+        "63ad7a0b723874d6ee9ad68e":[],
+        "63ad7a25723874d6ee9ad690":[],
+        "63b2bbd21af58c28a6aedd03":[],
+        "63b2bc1b1af58c28a6aedd05":[],
+        "63b2bc591af58c28a6aedd07":[],
+    }]
+
+    const [people, setPeople] = useState([])
+
+
+
+    const fetchAllUser = async() =>{
+        try{
+            const data = await userApi.getAllUser()
+            if(data.success){
+                let dataUser = data.allUser.map(user=>{
+                    return{
+                        id: user._id,
+                        name: user.name,
+                        avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
+                        lastSend: "",
+                        active: true,
+                    }
+                })
+                setPeople(dataUser)
+            }
+        }catch(err){
+            alert(err.message)
+        }
+    } 
+
+    useEffect(()=>{
+        fetchAllUser()
+    },[])
+
+
+
+    const [currentPeople, setCurrentPeople] = useState({
+        id: "",
+        name: "",
+        avt: "",
+        lastSend: "",
+        active: true,
+    },);
     const handleCurrentPeople = (contact) => {
+        console.log(contact)
         setCurrentPeople(contact);
 
         setChatCurrent(chatData[contact.id]);
     };
     const [chatCurrent, setChatCurrent] = useState(
-        chatData[people[0].id] ? chatData[people[0].id] : []
+        chatData[currentPeople.id] ? chatData[currentPeople?.id] : []
     );
 
     const handleChangeChat = (value, key, createAt) => {
@@ -97,7 +156,6 @@ function FeatureChat(props) {
                     value,
                 ];
             }
-
             setChatCurrent(dataClone);
         }
     };

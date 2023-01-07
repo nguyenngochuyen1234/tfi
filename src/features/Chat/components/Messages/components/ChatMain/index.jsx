@@ -22,7 +22,7 @@ function ChatMain({ current, chatCurrent, }) {
     const [height, setHeight] = useState(1)
     const [scroll,setScroll]=useState(false)
     const ref = useRef(null)
-  
+
   
     useEffect(() => {
         scrollToBottom();

@@ -7,11 +7,11 @@ function ListRecentGroup(props) {
     return (
         <div className={styles["wrap"]}>
             <div className={styles["list-container"]}>
+                {/* <GroupBox/>
                 <GroupBox/>
                 <GroupBox/>
                 <GroupBox/>
-                <GroupBox/>
-                <GroupBox/>
+                <GroupBox/> */}
 
             </div>
         </div>

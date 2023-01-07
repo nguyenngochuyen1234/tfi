@@ -1,13 +1,33 @@
-import { Button, Form, Input, message } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const Loginform = ({handleOnSubmit}) => {
+import React, { useEffect, useState } from 'react'
+import { Button, Spin, Steps, Form, Input, Checkbox, message } from 'antd';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"
+import { login } from '../../features/Auth/userSlice';
+const Loginform = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleOnLogin = async (values) => {
+    try {
+        const action = login(values);
+        const resultAction = await dispatch(action);
+        if(resultAction.payload.success){
+          alert("Đăng nhập thành công")
+          navigate("/home");
+        }else{
+          alert("Đăng nhập khong thành công")
+        }
+    } catch (e) {
+        console.log(e);
+        alert("Đăng nhập khong thành công")
 
+    }
+};
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
-    <div style={{ height: "100%", minWidth: "400px", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-      <h1 style={{ textAlign: "center" }}>Đăng nhập</h1>
+    <>
       {contextHolder}
       <Form
         name="basic"
@@ -21,8 +41,8 @@ const Loginform = ({handleOnSubmit}) => {
         initialValues={{
           remember: true,
         }}
-         onFinish={(value)=>{
-          handleOnSubmit(value)}}
+        onFinish={handleOnLogin}
+        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
@@ -54,8 +74,7 @@ const Loginform = ({handleOnSubmit}) => {
           <Button type="primary" htmlType="submit">Đăng nhập</Button>
         </Form.Item>
       </Form>
-      <p>Bạn chưa có tài khoản <Link to="/register">Đăng kí</Link></p>
-    </div>
+    </>
   );
 }
 

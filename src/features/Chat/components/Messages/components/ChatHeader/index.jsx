@@ -15,7 +15,7 @@ function ChatHeader(props) {
         <div className={styles.head}>
             <div style={{ display: "flex", alignItems: "center" }}>
                 <div className={styles.avt}>
-                    <Image src={current.avt} alt="avt" />
+                    <Image src={current?.avt} alt="avt" />
                 </div>
 
                 <span
@@ -24,7 +24,7 @@ function ChatHeader(props) {
                         "text-md": true,
                     })}
                 >
-                    {current.name}
+                    {current?.name}
                 </span>
             </div>
             <InfoCircleFilled

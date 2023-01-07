@@ -6,26 +6,28 @@ import FeatureDashBoard from '../../../../features/Dashboard';
 import FeatureChat from '../../../../features/Chat';
 import FeatureGroup from '../../../../features/Group';
 import FeatureTaskList from '../../../../features/TaskList';
+import GroupDashboard from '../../../../features/Group/GroupDashboard/GroupDashboard';
 
 
 HomeRight.propTypes = {
-    feature:PropTypes.string
+    feature: PropTypes.string
 };
 HomeRight.defaultProps = {
-    feature:''
+    feature: ''
 };
 
-function HomeRight({feature}) {
+function HomeRight({ feature }) {
     return (
-      
-            <Routes>
-                <Route path="/" element={<Navigate to="./dashboard"/>} />
-                <Route path="/dashboard" element={<FeatureDashBoard />} />
-                <Route path="/chat" element={<FeatureChat />} />
-                <Route path="/group" element={<FeatureGroup />} />
-                <Route path="/tasklist" element={<FeatureTaskList />} />
-            </Routes>
-       
+
+        <Routes>
+            <Route path="/" element={<Navigate to="./dashboard" />} />
+            <Route path="/dashboard" element={<FeatureDashBoard />} />
+            <Route path="/chat" element={<FeatureChat />} />
+            <Route path="/group" element={<FeatureGroup />} />
+            <Route path="/group/:groupId" element={<GroupDashboard />} />
+            <Route path="/tasklist" element={<FeatureTaskList />} />
+        </Routes>
+
     );
 }
 

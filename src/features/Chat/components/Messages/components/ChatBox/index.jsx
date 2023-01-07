@@ -15,6 +15,9 @@ ChatBox.propTypes = {
 };
 
 function ChatBox({ current ,handleChangeChat}) {
+    const userJson = localStorage.getItem("user")
+    const userData=JSON.parse(userJson)
+
     const [send, setSend] = useState(false);
     const [value, setValue] = useState("");
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
@@ -29,8 +32,9 @@ function ChatBox({ current ,handleChangeChat}) {
         }
         setValue(value);
     };
-
+    
     const handleSend = () => {
+        // console.log({user:userData._id,current:current.id})
         if (value === "") return;
         const configValue={
             id: "#"+Math.floor(Math.random()*1000),
@@ -38,7 +42,6 @@ function ChatBox({ current ,handleChangeChat}) {
         }
         const createAt=new Date().getTime();
         handleChangeChat(configValue,"c123",createAt)
-   
         setValue("");
         setSend(false);
     };
@@ -93,7 +96,7 @@ function ChatBox({ current ,handleChangeChat}) {
                     onChange={handleChangeInput}
                     value={value}
                     onPressEnter={handleSend}
-                    placeholder={`Gửi tin nhắn đến ${current.name}`}
+                    placeholder={`Gửi tin nhắn đến ${current?.name}`}
                 />
                 <SendIcon handleSend={handleSend} width="32px" height="32px" active={send} />
             </div>

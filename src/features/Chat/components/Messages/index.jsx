@@ -21,7 +21,7 @@ function Messages(props) {
     return (
         <div className={styles.container}>
             <ChatHeader current={current} />
-            {chatCurrent.length===0?<NotMess people={current.name}/> : <ChatMain current={current} chatCurrent={chatCurrent}/>}
+            {chatCurrent.length===0?<NotMess people={current?.name}/> : <ChatMain current={current} chatCurrent={chatCurrent}/>}
             <ChatBox current={current} handleChangeChat={handleChangeChat}/>
         </div>
     );

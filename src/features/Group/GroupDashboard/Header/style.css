@@ -1,0 +1,20 @@
+.header-group-container{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px 0px, rgb(27 31 35 / 15%) 1px 0px 0px 1px !important;
+}
+
+.header-group-item{
+    display: inline-flex;
+    align-items: center;
+}
+
+.header-group-line{
+    height: 13px;
+    width: 1px;
+    background-color: black;
+    margin: 0 10px;
+}

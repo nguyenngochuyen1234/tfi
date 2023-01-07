@@ -9,12 +9,12 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 Auth.propTypes = {
-    
+
     authRoute: PropTypes.string,
 };
 Auth.defaultProps = {
 
-    authRoute:"",
+    authRoute: "",
 };
 
 function Auth({ authRoute }) {
@@ -24,7 +24,7 @@ function Auth({ authRoute }) {
         try {
             const action = login(values);
             const resultAction = await dispatch(action);
-            unwrapResult(resultAction);
+            console.log(resultAction)
             alert("Đăng nhập thành công")
             navigate("/home");
         } catch (e) {
@@ -38,8 +38,20 @@ function Auth({ authRoute }) {
         <div className="auth-body">
             <img src="../../../img/task.png" alt="login-img" />
             <div className="form-container">
-                {authRoute === "login" && <Loginform handleOnSubmit={handleOnLogin} />}
-                {authRoute === "register" && <Registerform />}
+                {
+                    authRoute === 'login' && <div style={{ height: "100%", minWidth: "400px", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                        <h1 style={{ textAlign: "center" }}>Đăng nhập</h1>
+                        <Loginform />
+                        <p>Bạn chưa có tài khoản <a onClick={() => navigate("/register")}>Đăng ký</a></p>
+                    </div>
+                }
+                {
+                    authRoute === 'register' && <div style={{ height: "100%", minWidth: "400px" }}>
+                        <h1 style={{ textAlign: "center" }}>Đăng ký</h1>
+                        <Registerform />
+                        <p>Bạn đã có tài khoản? <a onClick={() => navigate("/login")}>Đăng nhập</a></p>
+                    </div>
+                }
             </div>
         </div>
     );

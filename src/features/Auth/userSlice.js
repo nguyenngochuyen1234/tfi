@@ -9,7 +9,8 @@ export const register = createAsyncThunk(
     //save local storages 
     localStorage.setItem(StorageKeys.TOKEN, data.jwt);
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
-
+    localStorage.setItem(StorageKeys.USERID, JSON.stringify(data.user._id));
+    
     return data.user;
   }
 )
@@ -20,6 +21,7 @@ export const login = createAsyncThunk(
     //save local storages 
     localStorage.setItem(StorageKeys.TOKEN, data.accessToken);
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.account));
+    localStorage.setItem(StorageKeys.USERID,data.account._id);
     return data;
   }
 )
