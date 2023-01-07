@@ -6,7 +6,7 @@ import ListProject from './listProject/ListProject';
 
 const GroupDashboard = () => {
     const params = useParams();
-    console.log(params);
+    const groupId = params.groupId
     return (
         <div style={{ width: "100%", display:"flex", flexDirection:"row"}}>
             <div style={{width:" calc(100% - 300px)"}}>
