@@ -1,23 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs } from 'antd'
+import { Tabs } from 'antd';
+import React, { useEffect, useState } from 'react';
+import groupApi from '../../api/groupApi';
 import BarItem from '../TaskList/components/BarItem';
-import GroupJoined from './GroupJoined';
-import GroupMade from './GroupMade';
 FeatureGroup.propTypes = {
 
 };
 
 function FeatureGroup(props) {
+    const [dataGroupMade, setDataGroupMade] = useState([])
+    const [dataGroupJoined, setDataGroupJoined] = useState([])
+
+    const fetchAllGroupUser = async() => {
+        try{
+            const data = await groupApi.getAllGroupUSer()
+            if(data.success){
+                setDataGroupMade(data.groupMade)
+                setDataGroupJoined(data.GroupJoined)
+            }
+        }catch(err){
+            alert(err.message)
+        }
+    }
+    useEffect(()=>{
+        fetchAllGroupUser()
+    },[])
     const items = [
         {
             label: <BarItem label="Group has been created" />,
-            key: "group-made",
-            children: <GroupMade />,
+            key: "group-created",
+            children:"group-created",
         },
         {
             label: <BarItem label="Group has been joined" />,
             key: "group-joined",
-            children: <GroupJoined />,
+            children: "group-joined",
         },
 
     ];
@@ -25,7 +41,7 @@ function FeatureGroup(props) {
     return (
         <div className="feature-container_right" >
             <Tabs
-                defaultActiveKey="group-made"
+                defaultActiveKey="group-created"
                 items={items}
             />
         </div>
