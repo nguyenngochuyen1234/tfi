@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import "./style.css"
 import ModalGroup from './compoment/modalGroup/ModalGroup';
 
-const GroupMade = () => {
+const GroupMade = ({dataGroupMade}) => {
 
   const navigate = useNavigate();
 
@@ -18,24 +18,9 @@ const GroupMade = () => {
 
 
   const idUser = localStorage.getItem("user_id")
-  const [groupsMade, setGroupMade] = useState([])
-  const fechAllGroupMade = async () => {
-    try {
-      const data = await groupApi.getAllGroupMade()
-      if (data.success) {
-        setGroupMade(data.groups)
-      }
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
   const handleClickGroup = (idGroup) => {
     navigate(`/home/group/${idGroup}`)
   }
-  useEffect(() => {
-    fechAllGroupMade()
-  }, [])
-
   return (
     <>
       <Button type="dashed" onClick={showModal}>
@@ -44,7 +29,7 @@ const GroupMade = () => {
       <ModalGroup title={"Create new group"} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <div className='group-container'>
         {
-          groupsMade.map((group, idx) => 
+          dataGroupMade.map((group, idx) => 
           <div key={idx} onClick={() => handleClickGroup(group._id)}>
             <GroupBox
                nameGroup={group.name}

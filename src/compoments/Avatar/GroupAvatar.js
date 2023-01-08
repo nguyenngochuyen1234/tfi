@@ -48,7 +48,7 @@ const GroupAvatar = ({ arrayId, size }) => {
                 <Tooltip title="Ant User" placement="top">
                     {baseStringArray.bodyGroup && <Avatar src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
                 </Tooltip>
-                {baseStringArray.hideGroup?.map(baseString => <Avatar src={`data:image/png;base64,${baseString}`} />)}
+                {baseStringArray.hideGroup.length>0 && baseStringArray.hideGroup?.map(baseString => <Avatar src={`data:image/png;base64,${baseString}`} />)}
             </Avatar.Group>
         </>
     );
