@@ -78,17 +78,17 @@ FeatureChat.propTypes = {};
 // };
 function FeatureChat(props) {
 
-    const chatData = [{
+    const chatData = {
         "63ad79c3723874d6ee9ad68c":[],
         "63ad7a0b723874d6ee9ad68e":[],
         "63ad7a25723874d6ee9ad690":[],
         "63b2bbd21af58c28a6aedd03":[],
         "63b2bc1b1af58c28a6aedd05":[],
         "63b2bc591af58c28a6aedd07":[],
-    }]
+    }
 
     const [people, setPeople] = useState([])
-
+    
 
 
     const fetchAllUser = async() =>{
@@ -125,15 +125,14 @@ function FeatureChat(props) {
         active: true,
     },);
     const handleCurrentPeople = (contact) => {
-        console.log(contact)
         setCurrentPeople(contact);
-
+        console.log(contact.id);
         setChatCurrent(chatData[contact.id]);
     };
     const [chatCurrent, setChatCurrent] = useState(
-        chatData[currentPeople.id] ? chatData[currentPeople?.id] : []
+        chatData[currentPeople.id] ? chatData[currentPeople.id] : []
     );
-
+    console.log(chatCurrent)
     const handleChangeChat = (value, key, createAt) => {
         if (chatCurrent.length === 0) {
             setChatCurrent([{
@@ -142,6 +141,7 @@ function FeatureChat(props) {
                 createAt: createAt,
             }]);
         } else {
+            
             const dataClone = [...chatCurrent];
             if (key !== dataClone[dataClone.length - 1].id) {
                 const dataItem = {

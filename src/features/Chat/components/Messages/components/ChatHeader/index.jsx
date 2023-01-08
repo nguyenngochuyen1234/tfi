@@ -11,6 +11,7 @@ ChatHeader.propTypes = {
 
 function ChatHeader(props) {
     const { current } = props;
+
     return (
         <div className={styles.head}>
             <div style={{ display: "flex", alignItems: "center" }}>

@@ -7,12 +7,16 @@ import GroupAvatar from "../Avatar/GroupAvatar";
 import styles from "./styles.module.css";
 
 GroupBox.propTypes = {
-    nameGroup: PropTypes.string.isRequired,
-    describe: PropTypes.string.isRequired,
-    members: PropTypes.array.isRequired,
+    nameGroup: PropTypes.string,
+    describe: PropTypes.string,
+    members: PropTypes.array,
+    click: PropTypes.func,
+    idGroup: PropTypes.string,
 };
 GroupBox.defaultProps = {
+    click:null,
     nameGroup: "Undefined",
+    idGroup:"",
     describe: "No description",
     members: [
         "https://ik.imagekit.io/TLIT/a_VxvE5ClCm.png?ik-sdk-version=javascript-1.4.3&updatedAt=1671827651689",
@@ -20,9 +24,9 @@ GroupBox.defaultProps = {
     ],
 };
 function GroupBox(props) {
-    const { nameGroup, describe, members } = props;
+    const { idGroup,nameGroup, describe, members ,click} = props;
     return (
-        <div className={styles.item}>
+        <div id={idGroup} className={styles.item} onClick={()=>click(idGroup)}>
             <span
                 className={classNames({
                     [styles.name]: true,

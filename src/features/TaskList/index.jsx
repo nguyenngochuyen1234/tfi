@@ -108,7 +108,7 @@ function FeatureTaskList(props) {
     ];
 
     return (
-        <div className="feature-container_right" style={{ margin: "5px 15px 5px 10px " }}>
+        <div className="feature-container_right" >
             <TabBar onChange={onChange} activeKey={filter} data={item} />
         </div>
     );

@@ -10,7 +10,7 @@ FeatureGroup.propTypes = {
 function FeatureGroup(props) {
     const items = [
         {
-            label: <BarItem label="Group has been create" />,
+            label: <BarItem label="Group has been created" />,
             key: "group-made",
             children: <GroupMade />,
         },
@@ -23,7 +23,7 @@ function FeatureGroup(props) {
     ];
 
     return (
-        <div>
+        <div className="feature-container_right" >
             <Tabs
                 defaultActiveKey="group-made"
                 items={items}

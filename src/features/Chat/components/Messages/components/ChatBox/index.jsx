@@ -34,7 +34,7 @@ function ChatBox({ current ,handleChangeChat}) {
     };
     
     const handleSend = () => {
-        // console.log({user:userData._id,current:current.id})
+
         if (value === "") return;
         const configValue={
             id: "#"+Math.floor(Math.random()*1000),

@@ -37,25 +37,26 @@ const GroupMade = () => {
   }, [])
 
   return (
-    <>
+    <div>
       <Button type="dashed" onClick={showModal}>
         Create new group
       </Button>
       <ModalGroup title={"Create new group"} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <div className='group-container'>
         {
-          groupsMade.map((group, idx) => 
-          <div key={idx} onClick={() => handleClickGroup(group._id)}>
+          groupsMade.map((group) => 
             <GroupBox
-               nameGroup={group.name}
+              key={group._id}
+              idGroup={group._id}
+              click={handleClickGroup}
+              nameGroup={group.name}
               describe={group.description}
               members={group.member}
             />
-          </div>
           )
         }
       </div>
-    </>
+    </div>
   )
 }
 
