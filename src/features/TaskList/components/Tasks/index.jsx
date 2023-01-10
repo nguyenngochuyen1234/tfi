@@ -12,7 +12,7 @@ Tasks.defaultProps = {
 function Tasks({ tasks }) {
 
     return (
-        <ul style={{ listStyleType: "none" }}>
+        <ul className={styles["list-item"]}>
             {tasks.map((task) => {
                 return (
                     <li key={task.key}>

@@ -1,16 +1,31 @@
 .item{
     background-color: var(--color--default);
-    width: 300px;
+    /* width: 280px;*/
+    position: relative;
+    width: 100%;
     height: 165px;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
     flex: 0 0 auto;
     padding:15px;
-    margin-left: 10px;
+    padding-right: 40px;
     position: relative;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
+.item:hover{
+    background-color: #f0f0f0 !important;
 
+}
+.Tdot{
+    position: absolute;
+    top:15px;
+    right:10px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .group{
     position: absolute;
     bottom: 15px;

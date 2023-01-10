@@ -2,7 +2,7 @@
 import axiosClient from "./axiosClient"
 
 const groupApi ={
-    getAllGroupUSer(){
+    getAllGroupUser(){
         const url='/group/allGroupUser'
         return axiosClient.get(url)
     },

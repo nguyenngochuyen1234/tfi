@@ -2,7 +2,7 @@ import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TabBar from "../../compoments/TabBar";
-import BarItem from "./components/BarItem";
+import BarItem from "../../compoments/BarItem";
 import Tasks from "./components/Tasks";
 FeatureTaskList.propTypes = {};
 
@@ -81,7 +81,6 @@ function FeatureTaskList(props) {
     const onChange = (key) => {
         const param = queryString.stringify({ status: key });
         navigate(`./?${param}`);
-
     };
 
     const item = [

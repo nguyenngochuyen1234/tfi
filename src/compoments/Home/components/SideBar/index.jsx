@@ -34,7 +34,7 @@ function SideBar({handleClickFeature,currentFeature}) {
     const items = [
         getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
         getItem("Chat", "chat", <MessageOutlined />),
-        getItem("Group", "group", <TeamOutlined />),
+        getItem("Groups", "groups", <TeamOutlined />),
         getItem("Task List", "tasklist", <OrderedListOutlined />),
     ];
     const [collapsed, setCollapsed] = useState(false);

@@ -1,9 +1,25 @@
 .feature-container_right {
     flex: 1 1;
-    margin:5px 15px 5px 10px ;
+    position: relative;
 }
 .ellip-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.wrap-container {
+    padding: 10px 15px !important;
+    height: 100%;
+    width: 100%;
+}
+.bar-item {
+    padding: 5px 15px;
+    font-weight: 500;
+}
+.link-back{
+    color: var(--color-text-default) !important;
+
+}
+.link-back:hover{
+    color: var(--color-text-default) !important;
 }

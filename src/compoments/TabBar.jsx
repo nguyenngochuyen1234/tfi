@@ -1,7 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Tabs } from "antd";
-import styles from "./styles.module.css";
+import PropTypes from "prop-types";
+import React from "react";
 
 TabBar.propTypes = {
     data: PropTypes.array,
@@ -16,7 +15,7 @@ function TabBar(props) {
     const {data, onChange,activeKey} = props;
     return (
         <Tabs
-            className={styles.item}
+            className="wrap-container"
             tabBarGutter="0px"
             activeKey={activeKey}
             onChange={onChange}

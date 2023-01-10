@@ -7,7 +7,7 @@ BarItem.propTypes = {
 
 function BarItem({label}) {
     return (
-        <div style={{padding:"5px 15px", fontWeight:"500"} }>
+        <div className='bar-item'>
             <span>{label}</span>
         </div>
     );

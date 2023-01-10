@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./styles.module.css";
 import ChatText from "./components/ChatText";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
 
 ChatMain.propTypes = {
     current: PropTypes.object.isRequired,
@@ -14,7 +15,8 @@ ChatMain.defaultProps = {
   
 };
 function ChatMain({ current, chatCurrent, }) {
-    const messagesEndRef = useRef(null);
+    const messagesEndRef = useRef(null);    
+    const idUser=useSelector((state)=>state.user.current._id);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView();
@@ -41,9 +43,10 @@ function ChatMain({ current, chatCurrent, }) {
 
                 {chatCurrent.map((eachData) => (
                     <ChatText
-                        key={eachData.id}
-                        text={eachData.data}
-                        pos={Object.hasOwn(eachData, "idPeople") ? "l" : "r"}
+                        key={eachData._id}
+                        text={eachData.text}
+                        pos={eachData.sender!==idUser ? "l" : "r"}
+                        id={eachData._id}
                         avt={current.avt}
                     />
                 ))}

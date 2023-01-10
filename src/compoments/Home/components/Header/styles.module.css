@@ -59,11 +59,12 @@
 }
 .main{
     padding:5px 10px;
+    color: var( --color--text-default)!important;
+
 }
 .main li:hover{
     background-color: #F0F0F0!important;
 }
-.main{
-    color: var( --color--text-default)!important;
-
+.main li{
+    border-radius: 10px !important;
 }

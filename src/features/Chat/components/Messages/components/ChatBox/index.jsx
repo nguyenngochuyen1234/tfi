@@ -8,6 +8,7 @@ import SendIcon from "../../../../../../compoments/CustomIcon/SendIcon";
 import useComponentVisible from "../../../../../../customHook/ComponentVisible";
 import styles from "./styles.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 ChatBox.propTypes = {
     current: PropTypes.object.isRequired,
@@ -15,8 +16,7 @@ ChatBox.propTypes = {
 };
 
 function ChatBox({ current ,handleChangeChat}) {
-    const userJson = localStorage.getItem("user")
-    const userData=JSON.parse(userJson)
+    const idUser=useSelector((state)=>state.user.current._id);
 
     const [send, setSend] = useState(false);
     const [value, setValue] = useState("");
@@ -34,14 +34,15 @@ function ChatBox({ current ,handleChangeChat}) {
     };
     
     const handleSend = () => {
-
         if (value === "") return;
         const configValue={
-            id: "#"+Math.floor(Math.random()*1000),
-            text:value
+            conversationId:"#1234",
+            _id: "#"+Math.floor(Math.random()*1000),
+            sender:idUser,
+            text:value,
+            createAt:new Date().getTime(),
         }
-        const createAt=new Date().getTime();
-        handleChangeChat(configValue,"c123",createAt)
+        handleChangeChat(configValue)
         setValue("");
         setSend(false);
     };

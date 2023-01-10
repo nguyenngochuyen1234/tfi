@@ -19,12 +19,12 @@ function Messages(props) {
 
     return (
         <div className={styles.container}>
-            {!current.id && <NotMess  mess="Hãy bắt đầu nhắn với bạn bè bạn"  />}
+            {!current.id && <NotMess mess="Hãy bắt đầu nhắn với bạn bè bạn" />}
             {current.id && (
                 <div className={styles["flex-col"]}>
                     <ChatHeader current={current} />
                     {chatCurrent.length === 0 ? (
-                        <NotMess  mess={`Oh! Có vẻ bạn chưa nhắn tin với ${current?.name}`} />
+                        <NotMess mess={`Oh! Có vẻ bạn chưa nhắn tin với ${current?.name}`} />
                     ) : (
                         <ChatMain current={current} chatCurrent={chatCurrent} />
                     )}

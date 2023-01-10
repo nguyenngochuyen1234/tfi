@@ -50,6 +50,9 @@ body {
 .text-lg {
     font-size: 24px;
 }
+.text-xxl {
+    font-size: 30px;
+}
 .text-sm {
     font-size: 14px;
 }

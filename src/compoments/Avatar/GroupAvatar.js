@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Divider, Tooltip } from 'antd';
+import { Avatar, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
 import imageApi from '../../api/imageApi';
 const GroupAvatar = ({ arrayId, size }) => {
+   
     const [baseStringArray, setBaseStringArray] = useState({
         headerGroup: [],
         bodyGroup: null,
@@ -44,11 +44,11 @@ const GroupAvatar = ({ arrayId, size }) => {
                 size={size}
                 maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
             >
-                {baseStringArray.headerGroup?.map(baseString => <Avatar src={`data:image/png;base64,${baseString}`} />)}
+                {baseStringArray.headerGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
                 <Tooltip title="Ant User" placement="top">
-                    {baseStringArray.bodyGroup && <Avatar src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
+                    {baseStringArray.bodyGroup && <Avatar  src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
                 </Tooltip>
-                {baseStringArray.hideGroup.length>0 && baseStringArray.hideGroup?.map(baseString => <Avatar src={`data:image/png;base64,${baseString}`} />)}
+                {baseStringArray.hideGroup.length>0 && baseStringArray.hideGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
             </Avatar.Group>
         </>
     );

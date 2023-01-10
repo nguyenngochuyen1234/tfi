@@ -24,7 +24,7 @@ function Auth({ authRoute }) {
         try {
             const action = login(values);
             const resultAction = await dispatch(action);
-            console.log(resultAction)
+            
             alert("Đăng nhập thành công")
             navigate("/home");
         } catch (e) {
