@@ -5,13 +5,14 @@ import styles from "./styles.module.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import groupApi from "../../../../api/groupApi";
+import InputSearchMember from "../../../../compoments/InputSearchMember/InputSearchMember"
 
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [values, setValues] = useState({});
-
+    const [memberFiltered, setMemberFiltered] = useState([])
     const user = useSelector((state) => state.user.current);
     const idUser = user._id;
     console.log(user, idUser);
@@ -25,18 +26,16 @@ function CreateGroup(props) {
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
-
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description, leader: idUser ,member:[idUser],projects:[]};
-    
+        const memberId = memberFiltered.map(member=>member._id)
+        const result = { name: values.groupname, description: values.description,member:memberId}
         async function post(){
             try {
-                
-
-                await groupApi.createGroup(result);
+                const data = await groupApi.createGroup(result);
                 alert("created done");
+                setIsModalOpen(false);
             } catch (error) {
-                console.log(error);
+                alert(error);
             }
         }
         post();
@@ -69,6 +68,7 @@ function CreateGroup(props) {
                     open={isModalOpen}
                     footer={null}
                     onCancel={handleCancel}
+                    width={1000}
                 >
                     <Form
                         className={styles["form-container"]}
@@ -90,7 +90,7 @@ function CreateGroup(props) {
                         <Form.Item label="Description" name="description">
                             <Input placeholder="Let people know what this group is all about" />
                         </Form.Item>
-
+                        <InputSearchMember memberFiltered={memberFiltered} setMemberFiltered={setMemberFiltered}/>
                         <Form.Item label="Privacy" name="privacy" initialValue="Private">
                             <Select
                                 defaultActiveFirstOption={true}
