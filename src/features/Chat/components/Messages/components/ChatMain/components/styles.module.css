@@ -28,7 +28,7 @@
 .text{
     max-width: 400px;
     padding:10px 12px;
-    margin: 1px 10px;
+    margin: 0px 10px;
     font-weight: 300;
     width: fit-content;
     word-wrap: break-word;      /* IE 5.5-7 */

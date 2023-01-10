@@ -16,8 +16,8 @@ ChatMain.defaultProps = {
 };
 function ChatMain({ current, chatCurrent, }) {
     const messagesEndRef = useRef(null);    
-    const idUser=useSelector((state)=>state.user.current._id);
-
+    const idUser=useSelector((state)=>state.user.current.account._id    );
+    console.log(idUser);
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView();
     };

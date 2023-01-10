@@ -15,8 +15,8 @@ ChatBox.propTypes = {
     handleChangeChat: PropTypes.func.isRequired,
 };
 
-function ChatBox({ current ,handleChangeChat}) {
-    const idUser=useSelector((state)=>state.user.current._id);
+function ChatBox({ current, handleChangeChat }) {
+    const idUser = useSelector((state) => state.user.current.account._id);
 
     const [send, setSend] = useState(false);
     const [value, setValue] = useState("");
@@ -32,17 +32,17 @@ function ChatBox({ current ,handleChangeChat}) {
         }
         setValue(value);
     };
-    
+
     const handleSend = () => {
         if (value === "") return;
-        const configValue={
-            conversationId:"#1234",
-            _id: "#"+Math.floor(Math.random()*1000),
-            sender:idUser,
-            text:value,
-            createAt:new Date().getTime(),
-        }
-        handleChangeChat(configValue)
+        const configValue = {
+            conversationId: "#1234",
+            _id: "#" + Math.floor(Math.random() * 1000),
+            sender: idUser,
+            text: value,
+            createAt: new Date().getTime(),
+        };
+        handleChangeChat(configValue);
         setValue("");
         setSend(false);
     };
