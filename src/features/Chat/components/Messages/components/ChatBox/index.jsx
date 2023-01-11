@@ -9,14 +9,16 @@ import useComponentVisible from "../../../../../../customHook/ComponentVisible";
 import styles from "./styles.module.css";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import userApi from "../../../../../../api/userApi";
+import conversatioApi from "../../../../../../api/conversationApi";
+import messageApi from "../../../../../../api/messageApi";
 
 ChatBox.propTypes = {
     current: PropTypes.object.isRequired,
     handleChangeChat: PropTypes.func.isRequired,
 };
 
-function ChatBox({ current, handleChangeChat }) {
-    const idUser = useSelector((state) => state.user.current.account._id);
+function ChatBox({ current, handleChangeChat, conversationCurrent, setConversationCurrent, socket }) {
 
     const [send, setSend] = useState(false);
     const [value, setValue] = useState("");
@@ -33,18 +35,38 @@ function ChatBox({ current, handleChangeChat }) {
         setValue(value);
     };
 
-    const handleSend = () => {
-        if (value === "") return;
-        const configValue = {
-            conversationId: "#1234",
-            _id: "#" + Math.floor(Math.random() * 1000),
-            sender: idUser,
-            text: value,
-            createAt: new Date().getTime(),
-        };
-        handleChangeChat(configValue);
-        setValue("");
-        setSend(false);
+    const handleSend = async () => {
+        let configValue = {}
+        try {
+            if (value === "") return;
+            if (!conversationCurrent) {
+                const newConversation = await conversatioApi.createConversation({
+                    receiverId: current.id
+                })
+                setConversationCurrent(newConversation._id)
+                configValue = await messageApi.createMessage(
+                    {
+                        conversationId: newConversation._id,
+                        text: value
+                    }
+                )
+            } else {
+                configValue = await messageApi.createMessage(
+                    {
+                        conversationId: conversationCurrent,
+                        text: value
+                    }
+                )
+
+            }
+            handleChangeChat(configValue);
+            socket.current.emit("send-msg",{...configValue, receiverId: current.id})
+            setValue("");
+            setSend(false);
+        } catch (err) {
+            console.log(err.message)
+            // alert(err.message)
+        }
     };
 
     const toggleEmoji = () => {

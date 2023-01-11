@@ -16,8 +16,7 @@ ChatMain.defaultProps = {
 };
 function ChatMain({ current, chatCurrent, }) {
     const messagesEndRef = useRef(null);    
-    const idUser=useSelector((state)=>state.user.current.account._id    );
-    console.log(idUser);
+    const idUser=useSelector((state)=>state.user.current._id) || localStorage.getItem("user_id")
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView();
     };
@@ -45,7 +44,7 @@ function ChatMain({ current, chatCurrent, }) {
                     <ChatText
                         key={eachData._id}
                         text={eachData.text}
-                        pos={eachData.sender!==idUser ? "l" : "r"}
+                        pos={eachData.sender===idUser ? "r" : "l"}
                         id={eachData._id}
                         avt={current.avt}
                     />

@@ -21,7 +21,8 @@ function HomeRight({ feature }) {
         <Routes>
             <Route path="/" element={<Navigate to="./dashboard" />} />
             <Route path="/dashboard" element={<FeatureDashBoard />} />
-            <Route path="/chat" element={<FeatureChat />} />
+            <Route path="/chat*" element={<FeatureChat />} />
+            <Route path="/chat/:idFriend" element={<FeatureChat />} />
             <Route path="/groups" element={<FeatureGroup />} />
             <Route path="/tasklist" element={<FeatureTaskList />} />
         </Routes>

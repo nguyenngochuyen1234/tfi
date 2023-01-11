@@ -15,7 +15,7 @@ Messages.defaultProps = {
     chatCurrent: [],
 };
 function Messages(props) {
-    const { current, chatCurrent, handleChangeChat } = props;
+    const { current, chatCurrent, handleChangeChat, conversationCurrent, setConversationCurrent, socket } = props;
 
     return (
         <div className={styles.container}>
@@ -28,7 +28,7 @@ function Messages(props) {
                     ) : (
                         <ChatMain current={current} chatCurrent={chatCurrent} />
                     )}
-                    <ChatBox current={current} handleChangeChat={handleChangeChat} />
+                    <ChatBox current={current} handleChangeChat={handleChangeChat} conversationCurrent={conversationCurrent} setConversationCurrent={setConversationCurrent} socket={socket}/>
                 </div>
             )}
         </div>

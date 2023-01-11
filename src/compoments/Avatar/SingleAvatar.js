@@ -7,7 +7,6 @@ const SingleAvatar = ({username,size}) => {
         try {
             const data = await imageApi.getSingleImage({ name: username })
             if (data.success) {
-                console.log(data)
                 const base64String = btoa(
                     String.fromCharCode(...new Uint8Array(data.data.img.data.data))
                 )

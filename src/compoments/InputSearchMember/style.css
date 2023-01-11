@@ -14,14 +14,16 @@
 .search-member-filtered {
     padding: 10px;
     background-color: #f5f5f5;
-    max-height: 200px;
+    max-height: 100px;
     overflow: auto;
 }
-.search-member-filtered input{
-    width: 100%;
+
+.search-member-filtered input {
+    min-width: 1000px;
 }
+
 .search-member-filtered-item {
-    max-width: 220px;
+    max-width: 1000px;
     display: inline-flex;
     align-items: center;
     background-color: #fff;

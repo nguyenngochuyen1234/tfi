@@ -1,96 +1,38 @@
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import userApi from "../../api/userApi";
 import Contacts from "./components/Contacts";
 import Messages from "./components/Messages";
 import styles from "./styles.module.css";
+import { io } from 'socket.io-client'
+
+import { STATIC_HOST } from "../../constants/common";
+import conversatioApi from "../../api/conversationApi";
+import { useNavigate } from "react-router";
+import messageApi from "../../api/messageApi";
 
 FeatureChat.propTypes = {};
-
-/* const people = [
-    {
-        id: "#123",
-        name: "Nguyễn Ngọc Huyền",
-        avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
-        lastSend: "",
-        active: true,
-    },
-    {
-        id: "#124",
-        name: "Dương Thị Thùy Linh",
-        avt: "https://toigingiuvedep.vn/wp-content/uploads/2022/01/hinh-avatar-cute-nu.jpg",
-        lastSend: "Nice to meet you 🧡",
-        active: false,
-    },
-    {
-        id: "#125",
-        name: "Tống Đức Luận",
-        avt: "https://tourchaua.net/wp-content/uploads/2021/12/avatar-cute-gau-nau.jpg",
-        lastSend: "You: Ok đợi!",
-        active: true,
-    },
-]; */
-const chatData = [
-    {
-        conversationId:"#1234",
-        sender:"63ad79c3723874d6ee9ad68c",
-        text:"Làm bài tập chưa",
-        _id:"#1",
-        createAt:1673327537391
-    },
-    {
-        conversationId:"#1234",
-        sender:"63ad79c3723874d6ee9ad68c",
-        text:"Thắng ơi!!",
-        _id:"#2",
-        createAt:1673327537398
-    },
-    {
-        conversationId:"#1234",
-        sender:"63ad79c3723874d6ee9ad68c",
-        text:"Thắng ơi!!",
-        _id:"#3",
-        createAt:1673327537500
-    },
-    {
-        conversationId:"#1234",
-        sender:"63ad7a0b723874d6ee9ad68e",
-        text:"Tao đây!!",
-        _id:"#4",
-        createAt:1673327537900
-    },
-    {
-        conversationId:"#1234",
-        sender:"63ad7a0b723874d6ee9ad68e",
-        text:"Làm rồi",
-        _id:"#5",
-        createAt:1673327537910
-    },
-    {
-        conversationId:"#1234",
-        sender:"63ad79c3723874d6ee9ad68c",
-        text:"Oke",
-        _id:"#6",
-        createAt:1673327537911
-    },
-];
 function FeatureChat(props) {
 
-    
+    const userId = localStorage.getItem("user_id")
+    const socket = useRef()
+
+    const navigate = useNavigate()
 
     const [people, setPeople] = useState([])
-    const [chatCurrent, setChatCurrent] = useState(
-        // chatData || 
-        []
-    );
+    const [chatCurrent, setChatCurrent] = useState([]);
+    
+    const [conversationCurrent, setConversationCurrent] = useState()
+    const [currentPeople, setCurrentPeople] = useState({});
 
-
-    const fetchAllUser = async() =>{
-        try{
-            const data = await userApi.getAllUser()
-            if(data.success){
-                let dataUser = data.allUser.map(user=>{
-                    return{
+    const [arrivalMessage, setArrivalMessage] = useState()
+    
+    const fetchAllUser = async () => {
+        try {
+            const data = await conversatioApi.getFriendData()
+            if (data.success) {
+                let dataUser = data.friendData.map(user => {
+                    return {
                         id: user._id,
                         name: user.name,
                         avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
@@ -100,33 +42,58 @@ function FeatureChat(props) {
                 })
                 setPeople(dataUser)
             }
-        }catch(err){
+        } catch (err) {
             alert(err.message)
         }
-    } 
+    }
+
+    useEffect(() => {
+        fetchAllUser()
+    }, [])
+    
+    useEffect(()=>{
+        if(socket.current){
+            socket.current.on("msg-recieve",(msg)=>{
+                setArrivalMessage(msg)
+            })
+        }
+    },[conversationCurrent])
 
     useEffect(()=>{
-        fetchAllUser()
-    },[])
-
-
-
-    const [currentPeople, setCurrentPeople] = useState({});
-    const handleCurrentPeople = (contact) => {
-        setCurrentPeople(contact);
-        console.log(contact.id);
-        if(contact.id==="63ad79c3723874d6ee9ad68c"){
-            setChatCurrent(chatData);
-        }else{
-            setChatCurrent([]);
+        if(arrivalMessage && (arrivalMessage.conversationId === conversationCurrent)){
+            setChatCurrent((prev)=>[...prev, arrivalMessage])
         }
-        
+    },[arrivalMessage])
+
+    useEffect(()=>{
+        socket.current = io(STATIC_HOST)
+        socket.current.emit("add-user",userId)
+    },[userId])
+
+
+
+    const handleCurrentPeople = async (contact) => {
+        try {
+            navigate(`/home/chat/${contact.id}`)
+            setCurrentPeople(contact);
+            const data = await messageApi.getMessage(contact.id)
+            if (data.success) {
+                setConversationCurrent(data.conversationId)
+                setChatCurrent(data.messages)
+            }
+            else {
+                setConversationCurrent(null)
+            }
+        } catch (err) {
+            setChatCurrent([])
+            setConversationCurrent(null)
+        }
+
     };
-    
-    console.log(chatCurrent)
+
     // khi nguoi dung bam ender de chat
     const handleChangeChat = (value) => {
-        setChatCurrent([...chatCurrent,value])
+        setChatCurrent([...chatCurrent, value])
     };
     return (
         <div
@@ -140,6 +107,7 @@ function FeatureChat(props) {
                     current={currentPeople}
                     handleCurrentPeople={handleCurrentPeople}
                     people={people}
+                    setPeople={setPeople}
                 />
             </div>
             <div className={styles["messages-container"]}>
@@ -147,6 +115,9 @@ function FeatureChat(props) {
                     current={currentPeople}
                     chatCurrent={chatCurrent}
                     handleChangeChat={handleChangeChat}
+                    conversationCurrent={conversationCurrent}
+                    setConversationCurrent={setConversationCurrent}
+                    socket={socket}
                 />
             </div>
         </div>
