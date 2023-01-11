@@ -1,1 +1,1 @@
-export const STATIC_HOST="http://localhost:8000/"
+export const STATIC_HOST="https://manager-job.vercel.app/"
