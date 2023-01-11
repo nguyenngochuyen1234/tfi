@@ -11,16 +11,16 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
     const [memberSearch, setMemberSearch] = useState([])
 
     const [valueInput, setValueInput] = useState("")
-    const user = useSelector((state) => state.user.current);
-    const idUser = user._id;
+    const user = useSelector((state) => state.user.current.account);
+    const idUser = user._id || localStorage.getItem("id_user");
+
 
 
     const fechAllUser = async () => {
         try {
             const data = await userApi.getAllUser()
             if (data.success) {
-                const dataFilter = data.allUser.filter(dt=>dt._id!==idUser)
-                console.log(dataFilter)
+                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
                 setUsers(dataFilter)
             }
         } catch (err) {
@@ -53,12 +53,12 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
     }, [])
     return (
         <div>
-            {memberFiltered.length>0 && <div className='search-member-filtered'>
+            {memberFiltered.length > 0 && <div className='search-member-filtered'>
                 {memberFiltered.map(member => {
                     return (
                         <div key={member.username} className='search-member-filtered-item'>
                             <div style={{ padding: "5px" }}>
-                                <SingleAvatar username={member.username} size="small"/>
+                                <SingleAvatar username={member.username} size="small" />
                             </div>
                             <h4 style={{ fontSize: 10, padding: "5px" }}>{member.name}</h4>
                             <p style={{ opacity: "0.6", fontSize: 10, padding: "5px" }}>{member.username}</p>
@@ -91,7 +91,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
                     return (
                         <div key={user.username} className='search-member-item' onClick={() => handleOnclick(user)}>
                             <div style={{ padding: "10px" }}>
-                            <SingleAvatar username={user.username} size="default"/>
+                                <SingleAvatar username={user.username} size="default" />
                             </div>
                             <div style={{ padding: "10px" }}>
                                 <h4>{user.name}</h4>

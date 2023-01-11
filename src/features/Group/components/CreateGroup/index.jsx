@@ -90,7 +90,13 @@ function CreateGroup(props) {
                         <Form.Item label="Description" name="description">
                             <Input placeholder="Let people know what this group is all about" />
                         </Form.Item>
+
+
                         <InputSearchMember memberFiltered={memberFiltered} setMemberFiltered={setMemberFiltered}/>
+                        
+                        
+                        
+                        
                         <Form.Item label="Privacy" name="privacy" initialValue="Private">
                             <Select
                                 defaultActiveFirstOption={true}
