@@ -27,12 +27,10 @@ function CreateGroup(props) {
     };
 
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description, leader: idUser ,member:[idUser],projects:[]};
+        const result = { name: values.groupname, description: values.description, leader: idUser ,member:[],projects:[]};
     
         async function post(){
             try {
-                
-
                 await groupApi.createGroup(result);
                 alert("created done");
             } catch (error) {

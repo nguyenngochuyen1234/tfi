@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styles from './styles.module.css';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logOut } from '../../../../features/Auth/userSlice';
 import Notification from './components/Notification';
 import Profile from './components/Profile';
-import { logOut } from '../../../../features/Auth/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import styles from './styles.module.css';
 
 Header.propTypes = {
     

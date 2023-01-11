@@ -1,0 +1,11 @@
+.item{
+    padding:10px 0px;
+    font-weight: 400;
+}
+.item_sm{
+    padding:5px 0px;
+    font-weight: 400;
+}
+.m-l-5{
+    margin-left: 5px;
+}

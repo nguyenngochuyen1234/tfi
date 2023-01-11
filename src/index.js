@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from "react-redux";
@@ -12,7 +13,9 @@ root.render(
 
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+
+        <App />
+   
     </BrowserRouter>
   </Provider>
 

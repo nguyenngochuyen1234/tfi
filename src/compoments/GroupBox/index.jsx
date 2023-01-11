@@ -1,9 +1,17 @@
-import { MoreOutlined } from "@ant-design/icons";
-import { Button, Tooltip } from "antd";
+import {
+    DeleteOutlined,
+    EyeInvisibleOutlined,
+    LinkOutlined,
+    MoreOutlined,
+    SettingOutlined,
+} from "@ant-design/icons";
+import { Button, Dropdown, Tooltip } from "antd";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+
 import React from "react";
 import GroupAvatar from "../Avatar/GroupAvatar";
+import Options from "../Options";
 import styles from "./styles.module.css";
 
 GroupBox.propTypes = {
@@ -11,37 +19,74 @@ GroupBox.propTypes = {
     describe: PropTypes.string,
     members: PropTypes.array,
     click: PropTypes.func,
+    status: PropTypes.string.isRequired,
+    handleFeatures: PropTypes.func,
     idGroup: PropTypes.string,
 };
 GroupBox.defaultProps = {
-    click:null,
+    click: null,
+    handleFeatures: null,
     nameGroup: "Undefined",
-    idGroup:"",
+    idGroup: "",
     describe: "",
     members: [
         "https://ik.imagekit.io/TLIT/a_VxvE5ClCm.png?ik-sdk-version=javascript-1.4.3&updatedAt=1671827651689",
         "https://ik.imagekit.io/TLIT/a_VxvE5ClCm.png?ik-sdk-version=javascript-1.4.3&updatedAt=1671827651689",
     ],
 };
-const items = [
-    {
-      label: '1st menu item',
-      key: '1',
-    },
-    {
-      label: '2nd menu item',
-      key: '2',
-    },
-    {
-      label: '3rd menu item',
-      key: '3',
-    },
-  ];
+
 function GroupBox(props) {
-    const { idGroup,nameGroup, describe, members ,click} = props;
+    const { idGroup, nameGroup, describe, members, click, handleFeatures, status } = props;
+
+    const items = [
+        {
+            label: <Options icon={<EyeInvisibleOutlined />} label="Hide" config="sm" />,
+            key: "hide",
+        },
+        {
+            label: <Options icon={<SettingOutlined />} label="Manage Group" config="sm" />,
+            key: "manage",
+        },
+        {
+            label: <Options icon={<LinkOutlined />} label="Get link to group" config="sm" />,
+            key: "link",
+        },
+    ];
+    if (status === "created") {
+        items.push({
+            label: <Options icon={<DeleteOutlined />} label="Delete group" config="sm" />,
+            key: "delete",
+        });
+    }
+
+    const onClick = ({ key }) => {
+        if(handleFeatures) handleFeatures(key,idGroup);
+    };
     return (
-        <div id={idGroup} className={styles.item} onClick={()=>click(idGroup)}>
-                    <Button type="text" className={styles.Tdot} shape="circle" icon={<MoreOutlined />} />
+        <div
+            id={idGroup}
+            className={styles.item}
+            onClick={() => {
+                if (click) click(idGroup);
+            }}
+        >
+            <Dropdown
+                overlayClassName={styles.main}
+                menu={{
+                    items,
+                    onClick,
+                }}
+                placement="bottomRight"
+                arrow={false}
+                trigger={["click"]}
+            >
+                <Button
+                    type="text"
+                    className={styles.Tdot}
+                    shape="circle"
+                    icon={<MoreOutlined />}
+                />
+            </Dropdown>
 
             <span
                 className={classNames({
@@ -65,13 +110,14 @@ function GroupBox(props) {
             >
                 {describe}
             </div>
-            <div style={{
-                position: "absolute",
-                bottom:"15px"
-            }}>
-            <GroupAvatar arrayId={members} size="large" />
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: "15px",
+                }}
+            >
+                <GroupAvatar arrayId={members} size="large" />
             </div>
-
         </div>
     );
 }

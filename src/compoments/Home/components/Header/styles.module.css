@@ -54,9 +54,7 @@
     padding:10px 0px;
     font-weight: 400;
 }
-.m-l-5{
-    margin-left: 5px;
-}
+
 .main{
     padding:5px 10px;
     color: var( --color--text-default)!important;

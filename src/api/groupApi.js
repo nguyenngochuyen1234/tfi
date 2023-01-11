@@ -9,7 +9,10 @@ const groupApi ={
     createGroup(data){
         const url='/group'
         return axiosClient.post(url,data)
+    },
+    delGroup(id){
+        const url='/group'
+        return axiosClient.delete(url+'/'+id)
     }
-
 }
 export default groupApi;

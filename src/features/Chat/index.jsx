@@ -1,13 +1,9 @@
-import React, { useRef, useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./styles.module.css";
 import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import userApi from "../../api/userApi";
 import Contacts from "./components/Contacts";
 import Messages from "./components/Messages";
-import {io} from 'socket.io-client'
-import { useEffect } from "react";
-import { STATIC_HOST } from "../../constants/common";
-import userApi from "../../api/userApi";
+import styles from "./styles.module.css";
 
 FeatureChat.propTypes = {};
 

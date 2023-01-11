@@ -1,50 +1,57 @@
-import { BulbOutlined, CrownOutlined, IdcardOutlined, LogoutOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+    BulbOutlined,
+    CrownOutlined,
+    IdcardOutlined,
+    LogoutOutlined,
+    SettingOutlined,
+} from "@ant-design/icons";
 import { Button, Dropdown } from "antd";
 import React from "react";
 import styles from "../../styles.module.css";
-import ProfileItem from "../ProfileItem";
-import PropTypes from "prop-types"
+
+import PropTypes from "prop-types";
+import Options from "../../../../../Options";
 Profile.propTypes = {
     handleLogOut: PropTypes.func.isRequired,
 };
 Profile.defaultProps = {
-    handleLogOut:null,
+    handleLogOut: null,
 };
 const items = [
     {
         key: "1",
-        label: <ProfileItem icon={<IdcardOutlined />} label="Thông tin tài khoản" />,
+        label: <Options icon={<IdcardOutlined />} label="Thông tin tài khoản" config="df" />,
     },
     {
         key: "2",
-        label: <ProfileItem icon={<SettingOutlined />} label="Cài đặt & Quyền riêng tư" />,
+        label: <Options icon={<SettingOutlined />} label="Cài đặt & Quyền riêng tư" config="df" />,
     },
     {
         key: "3",
-        label: <ProfileItem icon={<CrownOutlined />} label="Màn hình & Trợ lí Doris" />,
+        label: <Options icon={<CrownOutlined />} label="Màn hình & Trợ lí Doris" config="df" />,
     },
     {
         key: "4",
-        label: <ProfileItem icon={<BulbOutlined />} label="Báo lỗi & Đóng góp ý kiến" />,
+        label: <Options icon={<BulbOutlined />} label="Báo lỗi & Đóng góp ý kiến" config="df" />,
     },
     {
         key: "LogOut",
-        label: <ProfileItem icon={<LogoutOutlined />}  label="Đăng xuất" />,
+        label: <Options icon={<LogoutOutlined />} label="Đăng xuất" config="df" />,
     },
 ];
 function Profile(props) {
-    const {handleLogOut}=props;
-    const onClick=({key})=>{
-        if(key==="LogOut"){
+    const { handleLogOut } = props;
+    const onClick = ({ key }) => {
+        if (key === "LogOut") {
             handleLogOut();
         }
-    }
+    };
     return (
         <Dropdown
             overlayClassName={styles.main}
             menu={{
                 items,
-                onClick
+                onClick,
             }}
             placement="bottomRight"
             arrow={false}

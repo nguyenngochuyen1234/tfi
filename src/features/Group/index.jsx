@@ -1,30 +1,27 @@
-import { LeftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { Button, Input, Modal, Typography } from "antd";
+import { DeleteOutlined, LeftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { Button, Input, notification, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import groupApi from "../../api/groupApi";
 import BarItem from "../../compoments/BarItem";
 import TabBar from "../../compoments/TabBar";
-import styles from "./styles.module.css";
-import FilterGroups from "./components/FilterGroups";
 import CreateGroup from "./components/CreateGroup";
+import FilterGroups from "./components/FilterGroups";
 import JoinGroup from "./components/JoinGroup";
-import { Link, useNavigate } from "react-router-dom";
+import styles from "./styles.module.css";
+
 FeatureGroup.propTypes = {};
 
 function FeatureGroup(props) {
-
+    const [api, contextHolder] = notification.useNotification();
+ 
     const [allGroups, setAllGroups] = useState([]);
-    
     const [filterGroups, setFilterGroups] = useState([]);
     const [isCreateJoin, setIsCreateJoin] = useState(false);
     const handleClickCreateJoin = () => {
         setIsCreateJoin(true);
-      
-
     };
     const handleClickBack = () => {
         setIsCreateJoin(false);
-      
     };
     useEffect(() => {
         (async () => {
@@ -40,21 +37,49 @@ function FeatureGroup(props) {
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
     };
+    const handleClick = (key, idGroup) => {
+        if (key === "delete") {
+            (async () => {
+                try {
+                    await groupApi.delGroup(idGroup);
+                    console.log("Xoa thanh cong");
+                    const cloneFilterGroups = filterGroups.filter((group) => {
+                        return group._id !== idGroup;
+                    });
+                    api.open({
+                        message: `Xóa thành công`,
+                        description: "Xóa group thành công",
+                        duration:2,
+                        icon:< DeleteOutlined style={{ color: "var(--color--df-mess)"}}/>
+                      });
+                    setFilterGroups(cloneFilterGroups);
+                    
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+        }
+    };
     const items = [
         {
             label: <BarItem label="Groups has been created" />,
             key: "groupMade",
-            children: <FilterGroups data={filterGroups} />,
+            children: (
+                <FilterGroups data={filterGroups} handleClick={handleClick} status="created" />
+            ),
         },
         {
             label: <BarItem label="Groups has been joined" />,
             key: "groupJoined",
-            children: <FilterGroups data={filterGroups} />,
+            children: (
+                <FilterGroups data={filterGroups} handleClick={handleClick} status="joined" />
+            ),
         },
     ];
 
     return (
         <div className="feature-container_right">
+             {contextHolder}
             {!isCreateJoin && (
                 <div>
                     <div className={styles.features}>
@@ -77,7 +102,6 @@ function FeatureGroup(props) {
             {isCreateJoin && (
                 <div>
                     <div className={styles.nav}>
-                    
                         <Button
                             type="link"
                             className="link-back"
@@ -87,8 +111,13 @@ function FeatureGroup(props) {
                             Back
                         </Button>
                     </div>
-                    <Typography.Text className="text-xxl" style={{fontWeight:"300",margin:"0px 15px "}}>Join or create a group</Typography.Text>
-                    <div  className={styles.content}>
+                    <Typography.Text
+                        className="text-xxl"
+                        style={{ fontWeight: "300", margin: "0px 15px " }}
+                    >
+                        Join or create a group
+                    </Typography.Text>
+                    <div className={styles.content}>
                         <CreateGroup />
                         <JoinGroup />
                     </div>
