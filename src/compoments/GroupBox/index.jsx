@@ -10,6 +10,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import React from "react";
+import { Link } from "react-router-dom";
 import GroupAvatar from "../Avatar/GroupAvatar";
 import Options from "../Options";
 import styles from "./styles.module.css";
@@ -18,7 +19,7 @@ GroupBox.propTypes = {
     nameGroup: PropTypes.string,
     describe: PropTypes.string,
     members: PropTypes.array,
-    click: PropTypes.func,
+   
     status: PropTypes.string.isRequired,
     handleFeatures: PropTypes.func,
     idGroup: PropTypes.string,
@@ -36,7 +37,7 @@ GroupBox.defaultProps = {
 };
 
 function GroupBox(props) {
-    const { idGroup, nameGroup, describe, members, click, handleFeatures, status } = props;
+    const { idGroup, nameGroup, describe, members, handleFeatures, status } = props;
 
     const items = [
         {
@@ -60,16 +61,10 @@ function GroupBox(props) {
     }
 
     const onClick = ({ key }) => {
-        if(handleFeatures) handleFeatures(key,idGroup);
+        if (handleFeatures) handleFeatures(key, idGroup);
     };
     return (
-        <div
-            id={idGroup}
-            className={styles.item}
-            onClick={() => {
-                if (click) click(idGroup);
-            }}
-        >
+        <div style={{ position: "relative" }}>
             <Dropdown
                 overlayClassName={styles.main}
                 menu={{
@@ -87,37 +82,44 @@ function GroupBox(props) {
                     icon={<MoreOutlined />}
                 />
             </Dropdown>
-
-            <span
-                className={classNames({
-                    [styles.name]: true,
-                    "text-md": true,
-                })}
-            >
-                {nameGroup.length > 30 ? (
-                    <Tooltip title={nameGroup} key={nameGroup}>
-                        {nameGroup.slice(0, 30)}...
-                    </Tooltip>
-                ) : (
-                    nameGroup
-                )}
-            </span>
-            <div
-                className={classNames({
-                    [styles.describe]: true,
-                    "text-sm": true,
-                })}
-            >
-                {describe}
-            </div>
-            <div
-                style={{
-                    position: "absolute",
-                    bottom: "15px",
-                }}
-            >
-                <GroupAvatar arrayId={members} size="large" />
-            </div>
+            <Link to={`./${idGroup}`}>
+                <div
+                    id={idGroup}
+                    className={styles.item}
+                    
+                >
+                    <span
+                        className={classNames({
+                            [styles.name]: true,
+                            "text-md": true,
+                        })}
+                    >
+                        {nameGroup.length > 30 ? (
+                            <Tooltip title={nameGroup} key={nameGroup}>
+                                {nameGroup.slice(0, 30)}...
+                            </Tooltip>
+                        ) : (
+                            nameGroup
+                        )}
+                    </span>
+                    <div
+                        className={classNames({
+                            [styles.describe]: true,
+                            "text-sm": true,
+                        })}
+                    >
+                        {describe}
+                    </div>
+                    <div
+                        style={{
+                            position: "absolute",
+                            bottom: "15px",
+                        }}
+                    >
+                        <GroupAvatar arrayId={members} size="large" />
+                    </div>
+                </div>
+            </Link>
         </div>
     );
 }

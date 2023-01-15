@@ -1,23 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./styles.module.css";
-import GroupBox from "../../../../compoments/GroupBox";
 import { Col, Row } from "antd";
-import groupApi from "../../../../api/groupApi";
+import PropTypes from "prop-types";
+import React from "react";
+import GroupBox from "../../../../compoments/GroupBox";
+import styles from "./styles.module.css";
 FilterGroups.propTypes = {
     data: PropTypes.array,
     status: PropTypes.string.isRequired,
     handleClick:PropTypes.func.isRequired,
+
 };
 FilterGroups.defaultProps = {
     data: [],
 };
 
 function FilterGroups({ data, status,handleClick }) {
+    
+
     const handleFeatureClick=(key,idGroup)=>{
         if(handleClick) handleClick(key,idGroup);
-        
     }
+
     return (
         <Row gutter={[20, 20]} className={styles["list-group"]}>
             {data.map((item) => {
@@ -38,6 +40,7 @@ function FilterGroups({ data, status,handleClick }) {
                             handleFeatures={handleFeatureClick}
                             nameGroup={item.name}
                             members={item.member}
+                          
                         />
                     </Col>
                 );

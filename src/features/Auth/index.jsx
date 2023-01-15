@@ -1,12 +1,11 @@
-import { unwrapResult } from "@reduxjs/toolkit";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loginform from "../../compoments/FormAuth/Loginform";
 import Registerform from "../../compoments/FormAuth/Registerform";
 import "./style.css";
 import { login } from "./userSlice";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 
 Auth.propTypes = {
 

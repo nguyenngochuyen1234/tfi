@@ -1,7 +1,9 @@
 .search-member-container {
     max-height: 200px;
+    background-color: var(--color--default);
     overflow: auto;
     margin-top: 10px;
+    position: absolute;
 }
 
 .search-member-item {

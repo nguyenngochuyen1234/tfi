@@ -1,1 +1,1 @@
-export const STATIC_HOST="https://localhost:8000/"
+export const STATIC_HOST="http://localhost:8000/"

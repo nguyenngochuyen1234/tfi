@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react'
-import { UserOutlined, CloseOutlined } from '@ant-design/icons';
-import { Input, Form, Avatar } from 'antd'
-import { useState } from 'react'
-import userApi from '../../api/userApi'
-import "./style.css"
-import SingleAvatar from '../Avatar/SingleAvatar';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
+import groupApi from '../../api/groupApi';
+import userApi from '../../api/userApi';
+import SingleAvatar from '../Avatar/SingleAvatar';
+import "./style.css";
+
+const InputSearchMember = ({group}) => {
     const [users, setUsers] = useState([])
     const [memberSearch, setMemberSearch] = useState([])
-
+    const [memberFiltered, setMemberFiltered] = useState([]);
     const [valueInput, setValueInput] = useState("")
-    const user = useSelector((state) => state.user.current.account);
-    const idUser = user._id || localStorage.getItem("id_user");
-
-
+    const user = useSelector((state) => state.user.current);
+    console.log(user)
+    const idUser = user._id;
 
     const fechAllUser = async () => {
         try {
             const data = await userApi.getAllUser()
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
+                
                 setUsers(dataFilter)
             }
         } catch (err) {
@@ -42,6 +43,20 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
         setMemberSearch(newUsers)
         setMemberFiltered(prev => [...prev, userFilter])
         setValueInput("")
+    }
+    const handleAdd = ()=>{
+        const memberid= memberFiltered.map(member =>member._id)
+        const data={...group,member:memberid};
+        console.log(data)
+        // (async ()=>{
+        //     try {
+        //         const response=await groupApi.updateGroup(data._id,data);
+        //         console.log(response);
+                
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // })();
     }
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)
@@ -72,14 +87,17 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
                     )
                 })}
             </div>}
-            <label for="member">Member</label>
-            <input
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"20px"}}>
+                <div style={{position:"relative",width:"80%"}}>
+                <input
                 onChange={onChangeHandle}
                 value={valueInput}
                 name="member"
+                placeholder='Add members'
                 id="member"
                 style={{
                     width: "100%",
+                    padding:"0 10px",
                     height: 32,
                     border: "solid 1px #ccc",
                     borderRadius: 5,
@@ -100,6 +118,12 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
                         </div>
                     )
                 })}
+            </div>
+                </div>
+            
+            <Button type="primary" onClick={handleAdd}>
+                Add
+            </Button>
             </div>
         </div>
     )
