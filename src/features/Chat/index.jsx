@@ -40,6 +40,7 @@ function FeatureChat(props) {
                         active: true,
                     }
                 })
+                console.log(dataUser);
                 setPeople(dataUser)
             }
         } catch (err) {
