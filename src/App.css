@@ -12,8 +12,12 @@
     height: 100%;
     width: 100%;
 }
-.bar-item {
+.bar-item-df {
     padding: 5px 15px;
+    font-weight: 500;
+}
+.bar-item-sm {
+    padding: 0px 10px;
     font-weight: 500;
 }
 .link-back{
