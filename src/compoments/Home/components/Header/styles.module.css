@@ -20,6 +20,11 @@
     z-index: 11;
     height: 70px;
 }
+@media only screen and (max-width: 1000px) {
+    .root{
+        padding:5px 20px 5px 10px;
+    }
+}
 .project{
     font-size: 25px;
     font-weight: 500;

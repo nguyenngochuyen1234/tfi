@@ -1,4 +1,4 @@
-import { LeftOutlined, MoreOutlined, SettingOutlined, UserAddOutlined } from "@ant-design/icons";
+import { LeftOutlined, SettingOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import PropTypes from "prop-types";
 import React from "react";

@@ -4,8 +4,9 @@
     --color--text-default: black;
     --color--bg-default: rgb(245,245,251);
     --color--border-primary:  rgb(6 24 44 / 65%);
-    --color--bg-drop:#F0F2F5;
+    --color--bg-drop:#F0F0F0;
     --color--df-mess:#0084FF;
+    --color-bd-primary:#ccc;
 }
 * {
     box-sizing: border-box;

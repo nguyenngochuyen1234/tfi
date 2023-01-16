@@ -9,7 +9,8 @@ import {
 import { Button, Menu } from "antd";
 import classNames from "classnames";
 import PropTypes from 'prop-types';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useWindowDimensions from "../../../../customHook/WindowDimensions";
 import styles from "./styles.module.css";
 
 SideBar.propTypes = {
@@ -31,6 +32,7 @@ function getItem(label, key, icon, children, type) {
     };
 }
 function SideBar({handleClickFeature,currentFeature}) {
+    const { width } = useWindowDimensions();
     const items = [
         getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
         getItem("Chat", "chat", <MessageOutlined />),
@@ -44,6 +46,11 @@ function SideBar({handleClickFeature,currentFeature}) {
     const handleSelectMenu = (key) => {
       if(handleClickFeature) handleClickFeature(key)
     };
+    useEffect(()=>{
+        if(width<1000 && collapsed===false){
+            setCollapsed(true);
+        }
+    },[width])
     
     return (
         <div
@@ -53,9 +60,9 @@ function SideBar({handleClickFeature,currentFeature}) {
                 [styles["root-width"]]: !collapsed,
             })}
         >
-            <Button value="large" type="text" onClick={toggleCollapsed} className={styles.btnSideBar}>
+            {width> 1000 &&<Button value="large" type="text" onClick={toggleCollapsed} className={styles.btnSideBar}>
                 {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </Button>
+            </Button>}
             <Menu
                 className={styles.menu}
               
