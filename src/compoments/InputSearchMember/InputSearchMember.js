@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { UserOutlined, CloseOutlined } from '@ant-design/icons';
-import { Input, Form, Avatar } from 'antd'
 import { useState } from 'react'
 import userApi from '../../api/userApi'
 import "./style.css"
@@ -11,8 +10,8 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered }) => {
     const [memberSearch, setMemberSearch] = useState([])
 
     const [valueInput, setValueInput] = useState("")
-    const user = useSelector((state) => state.user.current.account);
-    const idUser = user._id || localStorage.getItem("id_user");
+    const user = useSelector((state) => state.user.current);
+    const idUser = user?._id || localStorage.getItem("id_user");
 
 
 

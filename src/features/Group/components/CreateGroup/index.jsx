@@ -11,7 +11,6 @@ CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [values, setValues] = useState({});
     const [memberFiltered, setMemberFiltered] = useState([])
     const user = useSelector((state) => state.user.current);
     const idUser = user._id;
@@ -27,8 +26,7 @@ function CreateGroup(props) {
         console.log(`selected ${value}`);
     };
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description, leader: idUser ,member:[],projects:[]};
-    
+        const result = { name: values.groupname, description: values.description, leader: idUser ,member:memberFiltered,projects:[]};
         async function post(){
             try {
                 await groupApi.createGroup(result);

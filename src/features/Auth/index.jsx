@@ -1,10 +1,8 @@
 import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Loginform from "../../compoments/FormAuth/Loginform";
 import Registerform from "../../compoments/FormAuth/Registerform";
 import "./style.css";
-import { login } from "./userSlice";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -18,21 +16,8 @@ Auth.defaultProps = {
 };
 
 function Auth({ authRoute }) {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const handleOnLogin = async (values) => {
-        try {
-            const action = login(values);
-            const resultAction = await dispatch(action);
-            
-            alert("Đăng nhập thành công")
-            navigate("/home");
-        } catch (e) {
-            console.log(e);
-            alert("Đăng nhập khong thành công")
-
-        }
-    };
+    
 
     return (
         <div className="auth-body">

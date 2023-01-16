@@ -1,1 +1,1 @@
-export const STATIC_HOST="https://manager-app-uef5.onrender.com/"
+export const STATIC_HOST="http://localhost:8000/"

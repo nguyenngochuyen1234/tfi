@@ -19,34 +19,19 @@ Contacts.defaultProps = {
 };
 
 function Contacts(props) {
-    const { people, current, handleCurrentPeople, setPeople } = props;
+    const { people, current, handleCurrentPeople, setPeople, users } = props;
 
     const navigate = useNavigate()
 
     const [memberSearch, setMemberSearch] = useState([])
     const [valueInput, setValueInput] = useState("")
     const [contactShow, setContactShow] = useState(true)
-    const [users, setUsers] = useState([])
-    const user = useSelector((state) => state.user.current);
-    const idUser = user._id || localStorage.getItem("user_id");
+
+
     const handleClickContact = (user) => {
         handleCurrentPeople(user);
     };
-    const fechAllUser = async () => {
-        try {
-            const data = await userApi.getAllUser()
-            if (data.success) {
-                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                setUsers(dataFilter)
-            }
-        } catch (err) {
-            alert(err.message)
-        }
-    }
 
-    useEffect(() => {
-        fechAllUser()
-    }, [])
 
     const onChangeHandle = (e) => {
         let value = e.target.value

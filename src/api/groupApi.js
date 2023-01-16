@@ -6,6 +6,10 @@ const groupApi ={
         const url='/group/allGroupUser'
         return axiosClient.get(url)
     },
+    getOnlyGroup(idGroup){
+        const url=`/group/find/${idGroup}`
+        return axiosClient.get(url)
+    }
     createGroup(data){
         const url='/group'
         return axiosClient.post(url,data)

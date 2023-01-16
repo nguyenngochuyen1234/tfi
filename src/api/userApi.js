@@ -1,17 +1,21 @@
 
 import axiosClient from "./axiosClient"
 
-const userApi ={
-    register(data){
-        const url='/auth/register'
-        return axiosClient.post(url,data)
+const userApi = {
+    register(data) {
+        const url = '/auth/register'
+        return axiosClient.post(url, data)
     },
-    login(data){
-        const url='/auth/login'
-        return axiosClient.post(url,data)
+    login(data) {
+        const url = '/auth/login'
+        return axiosClient.post(url, data)
     },
-    getAllUser(){
+    getAllUser() {
         const url='/auth/allAccount'
+        return axiosClient.get(url)
+    },
+    getOnlyUser(id) {
+        const url = `/auth/find/${id}`
         return axiosClient.get(url)
     }
 }
