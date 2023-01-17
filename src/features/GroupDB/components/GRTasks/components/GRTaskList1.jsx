@@ -1,4 +1,4 @@
-import { DeleteOutlined,EditOutlined  } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Row, Tag, Typography } from "antd";
 import PropTypes from "prop-types";
 import React from "react";

@@ -11,12 +11,11 @@ CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [memberFiltered, setMemberFiltered] = useState([])
 
     const [dataGroup,setDataGroup]=useState({});
     const [step, setStep] = useState(1);
-    const user = useSelector((state) => state.user.current);
-    const idUser = user._id;
+
+
     const showModal = () => {
         setIsModalOpen(true);
     };

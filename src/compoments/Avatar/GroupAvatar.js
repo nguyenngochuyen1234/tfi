@@ -2,7 +2,6 @@ import { Avatar, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import imageApi from '../../api/imageApi';
 const GroupAvatar = ({ arrayId, size }) => {
-   
     const [baseStringArray, setBaseStringArray] = useState({
         headerGroup: [],
         bodyGroup: null,

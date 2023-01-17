@@ -6,11 +6,12 @@ import GRTaskList1 from "./components/GRTaskList1";
 import styles from "./styles.module.css";
 GRTasks.propTypes = {
     tasks: PropTypes.array,
-    handleTask:PropTypes.func.isRequired,
+    handleTask:PropTypes.func,
 
 };
 GRTasks.defaultProps = {
     tasks: [],
+    handleTask:null,
 };
 
 function GRTasks({ tasks,handleTask }) {

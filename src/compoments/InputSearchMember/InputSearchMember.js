@@ -13,7 +13,7 @@ const InputSearchMember = ({ group, handleCancel }) => {
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [valueInput, setValueInput] = useState("")
     const user = useSelector((state) => state.user.current);
-    const idUser = user?._id || localStorage.getItem("id_user");
+    const idUser = user?._id || localStorage.getItem("user_id");
 
 
 
