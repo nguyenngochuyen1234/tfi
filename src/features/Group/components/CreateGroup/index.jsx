@@ -32,14 +32,13 @@ function CreateGroup(props) {
         console.log(`selected ${value}`);
     };
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description, leader: idUser ,member:memberFiltered,projects:[]};
+        const result = { name: values.groupname, description: values.description,member:[]};
         async function post(){
             try {
                 const response=await groupApi.createGroup(result);
-                alert("created done");
+                alert(response.message);
                 setDataGroup(response.group);
                 nextStep();
-
             
             } catch (error) {
                 alert(error);
@@ -96,6 +95,7 @@ function CreateGroup(props) {
                             </Typography.Text>
                             <InputSearchMember
                                 group={dataGroup}
+                                handleCancel={handleCancel}
                             />
                             <div className={styles["btn-form"]}>
                             <Button type="default" onClick={handleCancel} style={{marginTop:"50px"}}>

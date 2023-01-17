@@ -16,7 +16,7 @@ const groupApi ={
     },
     updateGroup(id,data){
         const url=`/group/${id}`
-        return axiosClient.put(url,data)
+        return axiosClient.patch(url,data)
     },
     delGroup(id){
         const url=`/group/${id}`

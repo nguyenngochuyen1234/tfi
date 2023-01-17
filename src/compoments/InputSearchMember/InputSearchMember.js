@@ -7,7 +7,7 @@ import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
 
-const InputSearchMember = ({group}) => {
+const InputSearchMember = ({ group, handleCancel }) => {
     const [users, setUsers] = useState([])
     const [memberSearch, setMemberSearch] = useState([])
     const [memberFiltered, setMemberFiltered] = useState([]);
@@ -22,7 +22,7 @@ const InputSearchMember = ({group}) => {
             const data = await userApi.getAllUser()
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                
+
                 setUsers(dataFilter)
             }
         } catch (err) {
@@ -45,19 +45,17 @@ const InputSearchMember = ({group}) => {
         setMemberFiltered(prev => [...prev, userFilter])
         setValueInput("")
     }
-    const handleAdd = ()=>{
-        const memberid= memberFiltered.map(member =>member._id)
-        const data={...group,member:memberid};
-        console.log(data)
-        // (async ()=>{
-        //     try {
-        //         const response=await groupApi.updateGroup(data._id,data);
-        //         console.log(response);
-                
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // })();
+    const handleAdd = async () => {
+        const memberid = memberFiltered.map(member => member._id)
+        const updateMember = {member: [...group.member, ...memberid]};
+        try {
+            const idGroup = group._id
+            await groupApi.updateGroup(idGroup, updateMember)
+            handleCancel()
+        } catch (err) {
+            console.log(err)
+        }
+
     }
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)
@@ -88,43 +86,43 @@ const InputSearchMember = ({group}) => {
                     )
                 })}
             </div>}
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"20px"}}>
-                <div style={{position:"relative",width:"80%"}}>
-                <input
-                onChange={onChangeHandle}
-                value={valueInput}
-                name="member"
-                placeholder='Add members'
-                id="member"
-                style={{
-                    width: "100%",
-                    padding:"0 10px",
-                    height: 32,
-                    border: "solid 1px #ccc",
-                    borderRadius: 5,
-                    outline: "none",
-                }}
-            />
-            <div className='search-member-container'>
-                {memberSearch.map(user => {
-                    return (
-                        <div key={user.username} className='search-member-item' onClick={() => handleOnclick(user)}>
-                            <div style={{ padding: "10px" }}>
-                                <SingleAvatar username={user.username} size="default" />
-                            </div>
-                            <div style={{ padding: "10px" }}>
-                                <h4>{user.name}</h4>
-                                <p style={{ opacity: "0.6" }}>{user.username}</p>
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
+                <div style={{ position: "relative", width: "80%" }}>
+                    <input
+                        onChange={onChangeHandle}
+                        value={valueInput}
+                        name="member"
+                        placeholder='Add members'
+                        id="member"
+                        style={{
+                            width: "100%",
+                            padding: "0 10px",
+                            height: 32,
+                            border: "solid 1px #ccc",
+                            borderRadius: 5,
+                            outline: "none",
+                        }}
+                    />
+                    <div className='search-member-container'>
+                        {memberSearch.map(user => {
+                            return (
+                                <div key={user.username} className='search-member-item' onClick={() => handleOnclick(user)}>
+                                    <div style={{ padding: "10px" }}>
+                                        <SingleAvatar username={user.username} size="default" />
+                                    </div>
+                                    <div style={{ padding: "10px" }}>
+                                        <h4>{user.name}</h4>
+                                        <p style={{ opacity: "0.6" }}>{user.username}</p>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
-            
-            <Button type="primary" onClick={handleAdd}>
-                Add
-            </Button>
+
+                <Button type="primary" onClick={handleAdd}>
+                    Add
+                </Button>
             </div>
         </div>
     )
