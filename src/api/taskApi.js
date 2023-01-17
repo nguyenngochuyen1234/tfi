@@ -17,7 +17,7 @@ const groupApi ={
     updateTask(idTask, newData){
         const url=`/task/${idTask}`
         return axiosClient.put(url,newData)
-    }
+    },
     deleteTask(idTask){
         const url=`/task/${idTask}`
         return axiosClient.delete(url)

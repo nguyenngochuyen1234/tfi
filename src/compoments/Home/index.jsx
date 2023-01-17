@@ -3,28 +3,24 @@ import AppBar from "./components/AppBar";
 import Header from "./components/Header";
 import styles from "./styles.module.css";
 import { io } from 'socket.io-client'
-import { STATIC_HOST } from "../../constants";
+import { STATIC_HOST } from "../../constants/common";
 import { useDispatch } from "react-redux";
 import { socketActions } from "../socketSlice";
-import PropTypes from "prop-types"
 Home.propTypes = {
 
 };
 
 function Home() {
-    const userId = localStorage.getItem("user_id")
-    const dispatch = useDispatch()
-
-    const socket = useRef()
-
+    const idUser = localStorage.getItem("user_id")
+    const socket = useRef();
+    const dispatch = useDispatch();
     useEffect(() => {
-        socket.current = io(STATIC_HOST)
-        socket.current.emit("add-user", userId)
-        dispatch(socketActions.setSocket(socket.current))
-    }, [userId])
-
-
-
+        if (idUser) {
+          socket.current = io(STATIC_HOST);
+          socket.current.emit("add-user", idUser);
+          dispatch(socketActions.setSocket(socket.current))
+        }
+      }, [idUser]);
     return (
         <div className={styles.root}>
             <Header />

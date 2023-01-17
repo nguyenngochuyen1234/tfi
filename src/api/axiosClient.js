@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { STATIC_HOST } from '../constants';
+import { STATIC_HOST } from '../constants/common';
 
 const axiosClient = axios.create({
     baseURL: `${STATIC_HOST}api/`,

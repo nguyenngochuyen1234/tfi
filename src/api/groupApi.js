@@ -9,7 +9,7 @@ const groupApi ={
     getOnlyGroup(idGroup){
         const url=`/group/find/${idGroup}`
         return axiosClient.get(url)
-    }
+    },
     createGroup(data){
         const url='/group'
         return axiosClient.post(url,data)
