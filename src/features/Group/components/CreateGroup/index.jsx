@@ -1,25 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Form, Input, Modal, Select, Typography } from "antd";
-import styles from "./styles.module.css";
 import { PlusOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Modal, Typography } from "antd";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import groupApi from "../../../../api/groupApi";
-import InputSearchMember from "../../../../compoments/InputSearchMember/InputSearchMember"
+import InputSearchMember from "../../../../compoments/InputSearchMember/InputSearchMember";
+import FormGroup from "./components/FormGroup";
+import styles from "./styles.module.css";
 
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [memberFiltered, setMemberFiltered] = useState([])
+
+    const [dataGroup,setDataGroup]=useState({});
+    const [step, setStep] = useState(1);
     const user = useSelector((state) => state.user.current);
     const idUser = user._id;
-    console.log(user, idUser);
     const showModal = () => {
         setIsModalOpen(true);
     };
+    const nextStep = () => {
+        setStep(2);
+    };
     const handleCancel = () => {
         setIsModalOpen(false);
+        setStep(1);
     };
 
     const handleChange = (value) => {
@@ -29,17 +35,18 @@ function CreateGroup(props) {
         const result = { name: values.groupname, description: values.description, leader: idUser ,member:memberFiltered,projects:[]};
         async function post(){
             try {
-                await groupApi.createGroup(result);
+                const response=await groupApi.createGroup(result);
                 alert("created done");
-                setIsModalOpen(false);
+                setDataGroup(response.group);
+                nextStep();
+
+            
             } catch (error) {
                 alert(error);
             }
         }
         post();
-
     };
-
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
@@ -62,67 +69,42 @@ function CreateGroup(props) {
                 </Button>
                 <Modal
                     className={styles.form}
-                    title={<Typography.Title level={3}>Create your group</Typography.Title>}
+                    title={
+                        <Typography.Title level={3}>
+                            {step === 1 ? "Create your group" : "Add members to group"}
+                        </Typography.Title>
+                    }
                     open={isModalOpen}
                     footer={null}
                     onCancel={handleCancel}
                     width={1000}
                 >
-                    <Form
-                        className={styles["form-container"]}
-                        name="basic"
-                        layout="vertical"
-                        initialValues={{ remember: true }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                    >
-                        <Form.Item
-                            label="Group name"
-                            name="groupname"
-                            rules={[{ required: true, message: "Please input your group name!" }]}
-                        >
-                            <Input placeholder="Your group name" />
-                        </Form.Item>
+                    {step === 1 && (
+                        <FormGroup
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                            handleChange={handleChange}
+                        />
+                    )}
 
-                        <Form.Item label="Description" name="description">
-                            <Input placeholder="Let people know what this group is all about" />
-                        </Form.Item>
-
-
-                        <InputSearchMember memberFiltered={memberFiltered} setMemberFiltered={setMemberFiltered}/>
-                        
-                        
-                        
-                        
-                        <Form.Item label="Privacy" name="privacy" initialValue="Private">
-                            <Select
-                                defaultActiveFirstOption={true}
-                                style={{
-                                    width: "100%",
-                                }}
-                                onChange={handleChange}
-                                options={[
-                                    {
-                                        value: "Private",
-                                        label: "Private - Only leader's group can add members",
-                                    },
-                                    {
-                                        disabled: true,
-                                        value: "Public",
-                                        label: "Public - Anyone can join your group",
-                                    },
-                                ]}
+                    {step === 2 && (
+                        <div>
+                            <Typography.Text>
+                                Start typing a name, distribution list, or security group to add to
+                                your team. You can also add people outside your organisation as
+                                guests by typing their email addresses.
+                            </Typography.Text>
+                            <InputSearchMember
+                                group={dataGroup}
                             />
-                        </Form.Item>
-                        <Form.Item>
                             <div className={styles["btn-form"]}>
-                                <Button type="primary" htmlType="submit">
-                                    Next
-                                </Button>
+                            <Button type="default" onClick={handleCancel} style={{marginTop:"50px"}}>
+                                Skip
+                            </Button>
                             </div>
-                        </Form.Item>
-                    </Form>
+                            
+                        </div>
+                    )}
                 </Modal>
             </div>
         </div>

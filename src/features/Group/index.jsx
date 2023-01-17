@@ -1,17 +1,21 @@
 import { DeleteOutlined, LeftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Button, Input, notification, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import groupApi from "../../api/groupApi";
 import BarItem from "../../compoments/BarItem";
 import TabBar from "../../compoments/TabBar";
 import CreateGroup from "./components/CreateGroup";
 import FilterGroups from "./components/FilterGroups";
 import JoinGroup from "./components/JoinGroup";
+import { getAll } from "./groupSlice";
 import styles from "./styles.module.css";
 
 FeatureGroup.propTypes = {};
 
 function FeatureGroup(props) {
+    const dispatch=useDispatch()
     const [api, contextHolder] = notification.useNotification();
  
     const [allGroups, setAllGroups] = useState([]);
@@ -23,17 +27,28 @@ function FeatureGroup(props) {
     const handleClickBack = () => {
         setIsCreateJoin(false);
     };
+    useEffect(()=>{
+        (async ()=>{
+            try {
+               
+            } catch (error) {
+                console.log(error);
+            }
+        })()
+    },[])
     useEffect(() => {
         (async () => {
             try {
-                const res = await groupApi.getAllGroupUser();
-                setAllGroups(res);
-                setFilterGroups(res.groupMade);
+               
+               const response= await dispatch(getAll());
+                const data=response.payload
+                setAllGroups(data);
+                setFilterGroups(data.groupMade);
             } catch (error) {
                 console.log(error);
             }
         })();
-    }, [setAllGroups]);
+    }, [dispatch, setAllGroups,isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
     };
@@ -60,6 +75,7 @@ function FeatureGroup(props) {
             })();
         }
     };
+
     const items = [
         {
             label: <BarItem label="Groups has been created" />,
@@ -79,7 +95,7 @@ function FeatureGroup(props) {
 
     return (
         <div className="feature-container_right">
-             {contextHolder}
+            {contextHolder}
             {!isCreateJoin && (
                 <div>
                     <div className={styles.features}>

@@ -1,12 +1,16 @@
 import userReducer from "../features/Auth/userSlice"
 import socketReducer from "../compoments/socketSlice"
+import groupReducer from "../features/Group/groupSlice"
+
+
 import { configureStore } from "@reduxjs/toolkit";
 
 
 
 const rootReducer={
     user:userReducer,
-    socket:socketReducer
+    socket:socketReducer,
+    group:groupReducer,
 };
 
 const store=configureStore({

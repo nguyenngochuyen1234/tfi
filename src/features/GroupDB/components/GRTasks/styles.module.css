@@ -1,0 +1,44 @@
+.GRTasks{
+    width: 100%;
+    
+}
+.filter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.box_1{
+    padding:0px 10px;
+
+}
+.content{
+    height: calc(100vh - 300px);
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    border:1px solid var(--color-bd-primary);
+}
+.header{
+    padding:7px 0px;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom:1px solid var(--color-bd-primary);
+
+}
+.body{
+    padding:7px 0px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    height: 60px;
+    border-bottom:1px solid var(--color-bd-primary);
+}
+.body:hover{
+    background-color: var(--color--bg-drop);
+}
+.main{
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex:1;
+}

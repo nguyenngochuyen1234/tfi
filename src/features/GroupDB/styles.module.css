@@ -1,0 +1,41 @@
+
+.group-header{
+    width: 100%;
+    z-index: 9;
+    position: relative;
+    padding:10px;
+    
+    padding-bottom: 0px;
+    margin-bottom: -10px;
+}
+
+.group-body{
+    height: 100%;
+    width: 100%;
+}
+.box{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding:0px 15px;
+    justify-content: space-between;
+}
+.box_2{
+    display: flex;
+    align-items: center;
+}
+
+.des{
+    margin-top: 5px;
+    margin-left: 15px;
+    width: 50%;
+    min-width: 150px;
+    overflow: hidden;
+    font-size: 12px;
+    color:#555;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}

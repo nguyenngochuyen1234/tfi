@@ -4,13 +4,16 @@ import React from "react";
 
 TabBar.propTypes = {
     data: PropTypes.array,
-    onChange: PropTypes.func.isRequired,
-    activeKey: PropTypes.string
+    onChange: PropTypes.func,
+    activeKey: PropTypes.string,
 
 };
 TabBar.defaultProps = {
-    data:[]
+    data:[],
+    onChange:null,
+
 };
+
 function TabBar(props) {
     const {data, onChange,activeKey} = props;
     return (
@@ -18,7 +21,7 @@ function TabBar(props) {
             className="wrap-container"
             tabBarGutter="0px"
             activeKey={activeKey}
-            onChange={onChange}
+            onChange={(key)=>{if (onChange) onChange(key)}}
             size="middle"
             items={data}
         />
