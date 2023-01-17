@@ -60,7 +60,7 @@ function ChatBox({ current, handleChangeChat, conversationCurrent, setConversati
 
             }
             handleChangeChat(configValue);
-            socket.current.emit("send-msg",{...configValue, receiverId: current.id})
+            socket.emit("send-msg",{...configValue, receiverId: current.id})
             setValue("");
             setSend(false);
         } catch (err) {

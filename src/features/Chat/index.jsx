@@ -1,33 +1,48 @@
-import React, { useRef, useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./styles.module.css";
 import classNames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
+import userApi from "../../api/userApi";
 import Contacts from "./components/Contacts";
 import Messages from "./components/Messages";
+import styles from "./styles.module.css";
 import { io } from 'socket.io-client'
-import { useEffect } from "react";
+
 import { STATIC_HOST } from "../../constants/common";
 import conversatioApi from "../../api/conversationApi";
 import { useNavigate } from "react-router";
 import messageApi from "../../api/messageApi";
+import { useSelector } from "react-redux";
 
 FeatureChat.propTypes = {};
 function FeatureChat(props) {
 
-    const userId = localStorage.getItem("user_id")
-    const socket = useRef()
+    const user = useSelector((state) => state.user.current);
+    const idUser = user._id || localStorage.getItem("user_id");
+
+    const [users, setUsers] = useState([])
+
+    let socket = useSelector(state => state.socket.socket)
 
     const navigate = useNavigate()
 
     const [people, setPeople] = useState([])
     const [chatCurrent, setChatCurrent] = useState([]);
-    
+
     const [conversationCurrent, setConversationCurrent] = useState()
     const [currentPeople, setCurrentPeople] = useState({});
 
     const [arrivalMessage, setArrivalMessage] = useState()
-    
-    const fetchAllUser = async () => {
+    const fechAllUser = async () => {
+        try {
+            const data = await userApi.getAllUser()
+            if (data.success) {
+                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
+                setUsers(dataFilter)
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+    const fetchAllFriend = async () => {
         try {
             const data = await conversatioApi.getFriendData()
             if (data.success) {
@@ -40,36 +55,46 @@ function FeatureChat(props) {
                         active: true,
                     }
                 })
-                console.log(dataUser);
                 setPeople(dataUser)
             }
         } catch (err) {
-            alert(err.message)
+            console.log(err.message)
         }
     }
 
     useEffect(() => {
-        fetchAllUser()
+        fechAllUser()
+        fetchAllFriend()
     }, [])
-    
-    useEffect(()=>{
-        if(socket.current){
-            socket.current.on("msg-recieve",(msg)=>{
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("msg-recieve", (msg) => {
+                
                 setArrivalMessage(msg)
             })
         }
-    },[conversationCurrent])
+    }, [conversationCurrent])
 
-    useEffect(()=>{
-        if(arrivalMessage && (arrivalMessage.conversationId === conversationCurrent)){
-            setChatCurrent((prev)=>[...prev, arrivalMessage])
+    useEffect(() => {
+        // Hiển thị tin nhắn realtime 
+        const idSender = arrivalMessage && arrivalMessage.sender
+        const existFriend = people?.find(pp => pp.id == idSender)
+        if (!existFriend) {
+            const newFriend = users?.find(user => user._id == idSender)
+            console.log({idSender,existFriend,newFriend});
+            if(newFriend) setPeople(prev => [...prev, {
+                id: newFriend._id,
+                name: newFriend.name,
+                avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
+                lastSend: "",
+                active: true,
+            }])
         }
-    },[arrivalMessage])
-
-    useEffect(()=>{
-        socket.current = io(STATIC_HOST)
-        socket.current.emit("add-user",userId)
-    },[userId])
+        if (arrivalMessage && (arrivalMessage.conversationId === conversationCurrent)) {
+            setChatCurrent((prev) => [...prev, arrivalMessage])
+        }
+    }, [arrivalMessage])
 
 
 
@@ -109,6 +134,7 @@ function FeatureChat(props) {
                     handleCurrentPeople={handleCurrentPeople}
                     people={people}
                     setPeople={setPeople}
+                    users={users}
                 />
             </div>
             <div className={styles["messages-container"]}>
