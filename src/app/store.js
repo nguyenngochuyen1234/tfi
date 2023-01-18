@@ -1,5 +1,5 @@
 import userReducer from "../features/Auth/userSlice"
-import socketReducer from "../compoments/socketSlice"
+import socketReducer from "../components/socketSlice"
 import groupReducer from "../features/Group/groupSlice"
 
 

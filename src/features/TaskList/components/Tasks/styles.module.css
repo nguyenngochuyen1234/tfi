@@ -18,7 +18,7 @@
     margin-bottom: 2px;
 }
 .item-des {
-    color: rgb(124, 124, 124);
+    color: var(--color--text-drop);
 }
 .status {
     font-weight: 500;

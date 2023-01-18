@@ -1,8 +1,8 @@
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import TabBar from "../../compoments/TabBar";
-import BarItem from "../../compoments/BarItem";
+import TabBar from "../../components/TabBar";
+import BarItem from "../../components/BarItem";
 import Tasks from "./components/Tasks";
 FeatureTaskList.propTypes = {};
 

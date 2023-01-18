@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import './App.css';
-import Home from "./compoments/Home";
+import Home from "./components/Home";
+import NotFound from "./components/NotFound";
 import Auth from './features/Auth';
 
 
@@ -17,6 +18,8 @@ function App() {
       <Route path="/home/*" element={<Home user={user} />} />
       <Route path="/login" element={<Auth authRoute={"login"} />} />
       <Route path="/register" element={<Auth authRoute={"register"} />} />
+      <Route path="/404" element={<NotFound/>} />
+      <Route path="*" element={<NotFound/>} />
     </Routes>
   );
 }

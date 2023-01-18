@@ -1,4 +1,4 @@
-import { DeleteOutlined,EditOutlined  } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Row, Tag, Typography } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
@@ -6,10 +6,11 @@ import styles from "../styles.module.css";
 
 GRTaskList1.propTypes = {
     tasks: PropTypes.array,
-    handleTask:PropTypes.func.isRequired
+    handleTask:PropTypes.func,
 };
 GRTaskList1.defaultProps = {
     tasks: [],
+    handleTask:null,
 };
 
 function GRTaskList1({ tasks ,handleTask}) {
@@ -25,10 +26,10 @@ function GRTaskList1({ tasks ,handleTask}) {
                 <Col className={styles.box_1} span={3}>
                     Status
                 </Col>
-                <Col className={styles.box_1} span={6}>
+                <Col className={styles.box_1} span={5}>
                     About
                 </Col>
-                <Col className={styles.box_1} span={4}>
+                <Col className={styles.box_1} span={5}>
                     Member
                 </Col>
                 <Col className={styles.box_1} span={3}>
@@ -56,12 +57,12 @@ function GRTaskList1({ tasks ,handleTask}) {
                                 {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
                                 {task.status === "completed" && <Tag color="green">Completed</Tag>}
                             </Col>
-                            <Col className={styles.box_1} span={6}>
+                            <Col className={styles.box_1} span={5}>
                                 <Typography.Paragraph style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
                                     {task.about}{" "}
                                 </Typography.Paragraph>
                             </Col>
-                            <Col className={styles.box_1} span={4}>
+                            <Col className={styles.box_1} span={5}>
                                 <Avatar.Group
                                     maxStyle={{
                                         color: "#f56a00",
@@ -84,7 +85,6 @@ function GRTaskList1({ tasks ,handleTask}) {
                             </Col>
                             <Col span={2}>
                                 <Button type="text"size="large" shape="circle" icon={<DeleteOutlined />}/>
-
                             </Col>
                         </Row>
                     );

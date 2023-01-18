@@ -1,11 +1,10 @@
 import { DeleteOutlined, LeftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Button, Input, notification, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import groupApi from "../../api/groupApi";
-import BarItem from "../../compoments/BarItem";
-import TabBar from "../../compoments/TabBar";
+import BarItem from "../../components/BarItem";
+import TabBar from "../../components/TabBar";
 import CreateGroup from "./components/CreateGroup";
 import FilterGroups from "./components/FilterGroups";
 import JoinGroup from "./components/JoinGroup";
@@ -51,6 +50,7 @@ function FeatureGroup(props) {
     }, [dispatch, setAllGroups,isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
+        console.log()
     };
     const handleClick = (key, idGroup) => {
         if (key === "delete") {

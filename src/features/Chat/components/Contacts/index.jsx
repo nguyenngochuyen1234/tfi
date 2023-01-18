@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import styles from "./styles.module.css";
 import { Input } from "antd";
-import ContactItem from "../ContactItem";
-import { useSelector } from "react-redux";
-import SingleAvatar from "../../../../compoments/Avatar/SingleAvatar";
-import userApi from "../../../../api/userApi";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import SingleAvatar from "../../../../components/Avatar/SingleAvatar";
+import ContactItem from "../ContactItem";
+import styles from "./styles.module.css";
 Contacts.propTypes = {
     people: PropTypes.array,
     current: PropTypes.object,
