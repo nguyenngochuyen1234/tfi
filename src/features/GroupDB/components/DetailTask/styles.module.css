@@ -1,0 +1,18 @@
+.detail-task{
+    width: 100%;
+    padding:10px;
+    height: 100%;
+}
+.task-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex{
+    display: flex;
+    flex-direction: column;
+}
+.result{
+    flex:1 1;
+    border: 1px solid black;
+}

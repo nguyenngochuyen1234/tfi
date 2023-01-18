@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
-import GroupBox from "../../../../compoments/GroupBox";
+import GroupBox from "../../../../components/GroupBox";
 import styles from "./styles.module.css";
 FilterGroups.propTypes = {
     data: PropTypes.array,

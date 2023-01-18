@@ -1,17 +1,15 @@
 import { Input, Tooltip } from "antd";
 import EmojiPicker from "emoji-picker-react";
-import React, { useState } from "react";
-import AttachIcon from "../../../../../../compoments/CustomIcon/AttachIcon";
-import ImageIcon from "../../../../../../compoments/CustomIcon/ImageIcon";
-import LaughIcon from "../../../../../../compoments/CustomIcon/LaughIcon";
-import SendIcon from "../../../../../../compoments/CustomIcon/SendIcon";
-import useComponentVisible from "../../../../../../customHook/ComponentVisible";
-import styles from "./styles.module.css";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import userApi from "../../../../../../api/userApi";
+import React, { useState } from "react";
 import conversatioApi from "../../../../../../api/conversationApi";
 import messageApi from "../../../../../../api/messageApi";
+import AttachIcon from "../../../../../../components/CustomIcon/AttachIcon";
+import ImageIcon from "../../../../../../components/CustomIcon/ImageIcon";
+import LaughIcon from "../../../../../../components/CustomIcon/LaughIcon";
+import SendIcon from "../../../../../../components/CustomIcon/SendIcon";
+import useComponentVisible from "../../../../../../customHook/ComponentVisible";
+import styles from "./styles.module.css";
 
 ChatBox.propTypes = {
     current: PropTypes.object.isRequired,

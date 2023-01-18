@@ -1,12 +1,14 @@
 import { LeftOutlined, SettingOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import groupApi from "../../api/groupApi";
-import GroupAvatar from "../../compoments/Avatar/GroupAvatar";
-import BarItem from "../../compoments/BarItem";
-import TabBar from "../../compoments/TabBar";
+import GroupAvatar from "../../components/Avatar/GroupAvatar";
+import BarItem from "../../components/BarItem";
+import TabBar from "../../components/TabBar";
+import AddTask from "./components/AddTask";
 import DetailTask from "./components/DetailTask";
 import GRRouter from "./components/Router";
 import styles from "./styles.module.css";
@@ -23,7 +25,11 @@ const dataTasks = [
             "https://i.pinimg.com/564x/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg",
             "https://i.pinimg.com/564x/f5/ac/55/f5ac55bae4947f7ae9f352c43cf32fb2.jpg",
         ],
-        file: "https://firebasestorage.googleapis.com/v0/b/api-manager-job.appspot.com/o/sunflower-6515860__340.jpg?alt=media",
+        result: [
+            {
+                id: "#123",
+            },
+        ],
         comment: "Hay quá em ơi anh cho 10 điểm nhé",
     },
     {
@@ -37,7 +43,7 @@ const dataTasks = [
             "https://i.pinimg.com/564x/f5/ac/55/f5ac55bae4947f7ae9f352c43cf32fb2.jpg",
             "https://i.pinimg.com/564x/56/bf/f1/56bff19cfb245a05abb29a0e6bbdd4e2.jpg",
         ],
-        file: "",
+        result: [],
     },
     {
         id: "2",
@@ -50,6 +56,7 @@ const dataTasks = [
             "https://i.pinimg.com/564x/56/bf/f1/56bff19cfb245a05abb29a0e6bbdd4e2.jpg",
             "https://i.pinimg.com/564x/fe/f6/71/fef671f5ce8657035b612dd84e5b21de.jpg",
         ],
+        result: [],
         comment: "Hay quá em ơi anh cho 10 điểm nhé",
     },
     {
@@ -59,12 +66,21 @@ const dataTasks = [
         about: "Mô tả về task",
         due: "09-01-2023",
         members: [
+            // mang id member nhung day lay tam link anh
             "https://i.pinimg.com/564x/01/48/0f/01480f29ce376005edcbec0b30cf367d.jpg",
             "https://i.pinimg.com/564x/56/bf/f1/56bff19cfb245a05abb29a0e6bbdd4e2.jpg",
             "https://i.pinimg.com/564x/0e/24/99/0e2499390628ae8609356ef2b1cb918a.jpg",
             "https://i.pinimg.com/564x/f5/ac/55/f5ac55bae4947f7ae9f352c43cf32fb2.jpg",
         ],
-        file: "https://firebasestorage.googleapis.com/v0/b/api-manager-job.appspot.com/o/MA111_BaiTapGiaiTich282022.pdf?alt=media",
+        result: [
+            {
+                id: "#001",
+                name: "Thang",
+                createAt: "xx-xx-xxxx",
+                data: "https://firebasestorage.googleapis.com/v0/b/api-manager-job.appspot.com/o/MA111_BaiTapGiaiTich282022.pdf?alt=media",
+            },
+            // id khong ton tai thi la chua nop bai
+        ],
         comment: "Hay quá em ơi anh cho 10 điểm nhé",
     },
     {
@@ -93,6 +109,7 @@ const dataTasks = [
             "https://i.pinimg.com/564x/bd/6f/e2/bd6fe2990a48ecdc23ed3a92c142f524.jpg",
             "https://i.pinimg.com/564x/f5/ac/55/f5ac55bae4947f7ae9f352c43cf32fb2.jpg",
         ],
+        result: [],
     },
     {
         id: "10",
@@ -108,23 +125,35 @@ const dataTasks = [
             "https://i.pinimg.com/564x/f5/ac/55/f5ac55bae4947f7ae9f352c43cf32fb2.jpg",
             "https://i.pinimg.com/564x/56/bf/f1/56bff19cfb245a05abb29a0e6bbdd4e2.jpg",
         ],
+        result: [],
     },
 ];
 
 function GroupDB(props) {
-    const [feature, setFeature] = useState("general");
-    const [render, setRender] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
-
     const id = location.pathname.split("/")[3];
+    const [feature, setFeature] = useState();
+    const [render, setRender] = useState();
     const user = useSelector((state) => state.user.current);
     const idUser = user?._id || localStorage.getItem("user_id");
     const [dataTaskClick, setDataTaskClick] = useState(null);
     const [group, setGroup] = useState(null);
     const data = useSelector((state) => state.group.current);
+    useEffect(() => {
+        setFeature(location.pathname.split("/")[4]);
 
-    
+        const param = queryString.parse(location.search);
+        setRender(
+            (() => {
+                if (JSON.stringify(param) === "{}") return "";
+                if (param.feature === "add") return "addTask";
+                if (param.idTask) return "task";
+                return "";
+            })()
+        );
+    }, [location]);
+
     useEffect(() => {
         if (JSON.stringify(data) !== "{}") {
             const result = {
@@ -152,12 +181,12 @@ function GroupDB(props) {
         navigate(`./${key.toLowerCase()}`);
     };
     const handleTask = (idTask) => {
-        navigate(`./?idTask=${idTask}`);
+        navigate(`./tasks/?idTask=${idTask}`);
         setDataTaskClick(dataTasks.filter((task) => task.id === idTask)[0]);
         setRender("task");
     };
     const handleClickBack = () => {
-        navigate("/home/groups");
+        navigate("/home/groups/");
     };
 
     const item = [
@@ -169,7 +198,9 @@ function GroupDB(props) {
         {
             label: <BarItem typeSize={"sm"} label="Tasks Overview" />,
             key: "tasks",
-            children: <GRRouter handleTask={handleTask} dataTasks={dataTasks} />,
+            children: (
+                <GRRouter handleTask={handleTask} dataTasks={dataTasks} setRender={setRender} />
+            ),
         },
         {
             label: <BarItem typeSize={"sm"} label="Timeline" />,
@@ -182,71 +213,68 @@ function GroupDB(props) {
             children: <GRRouter />,
         },
     ];
-    console.log(item)
-    return (
-        <div
-            style={{ backgroundColor: "var(--color--default)" }}
-            className="feature-container_right"
-        >
-            {group && (
-                <div id={group._id}>
-                    {render === "" && group && (
-                        <div className={styles["group-header"]}>
-                            <div>
-                                <Button
-                                    type="link"
-                                    className="link-back"
-                                    onClick={handleClickBack}
-                                    icon={<LeftOutlined />}
-                                >
-                                    Back
-                                </Button>
-                            </div>
-                            <div className={styles.box}>
-                                <Typography.Title
-                                    level={3}
-                                    ellipsis={true}
-                                    style={{ margin: "0px", width: "70%", minWidth: "300px" }}
-                                >
-                                    {group.name}
-                                </Typography.Title>
 
-                                <div className={styles.box_2}>
-                                    <GroupAvatar arrayId={group.member} size="large" />
-                                    <Button
-                                        style={{ marginLeft: "40px" }}
-                                        size="large"
-                                        shape="circle"
-                                        icon={<UserAddOutlined />}
-                                    />
-                                    <Button
-                                        style={{ marginLeft: "20px" }}
-                                        size="large"
-                                        shape="circle"
-                                        icon={<SettingOutlined />}
-                                    />
-                                </div>
-                            </div>
-                            <Typography.Text
-                                style={{
-                                    fontSize: "12px",
-                                    color: "#555",
-                                    margin: "5px 0px 0px 15px",
-                                    width: "70%",
-                                    minWidth: "250px",
-                                }}
-                                ellipsis={true}
+    return (
+        <div className="feature-container_right">
+            {group && render === "" && (
+                <div id={group._id} style={{ backgroundColor: "var(--color--default)" }}>
+                    <div className={styles["group-header"]}>
+                        <div>
+                            <Button
+                                type="link"
+                                className="link-back"
+                                onClick={handleClickBack}
+                                icon={<LeftOutlined />}
                             >
-                                {group.description}
-                            </Typography.Text>
+                                Back
+                            </Button>
                         </div>
-                    )}
-                    {render === "" && (
-                        <TabBar onChange={onChange} activeKey={feature} data={item} />
-                    )}
-                    {render === "task" && <DetailTask setRender={setRender} data={dataTaskClick} />}
+                        <div className={styles.box}>
+                            <Typography.Title
+                                level={3}
+                                ellipsis={true}
+                                style={{ margin: "0px", width: "70%", minWidth: "300px" }}
+                            >
+                                {group.name}
+                            </Typography.Title>
+
+                            <div className={styles.box_2}>
+                                <GroupAvatar arrayId={group.member} size="large" />
+                                <Button
+                                    style={{ marginLeft: "40px" }}
+                                    size="large"
+                                    shape="circle"
+                                    icon={<UserAddOutlined />}
+                                />
+                                <Button
+                                    style={{ marginLeft: "20px" }}
+                                    size="large"
+                                    shape="circle"
+                                    icon={<SettingOutlined />}
+                                />
+                            </div>
+                        </div>
+                        <Typography.Text
+                            style={{
+                                fontSize: "12px",
+                                color: "#555",
+                                margin: "5px 0px 0px 15px",
+                                width: "70%",
+                                minWidth: "250px",
+                            }}
+                            ellipsis={true}
+                        >
+                            {group.description}
+                        </Typography.Text>
+                    </div>
+
+                    <TabBar onChange={onChange} activeKey={feature} data={item} />
                 </div>
             )}
+            {group && render === "task" && (
+                <DetailTask setRender={setRender} data={dataTaskClick} />
+            )}
+            {group && render === "addTask" && <AddTask />}
         </div>
     );
 }

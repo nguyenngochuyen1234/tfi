@@ -5,18 +5,20 @@ import General from '../General';
 import GRTasks from '../GRTasks';
 import TimeLine from '../TimeLine';
 import Files from '../Files';
-import NotFound from '../../../../compoments/NotFound';
+
 
 GRRouter.propTypes = {
     handleTask:PropTypes.func,
-    dataTasks:PropTypes.array
+    dataTasks:PropTypes.array,
+    setRender:PropTypes.func,
 };
 GRRouter.defaultProps = {
     handleTask:null,
-    dataTasks:[]
+    dataTasks:[],
+    setRender:null,
 }
 
-function GRRouter({handleTask,dataTasks}) {
+function GRRouter({handleTask,dataTasks,setRender}) {
     return (
         <div>
             
@@ -24,7 +26,7 @@ function GRRouter({handleTask,dataTasks}) {
                 <Route path="/general" element={<General />} />
                 <Route
                     path="/tasks"
-                    element={<GRTasks handleTask={handleTask} tasks={dataTasks} />}
+                    element={<GRTasks handleTask={handleTask} tasks={dataTasks} setRender={setRender}/>}
                 />
                 <Route path="/time-line" element={<TimeLine />} />
                 <Route path="/files" element={<Files />} />

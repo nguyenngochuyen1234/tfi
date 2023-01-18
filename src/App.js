@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import './App.css';
-import Home from "./compoments/Home";
-import NotFound from "./compoments/NotFound";
+import Home from "./components/Home";
+import NotFound from "./components/NotFound";
 import Auth from './features/Auth';
 
 

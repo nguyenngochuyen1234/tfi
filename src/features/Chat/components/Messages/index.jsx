@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import ChatHeader from "./components/ChatHeader";
 import ChatMain from "./components/ChatMain";
 import ChatBox from "./components/ChatBox";
-import NotMess from "../../../../compoments/NotMess";
+import NotMess from "../../../../components/NotMess";
 
 Messages.propTypes = {
     current: PropTypes.object.isRequired,

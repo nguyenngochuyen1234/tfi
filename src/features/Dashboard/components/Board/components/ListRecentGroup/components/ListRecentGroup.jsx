@@ -1,5 +1,5 @@
 import React from "react";
-import GroupBox from "../../../../../../../compoments/GroupBox";
+import GroupBox from "../../../../../../../components/GroupBox";
 import styles from "../styles.module.css";
 ListRecentGroup.propTypes = {};
 

@@ -82,7 +82,7 @@ function GroupBox(props) {
                     icon={<MoreOutlined />}
                 />
             </Dropdown>
-            <Link to={`./${idGroup}`}>
+            <Link to={`./${idGroup}/general`}>
                 <div
                     id={idGroup}
                     className={styles.item}

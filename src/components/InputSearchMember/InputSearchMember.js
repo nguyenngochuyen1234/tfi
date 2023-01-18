@@ -55,7 +55,6 @@ const InputSearchMember = ({ group, handleCancel }) => {
         } catch (err) {
             console.log(err)
         }
-
     }
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)

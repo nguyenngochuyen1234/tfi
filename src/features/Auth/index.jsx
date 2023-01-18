@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Loginform from "../../compoments/FormAuth/Loginform";
-import Registerform from "../../compoments/FormAuth/Registerform";
+import Loginform from "../../components/FormAuth/Loginform";
+import Registerform from "../../components/FormAuth/Registerform";
 import "./style.css";
 
 Auth.propTypes = {
@@ -26,7 +26,7 @@ function Auth({ authRoute }) {
                     authRoute === 'login' && <div style={{ height: "100%", minWidth: "400px", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                         <h1 style={{ textAlign: "center" }}>Đăng nhập</h1>
                         <Loginform />
-                        <p>Bạn chưa có tài khoản <a onClick={() => navigate("/register")}>Đăng ký</a></p>
+                        <p>Bạn chưa có tài khoản <a onClick={() => navigate("/register") }>Đăng ký</a></p>
                     </div>
                 }
                 {

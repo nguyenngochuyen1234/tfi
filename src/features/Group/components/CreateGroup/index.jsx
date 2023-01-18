@@ -1,9 +1,8 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Typography } from "antd";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import groupApi from "../../../../api/groupApi";
-import InputSearchMember from "../../../../compoments/InputSearchMember/InputSearchMember";
+import InputSearchMember from "../../../../components/InputSearchMember/InputSearchMember";
 import FormGroup from "./components/FormGroup";
 import styles from "./styles.module.css";
 
