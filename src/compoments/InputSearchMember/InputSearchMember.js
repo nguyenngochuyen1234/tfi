@@ -1,19 +1,24 @@
+import React, { useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import groupApi from '../../api/groupApi';
+import notificationApi from '../../api/notificationApi';
 import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
 
 const InputSearchMember = ({ group, handleCancel }) => {
+
+    let socket = useSelector(state => state.socket.socket)
+
     const [users, setUsers] = useState([])
     const [memberSearch, setMemberSearch] = useState([])
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [valueInput, setValueInput] = useState("")
     const user = useSelector((state) => state.user.current);
     const idUser = user?._id || localStorage.getItem("id_user");
+    const [leader, setLeader] = useState()
 
 
 
@@ -22,7 +27,9 @@ const InputSearchMember = ({ group, handleCancel }) => {
             const data = await userApi.getAllUser()
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
+                const leader = data.allUser.find(dt => dt._id == idUser)
 
+                setLeader(leader)
                 setUsers(dataFilter)
             }
         } catch (err) {
@@ -51,6 +58,16 @@ const InputSearchMember = ({ group, handleCancel }) => {
         try {
             const idGroup = group._id
             await groupApi.updateGroup(idGroup, updateMember)
+            for(let i=0;i<memberid.length;i++){
+                let notification = {
+                    receiver:memberid[i],
+                    type:"group",
+                    title:`${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    link: `groups`,
+                }
+                socket.emit("send-notification",notification)
+                await notificationApi.createNotification(notification)
+            }
             handleCancel()
         } catch (err) {
             console.log(err)

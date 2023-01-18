@@ -70,7 +70,6 @@ function FeatureChat(props) {
     useEffect(() => {
         if (socket) {
             socket.on("msg-recieve", (msg) => {
-                
                 setArrivalMessage(msg)
             })
         }

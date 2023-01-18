@@ -22,6 +22,7 @@ export const login = createAsyncThunk(
     localStorage.setItem(StorageKeys.TOKEN, data.accessToken);
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.account));
     localStorage.setItem(StorageKeys.USERID,data.account._id);
+    localStorage.setItem(StorageKeys.NAMEUSER,data.account.name);
     return data;
   }
 )
@@ -35,9 +36,7 @@ const userSlice = createSlice({
   reducers: {
     logOut(state) {
       // clear local storage
-      localStorage.removeItem(StorageKeys.USER)
-      localStorage.removeItem(StorageKeys.TOKEN)
-
+      localStorage.clear()
       // set state
       state.current = {}
 

@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import userApi from "../../../../../../api/userApi";
 import conversatioApi from "../../../../../../api/conversationApi";
 import messageApi from "../../../../../../api/messageApi";
+import { HOST } from "../../../../../../constants/common";
+import notificationApi from "../../../../../../api/notificationApi";
 
 ChatBox.propTypes = {
     current: PropTypes.object.isRequired,
@@ -19,7 +21,8 @@ ChatBox.propTypes = {
 };
 
 function ChatBox({ current, handleChangeChat, conversationCurrent, setConversationCurrent, socket }) {
-
+    const nameUser = localStorage.getItem("name_user")
+    const idUser = localStorage.getItem("user_id")
     const [send, setSend] = useState(false);
     const [value, setValue] = useState("");
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
@@ -60,6 +63,13 @@ function ChatBox({ current, handleChangeChat, conversationCurrent, setConversati
 
             }
             handleChangeChat(configValue);
+            const notification = {
+                receiver:current.id,
+                type:"message",
+                title:`${nameUser ? nameUser : "Có người"} đã nhắn tin cho bạn`,
+                link: `chat/${idUser}`,
+            }
+            await notificationApi.createNotification(notification)
             socket.emit("send-msg",{...configValue, receiverId: current.id})
             setValue("");
             setSend(false);

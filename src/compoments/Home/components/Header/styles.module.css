@@ -59,7 +59,14 @@
     padding:10px 0px;
     font-weight: 400;
 }
-
+.iconNotification{
+    font-size: 30px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color: #1677ff; */
+}
 .main{
     padding:5px 10px;
     color: var( --color--text-default)!important;
