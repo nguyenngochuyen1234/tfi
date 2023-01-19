@@ -135,7 +135,7 @@ function GroupDB(props) {
     const id = location.pathname.split("/")[3];
     const [feature, setFeature] = useState();
     const [render, setRender] = useState();
-    const user = useSelector((state) => state.user.current);
+    const user = useSelector((state) => state.user.current.account);
     const idUser = user?._id || localStorage.getItem("user_id");
     const [dataTaskClick, setDataTaskClick] = useState(null);
     const [group, setGroup] = useState(null);

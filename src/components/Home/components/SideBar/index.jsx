@@ -1,10 +1,6 @@
 import {
-    AppstoreAddOutlined,
     MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    MessageOutlined,
-    OrderedListOutlined,
-    TeamOutlined
+    MenuUnfoldOutlined
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import classNames from "classnames";
@@ -15,30 +11,18 @@ import styles from "./styles.module.css";
 
 SideBar.propTypes = {
   handleClickFeature: PropTypes.func,
-  currentFeature: PropTypes.string
+  currentFeature: PropTypes.string,
+  items:PropTypes.array.isRequired,
 };
 SideBar.defaultProps = {
   handleClickFeature:null,
   currentFeature: 'dashboard'
 
 };
-function getItem(label, key, icon, children, type) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-        type,
-    };
-}
-function SideBar({handleClickFeature,currentFeature}) {
+
+function SideBar({handleClickFeature,currentFeature,items}) {
     const { width } = useWindowDimensions();
-    const items = [
-        getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
-        getItem("Chat", "chat", <MessageOutlined />),
-        getItem("Groups", "groups", <TeamOutlined />),
-        getItem("Task List", "tasklist", <OrderedListOutlined />),
-    ];
+    
     const [collapsed, setCollapsed] = useState(false);
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
@@ -68,6 +52,7 @@ function SideBar({handleClickFeature,currentFeature}) {
               
                 defaultSelectedKeys={[currentFeature]}
                 defaultOpenKeys={[currentFeature]}
+                selectedKeys={[currentFeature]}
                 mode="inline"
                 theme="light"
                 inlineCollapsed={collapsed}

@@ -27,7 +27,7 @@ const InputSearchMember = ({ group, handleCancel }) => {
             const data = await userApi.getAllUser()
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                const leader = data.allUser.find(dt => dt._id == idUser)
+                const leader = data.allUser.find(dt => dt._id === idUser)
 
                 setLeader(leader)
                 setUsers(dataFilter)
