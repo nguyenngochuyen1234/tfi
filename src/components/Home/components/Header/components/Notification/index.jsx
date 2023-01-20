@@ -41,7 +41,7 @@ function Notification(props) {
                                 <IconNotification type={dt.type} />
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                     <h3>{dt.title}</h3>
-                                    <p>{dt.updatedAt}</p>
+                                    <p>{dt.time}</p>
                                 </div>
                             </div>
 

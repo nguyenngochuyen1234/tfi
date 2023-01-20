@@ -6,18 +6,18 @@ import styles from "./styles.module.css";
 FilterGroups.propTypes = {
     data: PropTypes.array,
     status: PropTypes.string.isRequired,
-    handleClick:PropTypes.func.isRequired,
+    handleClick: PropTypes.func.isRequired,
 
 };
 FilterGroups.defaultProps = {
     data: [],
 };
 
-function FilterGroups({ data, status,handleClick }) {
-    
+function FilterGroups({ data, status, handleClick }) {
 
-    const handleFeatureClick=(key,idGroup)=>{
-        if(handleClick) handleClick(key,idGroup);
+
+    const handleFeatureClick = (key, idGroup) => {
+        if (handleClick) handleClick(key, idGroup);
     }
 
     return (
@@ -40,7 +40,7 @@ function FilterGroups({ data, status,handleClick }) {
                             handleFeatures={handleFeatureClick}
                             nameGroup={item.name}
                             members={item.member}
-                          
+
                         />
                     </Col>
                 );
