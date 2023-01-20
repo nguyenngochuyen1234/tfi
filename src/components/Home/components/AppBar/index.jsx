@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import { AppstoreAddOutlined, MessageOutlined, OrderedListOutlined, TeamOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HomeRight from "../HomeRight";
 import SideBar from "../SideBar";
 import styles from "./styles.module.css";
-AppBar.propTypes = {};
+import PropTypes from "prop-types"
+AppBar.propTypes = {
+    items:PropTypes.array.isRequired,
+};
+AppBar.defaultProps = {
 
-function AppBar(props) {
+}
+
+function AppBar({items}) {
     const { pathname } = useLocation();
-    const newPath = pathname.slice(6);
+    const newPath = pathname.split('/')[2];
     const [feature, setFeature] = useState(newPath===""?"dashboard":newPath);
     const navigate = useNavigate();
+    useEffect(()=>{
+        setFeature(pathname.split('/')[2])
+        console.log(pathname.split('/')[2])
+    },[pathname])
     const handleClickFeature = (item) => {
-        setFeature(item);
         navigate(item);
     };
 
@@ -20,7 +30,7 @@ function AppBar(props) {
             <SideBar
                 currentFeature={feature}
                 handleClickFeature={handleClickFeature}
-                
+                items={items}
             />
             <HomeRight  feature={feature} />
         </div>

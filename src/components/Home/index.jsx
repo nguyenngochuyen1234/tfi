@@ -1,19 +1,57 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppBar from "./components/AppBar";
 import Header from "./components/Header";
 import styles from "./styles.module.css";
 import { io } from 'socket.io-client'
 import { STATIC_HOST } from "../../constants/common";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { socketActions } from "../socketSlice";
+import PropTypes from "prop-types";
+import { AppstoreAddOutlined, LockOutlined, MessageOutlined, OrderedListOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
 Home.propTypes = {
 
 };
+Home.defaultProps = {
+
+}
+function getItem(label, key, icon, children, type) {
+  return {
+      key,
+      icon,
+      children,
+      label,
+      type,
+  };
+}
+const items_1 = [
+  getItem("Dashboard", "dashboard", <AppstoreAddOutlined />),
+  getItem("Chat", "chat", <MessageOutlined />),
+  getItem("Groups", "groups", <TeamOutlined />),
+  getItem("Task List", "tasklist", <OrderedListOutlined />),
+];
+const items_2=[
+  getItem("Thông tin tài khoản", "infor", <UserOutlined />),
+  getItem("Quản lý mật khẩu", "password", <LockOutlined />),
+  
+]
 
 function Home() {
-    const idUser = localStorage.getItem("user_id")
+    const {pathname}=useLocation()
+    const user= useSelector((state)=>state.user.current.account)
+    const idUser =user?._id|| localStorage.getItem("user_id")
     const socket = useRef();
     const dispatch = useDispatch();
+    const [items,setItems]=useState(items_1);
+    useEffect(()=>{
+      const param=pathname.split("/")[2]
+      if(["dashboard", "chat","groups","tasklist"].includes(param)){
+        setItems(items_1);
+      }
+      if(["infor","password"].includes(param)){
+        setItems(items_2);
+      }
+    },[pathname])
     useEffect(() => {
         if (idUser) {
           socket.current = io(STATIC_HOST);
@@ -23,8 +61,8 @@ function Home() {
       }, [idUser]);
     return (
         <div className={styles.root}>
-            <Header />
-            <AppBar />
+            <Header/>
+            <AppBar items={items}/>
         </div>
     );
 }

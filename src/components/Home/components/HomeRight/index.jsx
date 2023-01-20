@@ -5,6 +5,8 @@ import FeatureChat from "../../../../features/Chat";
 import FeatureDashBoard from "../../../../features/Dashboard";
 import FeatureGroup from "../../../../features/Group";
 import GroupDB from "../../../../features/GroupDB";
+import FeatureInfor from "../../../../features/Infor";
+import FeaturePassword from "../../../../features/Password";
 import FeatureTaskList from "../../../../features/TaskList";
 import NotFound from "../../../NotFound";
 
@@ -25,6 +27,8 @@ function HomeRight({ feature }) {
             <Route path="/groups" element={<FeatureGroup />} />
             <Route path="/groups/:idGroup/*" element={<GroupDB />} />
             <Route path="/tasklist" element={<FeatureTaskList />} />
+            <Route path="/infor" element={<FeatureInfor/>}/>
+            <Route path="/password" element={<FeaturePassword/>}/>
             <Route path="*" element={<NotFound/>} />
         </Routes>
     );

@@ -83,7 +83,6 @@ function Notification(props) {
             
         }
     }, [socket])
-    console.log(items)
     const handleClickNotification = async (dt, key) => {
         try {
             const id = dt._id

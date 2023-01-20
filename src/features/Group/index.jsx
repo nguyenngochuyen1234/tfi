@@ -50,7 +50,7 @@ function FeatureGroup(props) {
     }, [dispatch, setAllGroups,isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
-        console.log()
+       
     };
     const handleClick = (key, idGroup) => {
         if (key === "delete") {

@@ -1,22 +1,21 @@
 import classNames from "classnames";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import userApi from "../../api/userApi";
 import Contacts from "./components/Contacts";
 import Messages from "./components/Messages";
 import styles from "./styles.module.css";
-import { io } from 'socket.io-client'
 
-import { STATIC_HOST } from "../../constants/common";
-import conversatioApi from "../../api/conversationApi";
-import { useNavigate } from "react-router";
-import messageApi from "../../api/messageApi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import conversatioApi from "../../api/conversationApi";
+import messageApi from "../../api/messageApi";
 
 FeatureChat.propTypes = {};
 function FeatureChat(props) {
 
-    const user = useSelector((state) => state.user.current);
-    const idUser = user._id || localStorage.getItem("user_id");
+    const user = useSelector((state) => state.user.current.account);
+    const idUser = user?._id || localStorage.getItem("user_id");
+
 
     const [users, setUsers] = useState([])
 

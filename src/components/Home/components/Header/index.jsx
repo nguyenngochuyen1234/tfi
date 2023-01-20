@@ -5,18 +5,21 @@ import { logOut } from '../../../../features/Auth/userSlice';
 import Notification from './components/Notification';
 import Profile from './components/Profile';
 import styles from './styles.module.css';
-
+import PropTypes from "prop-types"
 Header.propTypes = {
-    
+
 };
 
-function Header(props) {
+function Header() {
     const navigate = useNavigate();
     const dispatch=useDispatch()
     const handleLogOut=()=>{
         const action=logOut();
         dispatch(action)
         navigate('/login');
+    }
+    const handleInfor=()=>{
+        navigate('./infor');
     }
     return (
         <div className={styles.root}>
@@ -26,7 +29,7 @@ function Header(props) {
             </div>
             <div className={styles["flex-container"]}>
                 <Notification/>
-                <Profile handleLogOut={handleLogOut}/>
+                <Profile handleLogOut={handleLogOut} handleInfor={handleInfor}/>
             </div>
         </div>
     );
