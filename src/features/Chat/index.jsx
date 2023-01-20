@@ -50,7 +50,7 @@ function FeatureChat(props) {
                     return {
                         id: user._id,
                         name: user.name,
-                        avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
+                        avt: user.avatar,
                         lastSend: "",
                         active: true,
                     }
@@ -81,11 +81,10 @@ function FeatureChat(props) {
         const existFriend = people?.find(pp => pp.id === idSender)
         if (!existFriend) {
             const newFriend = users?.find(user => user._id === idSender)
-            console.log({idSender,existFriend,newFriend});
             if(newFriend) setPeople(prev => [...prev, {
                 id: newFriend._id,
                 name: newFriend.name,
-                avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
+                avt: newFriend.avatar,
                 lastSend: "",
                 active: true,
             }])

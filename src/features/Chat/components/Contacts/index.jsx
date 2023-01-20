@@ -46,7 +46,7 @@ function Contacts(props) {
         const newPeople = {
             id: user._id,
             name: user.name,
-            avt: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcEp9Hz-tfr5lcePsZXCIQMDVkykm8J8WlZZ171UTCw&s",
+            avt: user.avatar,
             lastSend: "",
             active: true,
         }

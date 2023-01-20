@@ -1,8 +1,9 @@
 .search-member-container {
     max-height: 200px;
+    z-index: 99;
     background-color: var(--color--default);
     overflow: auto;
-    margin-top: 10px;
+    margin-top: 5px;
     position: absolute;
 }
 

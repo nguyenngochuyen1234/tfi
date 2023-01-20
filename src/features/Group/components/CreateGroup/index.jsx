@@ -1,17 +1,25 @@
+import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Typography } from "antd";
-import React, { useState } from "react";
 import groupApi from "../../../../api/groupApi";
+import { useSelector } from "react-redux";
 import InputSearchMember from "../../../../components/InputSearchMember/InputSearchMember";
 import FormGroup from "./components/FormGroup";
+import notificationApi from "../../../../api/notificationApi";
 import styles from "./styles.module.css";
 
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
+
+    let socket = useSelector(state => state.socket.socket)
+
+    const [memberFiltered, setMemberFiltered] = useState([]);
+    const [leader, setLeader] = useState()
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [dataGroup,setDataGroup]=useState({});
+    const [dataGroup, setDataGroup] = useState({});
     const [step, setStep] = useState(1);
 
 
@@ -29,15 +37,36 @@ function CreateGroup(props) {
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
+    const handleAdd = async () => {
+        const memberid = memberFiltered.map(member => member._id)
+        const updateMember = {member: [...dataGroup.member, ...memberid]};
+        try {
+            const idGroup = dataGroup._id
+            await groupApi.updateGroup(idGroup, updateMember)
+            for(let i=0;i<memberid.length;i++){
+                let notification = {
+                    receiver:memberid[i],
+                    type:"group",
+                    title:`${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    link: `groups`,
+                }
+                socket.emit("send-notification",notification)
+                await notificationApi.createNotification(notification)
+            }
+            handleCancel()
+        } catch (err) {
+            console.log(err)
+        }
+    }
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description,member:[]};
-        async function post(){
+        const result = { name: values.groupname, description: values.description, member: [] };
+        async function post() {
             try {
-                const response=await groupApi.createGroup(result);
+                const response = await groupApi.createGroup(result);
                 alert(response.message);
                 setDataGroup(response.group);
                 nextStep();
-            
+
             } catch (error) {
                 alert(error);
             }
@@ -92,15 +121,19 @@ function CreateGroup(props) {
                                 guests by typing their email addresses.
                             </Typography.Text>
                             <InputSearchMember
-                                group={dataGroup}
-                                handleCancel={handleCancel}
+                                memberFiltered={memberFiltered}
+                                setMemberFiltered={setMemberFiltered}
+                                setLeader={setLeader}
                             />
-                            <div className={styles["btn-form"]}>
-                            <Button type="default" onClick={handleCancel} style={{marginTop:"50px"}}>
-                                Skip
+                            <Button type="primary" onClick={handleAdd}>
+                                Add
                             </Button>
+                            <div className={styles["btn-form"]}>
+                                <Button type="default" onClick={handleCancel} style={{ marginTop: "50px" }}>
+                                    Skip
+                                </Button>
                             </div>
-                            
+
                         </div>
                     )}
                 </Modal>
