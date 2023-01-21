@@ -1,6 +1,9 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import groupRecentlyApi from "../../../../../../../api/groupRecentlyApi";
 import GroupBox from "../../../../../../../components/GroupBox";
+import GroupAvatar from "../../../../../../../components/Avatar/GroupAvatar";
+import classNames from "classnames";
+import { Tooltip } from "antd";
 import styles from "../styles.module.css";
 ListRecentGroup.propTypes = {};
 
@@ -10,8 +13,9 @@ function ListRecentGroup(props) {
         try {
             const data = await groupRecentlyApi.getGroupRecently()
             if (data.success) {
-                setGroupRecently(data.groups)
-                console.log(data.groups)
+                let dataGroup = data.groups.map(item => item.group)
+                setGroupRecently(dataGroup)
+                console.log(dataGroup)
             }
         } catch (err) {
             console.log(err.message)
@@ -25,9 +29,9 @@ function ListRecentGroup(props) {
     return (
         <div className={styles["wrap"]}>
             <div className={styles["list-container"]}>
-                {/* {groupRecently.map(group => {
-
-                })} */}
+                {groupRecently.map(group => {
+                    <div>GROUP</div>
+                })}
             </div>
         </div>
     );

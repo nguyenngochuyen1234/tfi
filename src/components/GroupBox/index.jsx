@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 
 import React from "react";
 import { Link } from "react-router-dom";
+import groupRecentlyApi from "../../api/groupRecentlyApi";
 import GroupAvatar from "../Avatar/GroupAvatar";
 import Options from "../Options";
 import styles from "./styles.module.css";
@@ -59,7 +60,13 @@ function GroupBox(props) {
             key: "delete",
         });
     }
-
+    const onClickHandle = async() => {
+        try{
+            await groupRecentlyApi.updateTimeGroup(idGroup)
+        }catch(err){
+            console.log(err.message)
+        }
+    }
     const onClick = ({ key }) => {
         if (handleFeatures) handleFeatures(key, idGroup);
     };
@@ -86,6 +93,7 @@ function GroupBox(props) {
                 <div
                     id={idGroup}
                     className={styles.item}
+                    onClick={onClickHandle}
                     
                 >
                     <span
