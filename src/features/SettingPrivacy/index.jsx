@@ -24,7 +24,6 @@ function SettingPrivacy({ open, setOpen }) {
         // handle api vs setting
         setOpen(false);
     };
-    console.log(setting);
     return (
         <Drawer
             title="Cài đặt & Quyền riêng tư"

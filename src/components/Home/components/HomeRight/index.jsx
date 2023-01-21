@@ -5,6 +5,8 @@ import FeatureChat from "../../../../features/Chat";
 import FeatureDashBoard from "../../../../features/Dashboard";
 import FeatureGroup from "../../../../features/Group";
 import GroupDB from "../../../../features/GroupDB";
+import AddTask from "../../../../features/GroupDB/components/AddTask";
+import DetailTask from "../../../../features/GroupDB/components/DetailTask";
 import FeatureInfor from "../../../../features/Infor";
 import FeaturePassword from "../../../../features/Password";
 import FeatureTaskList from "../../../../features/TaskList";
@@ -23,8 +25,10 @@ function HomeRight({ feature }) {
             <Route path="/" element={<Navigate to="./dashboard" />} />
             <Route path="/dashboard" element={<FeatureDashBoard />} />
             <Route path="/chat/*" element={<FeatureChat />} />
-            <Route path="/chat/:idFriend" element={<FeatureChat />} />
             <Route path="/groups" element={<FeatureGroup />} />
+            <Route path="/groups/:idGroup/tasks/:idTask" element={<DetailTask />} />
+            <Route path="/groups/:idGroup/tasks/add" element={<AddTask />} />
+
             <Route path="/groups/:idGroup/*" element={<GroupDB />} />
             <Route path="/tasklist" element={<FeatureTaskList />} />
             <Route path="/infor" element={<FeatureInfor/>}/>

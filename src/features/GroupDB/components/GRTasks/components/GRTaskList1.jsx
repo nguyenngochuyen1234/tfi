@@ -1,24 +1,26 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Row, Tag, Typography } from "antd";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import React from "react";
 import styles from "../styles.module.css";
 
 GRTaskList1.propTypes = {
     tasks: PropTypes.array,
-    handleTask:PropTypes.func,
+    handleTask: PropTypes.func,
 };
 GRTaskList1.defaultProps = {
     tasks: [],
-    handleTask:null,
+    handleTask: null,
 };
 
-function GRTaskList1({ tasks ,handleTask}) {
-    const handleClickTask=(id)=>{
-        if(handleTask) handleTask(id)
-    }
+function GRTaskList1({ tasks, handleTask }) {
+    console.log(tasks);
+    const handleClickTask = (id) => {
+        if (handleTask) handleTask(id);
+    };
     return (
-        <div className={styles.content} >
+        <div className={styles.content}>
             <Row className={styles.header}>
                 <Col className={styles.box_1} span={6}>
                     Name
@@ -40,7 +42,11 @@ function GRTaskList1({ tasks ,handleTask}) {
             <div className={styles.main}>
                 {tasks.map((task) => {
                     return (
-                        <Row onClick={()=>handleClickTask(task.id)}  key={task.id} className={styles.body}>
+                        <Row
+                            onClick={() => handleClickTask(task._id)}
+                            key={task._id}
+                            className={styles.body}
+                        >
                             <Col className={styles.box_1} span={6}>
                                 <Typography.Paragraph
                                     strong
@@ -51,40 +57,48 @@ function GRTaskList1({ tasks ,handleTask}) {
                                 </Typography.Paragraph>
                             </Col>
                             <Col className={styles.box_1} span={3}>
-                                {task.status === "uncompleted" && (
-                                    <Tag color="magenta">Uncompleted</Tag>
+                                {task.status === "uncomplete" && (
+                                    <Tag color="magenta">Uncomplete</Tag>
                                 )}
                                 {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
-                                {task.status === "completed" && <Tag color="green">Completed</Tag>}
+                                {task.status === "completet" && <Tag color="green">Completed</Tag>}
                             </Col>
                             <Col className={styles.box_1} span={5}>
                                 <Typography.Paragraph style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
-                                    {task.about}{" "}
+                                    {task.description}
                                 </Typography.Paragraph>
                             </Col>
                             <Col className={styles.box_1} span={5}>
-                                <Avatar.Group
-                                    maxStyle={{
-                                        color: "#f56a00",
-                                        backgroundColor: "#fde3cf",
-                                        cursor: "pointer",
-                                    }}
-                                    maxCount={5}
-                                >
-                                    {task.members.map((member,idx) => (
-                                        <Avatar 
-                                            key={idx}
-                                            style={{ backgroundColor: "#87d068" }}
-                                            src={member}
-                                        />
-                                    ))}
-                                </Avatar.Group>
+                                {task.member.length > 0 && (
+                                    <Avatar.Group
+                                        maxStyle={{
+                                            color: "#f56a00",
+                                            backgroundColor: "#fde3cf",
+                                            cursor: "pointer",
+                                        }}
+                                        maxCount={5}
+                                    >
+                                        {task.member.map((member, idx) => (
+                                            <Avatar
+                                                key={idx}
+                                                style={{ backgroundColor: "#87d068" }}
+                                                src={member}
+                                            />
+                                        ))}
+                                    </Avatar.Group>
+                                )}
+                                {task.member.length === 0 && "No member"}
                             </Col>
                             <Col className={styles.box_1} span={3}>
-                                {task.due}
+                                {dayjs(task.deadline).format('DD-MM-YYYY')}
                             </Col>
                             <Col span={2}>
-                                <Button type="text"size="large" shape="circle" icon={<DeleteOutlined />}/>
+                                <Button
+                                    type="text"
+                                    size="large"
+                                    shape="circle"
+                                    icon={<DeleteOutlined />}
+                                />
                             </Col>
                         </Row>
                     );

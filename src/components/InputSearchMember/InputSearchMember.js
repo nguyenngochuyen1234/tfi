@@ -5,7 +5,7 @@ import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
 
-const InputSearchMember = ({ memberFiltered, setMemberFiltered, setLeader }) => {
+const InputSearchMember = ({ memberFiltered, setMemberFiltered}) => {
 
     const user = useSelector((state) => state.user.current);
     const idUser = user?._id || localStorage.getItem("user_id");
@@ -20,9 +20,9 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, setLeader }) => 
             const data = await userApi.getAllUser()
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                const leader = data.allUser.find(dt => dt._id === idUser)
+            
 
-                setLeader(leader)
+               
                 setUsers(dataFilter)
             }
         } catch (err) {

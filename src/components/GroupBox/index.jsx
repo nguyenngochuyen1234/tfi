@@ -20,7 +20,7 @@ GroupBox.propTypes = {
     nameGroup: PropTypes.string,
     describe: PropTypes.string,
     members: PropTypes.array,
-   
+
     status: PropTypes.string.isRequired,
     handleFeatures: PropTypes.func,
     idGroup: PropTypes.string,
@@ -60,19 +60,18 @@ function GroupBox(props) {
             key: "delete",
         });
     }
-    const onClickHandle = async() => {
-        try{
-            await groupRecentlyApi.updateTimeGroup(idGroup)
-        }catch(err){
-            console.log(err.message)
-        }
-    }
+    const handleOnclick = () => {
+        (async () => {
+            try {
+                await groupRecentlyApi.updateTimeGroup(idGroup);
+            } catch (err) {
+                console.log(err.message);
+            }
+        })();
+    };
     const onClick = ({ key }) => {
         if (handleFeatures) handleFeatures(key, idGroup);
     };
-    const handleOnclick=()=>{
-        console.log(idGroup)
-    }
     return (
         <div style={{ position: "relative" }}>
             <Dropdown
@@ -93,11 +92,11 @@ function GroupBox(props) {
                 />
             </Dropdown>
             <Link to={`./${idGroup}/general`}>
-                <div onClick={handleOnclick}
+                <div
+                    
                     id={idGroup}
                     className={styles.item}
-                    onClick={onClickHandle}
-                    
+                    onClick={handleOnclick}
                 >
                     <span
                         className={classNames({

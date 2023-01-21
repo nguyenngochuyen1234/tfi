@@ -9,21 +9,12 @@ import moment from "moment/moment";
 import taskApi from "../../../../api/taskApi";
 import { useParams } from "react-router-dom";
 AddTask.propTypes = {
-    setRender: PropTypes.func,
 };
 AddTask.defaultProps = {
-    setRender: null,
-};
-const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-        result.push(i);
-    }
-
-    return result;
 };
 
-function AddTask({ setRender }) {
+
+function AddTask(props) {
     const config = {
         rules: [
             {
@@ -36,12 +27,11 @@ function AddTask({ setRender }) {
     const navigate = useNavigate();
 
     const [memberFiltered, setMemberFiltered] = useState([]);
-    const [leader, setLeader] = useState()
     const params = useParams();
     const idGroup = params.idGroup
     const handleClickBack = () => {
-        navigate("./tasks");
-        if (setRender) setRender("");
+        navigate(-1);
+     
     };
     const onFinish = async(values) => {
         try{
@@ -100,18 +90,13 @@ function AddTask({ setRender }) {
                         <InputSearchMember
                             memberFiltered={memberFiltered}
                             setMemberFiltered={setMemberFiltered}
-                            setLeader={setLeader}
                         />
-                        <Form.Item name="dealine" label="Due on" {...config}>
+                        <Form.Item name="deadline" label="Due on" {...config}>
                             <DatePicker
                                 disabledDate={(current) => {
                                     let customDate = moment().format("DD-MM-YYYY");
-                                    return current && current < moment(customDate, "DD-MM-YYYY");
+                                    return current && current <= moment(customDate, "DD-MM-YYYY");
                                 }}
-                                disabledTime={() => ({
-                                    disabledHours: () =>
-                                        range(0, Number(moment().format("HH")) + 1),
-                                })}
                                 showTime
                                 format="DD-MM-YYYY HH:mm"
                             />
