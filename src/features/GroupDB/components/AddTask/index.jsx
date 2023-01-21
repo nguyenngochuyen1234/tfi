@@ -1,10 +1,13 @@
-import React from "react";
+import React,{useState} from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
 import { Button, DatePicker, Form, Input, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
+import InputSearchMember from "../../../../components/InputSearchMember/InputSearchMember";
 import moment from "moment/moment";
+import taskApi from "../../../../api/taskApi";
+import { useParams } from "react-router-dom";
 AddTask.propTypes = {
     setRender: PropTypes.func,
 };
@@ -16,7 +19,7 @@ const range = (start, end) => {
     for (let i = start; i < end; i++) {
         result.push(i);
     }
-  
+
     return result;
 };
 
@@ -31,16 +34,30 @@ function AddTask({ setRender }) {
         ],
     };
     const navigate = useNavigate();
+
+    const [memberFiltered, setMemberFiltered] = useState([]);
+    const [leader, setLeader] = useState()
+    const params = useParams();
+    const idGroup = params.idGroup
     const handleClickBack = () => {
         navigate("./tasks");
         if (setRender) setRender("");
     };
-    const onFinish = (values) => {
-        const result = {
-            ...values,
-            due: values["due"].format("YYYY-MM-DD HH:mm"),
-        };
-        console.log("Success:", result);
+    const onFinish = async(values) => {
+        try{
+            const memberId = memberFiltered?.map(pp=>pp._id)
+            const result = {
+                ...values,
+                member:memberId
+            };
+            console.log("Success:", result);
+            const data = await taskApi.createTask(idGroup,result)
+            if(data.success){
+                alert("create task done")
+            }
+        }catch(err){
+            console.log(err.message)
+        }
     };
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
@@ -71,27 +88,29 @@ function AddTask({ setRender }) {
                     >
                         <Form.Item
                             label="Task name"
-                            name="taskname"
+                            name="name"
                             rules={[{ required: true, message: "Please input your task name!" }]}
                         >
                             <Input placeholder="Your task name" />
                         </Form.Item>
 
-                        <Form.Item name="about" label="About">
+                        <Form.Item name="description" label="About">
                             <Input.TextArea placeholder="Let talk about description this task" />
                         </Form.Item>
-                        <Form.Item label="Add Member" name="add">
-                            <Input placeholder="Find member" />
-                        </Form.Item>
-                        <Form.Item name="due" label="Due on" {...config}>
+                        <InputSearchMember
+                            memberFiltered={memberFiltered}
+                            setMemberFiltered={setMemberFiltered}
+                            setLeader={setLeader}
+                        />
+                        <Form.Item name="dealine" label="Due on" {...config}>
                             <DatePicker
                                 disabledDate={(current) => {
                                     let customDate = moment().format("DD-MM-YYYY");
                                     return current && current < moment(customDate, "DD-MM-YYYY");
                                 }}
-                                disabledTime={()=>({
+                                disabledTime={() => ({
                                     disabledHours: () =>
-                                        range(0,Number(moment().format("HH")) + 1),
+                                        range(0, Number(moment().format("HH")) + 1),
                                 })}
                                 showTime
                                 format="DD-MM-YYYY HH:mm"

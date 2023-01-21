@@ -1,7 +1,7 @@
 
 import axiosClient from "./axiosClient"
 
-const groupApi ={
+const taskApi ={
     createTask(idGroup,data){
         const url=`/task/${idGroup}`
         return axiosClient.post(url,data)
@@ -23,4 +23,4 @@ const groupApi ={
         return axiosClient.delete(url)
     }
 }
-export default groupApi;
+export default taskApi;

@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import { useSelector } from 'react-redux';
-import groupApi from '../../api/groupApi';
-import notificationApi from '../../api/notificationApi';
 import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
 
-const InputSearchMember = ({ group, handleCancel }) => {
+const InputSearchMember = ({ memberFiltered, setMemberFiltered, setLeader }) => {
 
-    let socket = useSelector(state => state.socket.socket)
+    const user = useSelector((state) => state.user.current);
+    const idUser = user?._id || localStorage.getItem("user_id");
 
     const [users, setUsers] = useState([])
     const [memberSearch, setMemberSearch] = useState([])
-    const [memberFiltered, setMemberFiltered] = useState([]);
     const [valueInput, setValueInput] = useState("")
-    const user = useSelector((state) => state.user.current);
-    const idUser = user?._id || localStorage.getItem("id_user");
-    const [leader, setLeader] = useState()
-
 
 
     const fechAllUser = async () => {
@@ -48,31 +41,11 @@ const InputSearchMember = ({ group, handleCancel }) => {
     const handleOnclick = (userFilter) => {
         const newUsers = users.filter(user => user.username !== userFilter.username)
         setUsers(newUsers)
-        setMemberSearch(newUsers)
+        setMemberSearch([])
         setMemberFiltered(prev => [...prev, userFilter])
         setValueInput("")
     }
-    const handleAdd = async () => {
-        const memberid = memberFiltered.map(member => member._id)
-        const updateMember = {member: [...group.member, ...memberid]};
-        try {
-            const idGroup = group._id
-            await groupApi.updateGroup(idGroup, updateMember)
-            for(let i=0;i<memberid.length;i++){
-                let notification = {
-                    receiver:memberid[i],
-                    type:"group",
-                    title:`${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
-                    link: `groups`,
-                }
-                socket.emit("send-notification",notification)
-                await notificationApi.createNotification(notification)
-            }
-            handleCancel()
-        } catch (err) {
-            console.log(err)
-        }
-    }
+   
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)
         setMemberFiltered(newMemberFiltered)
@@ -136,9 +109,7 @@ const InputSearchMember = ({ group, handleCancel }) => {
                     </div>
                 </div>
 
-                <Button type="primary" onClick={handleAdd}>
-                    Add
-                </Button>
+                
             </div>
         </div>
     )
