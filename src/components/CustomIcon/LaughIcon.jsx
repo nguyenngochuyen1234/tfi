@@ -20,7 +20,7 @@ function LaughIcon({ width, height,toggleEmoji }) {
             toggleEmoji();
         }
     }
-    const SendSgv = () => (
+    const LaughSgv = () => (
         <svg
             width={width}
             height={height}
@@ -52,6 +52,6 @@ function LaughIcon({ width, height,toggleEmoji }) {
             />
         </svg>
     );
-    return <Icon onClick={handleToggleEmoji} className="icon-cursor" component={SendSgv} />;
+    return <Icon onClick={handleToggleEmoji} className="icon-cursor" component={LaughSgv} />;
 }
 export default LaughIcon;

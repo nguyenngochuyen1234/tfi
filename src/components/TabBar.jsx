@@ -20,6 +20,7 @@ function TabBar(props) {
         <Tabs
             className="wrap-container"
             tabBarGutter="0px"
+            style={{color:"var(--color--text-default)"}}
             activeKey={activeKey}
             onChange={(key)=>{if (onChange) onChange(key)}}
             size="middle"

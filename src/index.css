@@ -1,13 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
 :root {
     --color--default: #fff;
     --color--text-default: black;
-    --color--bg-default: rgb(245,245,251);
-    --color--border-primary:  rgb(6 24 44 / 65%);
-    --color--bg-drop:#F0F0F0;
-    --color--text-drop:rgb(124, 124, 124);
-    --color--df-mess:#0084FF;
-    --color-bd-primary:#ccc;
+    --color--bg-default: rgb(245, 245, 251);
+    --color--border-primary: rgb(6 24 44 / 65%);
+    --color--text-drop: rgb(124, 124, 124);
+    --color--df-mess: #0084ff;
+    --color-bd-primary: #ccc;
+    --color--hover-li:#f0f0f0;
+    --bd-tail:rgba(5, 5, 5, 0.06);
+}
+.dark {
+    --color--default: rgb(36,37,38);
+    --color--text-default: #FFF;
+    --color--bg-default: rgb(24,25,26);
+    --color--border-primary: rgba(219, 236, 255, 0.65);
+    --color--text-drop: rgb(124, 124, 124);
+    --color--df-mess: #0084ff;
+    --color-bd-primary: #ccc;
+    --color--hover-li:#49494a;
+    --bd-tail:rgb(163, 161, 161);
+
 }
 * {
     box-sizing: border-box;
@@ -15,6 +29,7 @@
     padding: 0;
 }
 body {
+    color: var(--color--text-default);
     font-family: "Roboto", sans-serif;
     overflow: hidden;
 }
@@ -32,10 +47,9 @@ body {
 
 /* Handle */
 *::-webkit-scrollbar-thumb {
-    background: #BCC0C4;
+    background: #bcc0c4;
     border-radius: 10px;
 }
-
 
 .text-md {
     font-size: 18px;
@@ -58,7 +72,7 @@ body {
 .text-sm {
     font-size: 14px;
 }
-.text-ssm{
+.text-ssm {
     font-size: 12px;
 }
 @media only screen and (min-width: 1700px) {
@@ -80,7 +94,7 @@ body {
     .text-sm {
         font-size: 16px;
     }
-    .text-ssm{
+    .text-ssm {
         font-size: 14px;
     }
 }
@@ -103,7 +117,7 @@ body {
     .text-sm {
         font-size: 15px;
     }
-    .text-ssm{
+    .text-ssm {
         font-size: 13px;
     }
 }

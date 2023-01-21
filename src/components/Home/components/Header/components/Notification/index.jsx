@@ -123,7 +123,7 @@ function Notification(props) {
             trigger={["click"]}
         >
             <Badge dot={!(countSeen === 0)} offset={[-16, 29]}>
-                <Button type="default" className={styles["btn-r-container"]}>
+                <Button type="text" className={styles["btn-r-container"]}>
                     <BellFilled className={classNames({
                         "text-md-1": true,
                         "isActive": show

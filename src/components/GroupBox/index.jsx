@@ -70,6 +70,9 @@ function GroupBox(props) {
     const onClick = ({ key }) => {
         if (handleFeatures) handleFeatures(key, idGroup);
     };
+    const handleOnclick=()=>{
+        console.log(idGroup)
+    }
     return (
         <div style={{ position: "relative" }}>
             <Dropdown
@@ -90,7 +93,7 @@ function GroupBox(props) {
                 />
             </Dropdown>
             <Link to={`./${idGroup}/general`}>
-                <div
+                <div onClick={handleOnclick}
                     id={idGroup}
                     className={styles.item}
                     onClick={onClickHandle}

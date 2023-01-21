@@ -1,0 +1,14 @@
+.switch-checked{
+    background-color: #0A2647 !important;
+}
+.switch-checked div:first-child::before{
+    background-color: rgb(184, 184, 247) !important;
+}
+.switch{
+    background-color: rgb(184, 184, 247) !important;
+   
+
+}
+.switch div:first-child::before{
+    background-color: #0A2647 !important;
+}

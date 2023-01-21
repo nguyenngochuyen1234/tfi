@@ -13,7 +13,7 @@ AttachIcon.defaultProps = {
 };
 
 function AttachIcon({ width, height}) {
-    const SendSgv = () => (
+    const AttachSgv = () => (
         <svg
             width={width}
             height={height}
@@ -30,6 +30,6 @@ function AttachIcon({ width, height}) {
             />
         </svg>
     );
-    return <Icon className="icon-cursor" component={SendSgv} />;
+    return <Icon className="icon-cursor" component={AttachSgv} />;
 }
 export default AttachIcon;

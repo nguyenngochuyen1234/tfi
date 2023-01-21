@@ -9,11 +9,13 @@ import { socketActions } from "../socketSlice";
 import PropTypes from "prop-types";
 import { AppstoreAddOutlined, LockOutlined, MessageOutlined, OrderedListOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { useLocation } from "react-router-dom";
+import SettingPrivacy from "../../features/SettingPrivacy";
+import ScreenSupport from "../../features/ScreenSupport";
 Home.propTypes = {
-
+  theme:PropTypes.string
 };
 Home.defaultProps = {
-
+  theme:"light",
 }
 function getItem(label, key, icon, children, type) {
   return {
@@ -36,8 +38,13 @@ const items_2=[
   
 ]
 
-function Home() {
+function Home({theme}) {
+    
     const {pathname}=useLocation()
+    const [openSetting, setOpenSetting] = useState(false);
+    const [openScreen, setOpenScreen] = useState(false);
+    const [configTheme, setConfigTheme] = useState(theme)
+
     const user= useSelector((state)=>state.user.current.account)
     const idUser =user?._id|| localStorage.getItem("user_id")
     const socket = useRef();
@@ -61,8 +68,10 @@ function Home() {
       }, [idUser]);
     return (
         <div className={styles.root}>
-            <Header/>
-            <AppBar items={items}/>
+            <ScreenSupport open={openScreen} setOpen={setOpenScreen} setTheme={setConfigTheme}/>
+            <SettingPrivacy open={openSetting} setOpen={setOpenSetting}/>
+            <Header setOpenSetting={setOpenSetting} setOpenScreen={setOpenScreen}/>
+            <AppBar items={items} theme={configTheme}/>
         </div>
     );
 }

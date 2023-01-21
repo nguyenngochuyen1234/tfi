@@ -17,14 +17,13 @@ function Overview(props) {
                         [styles.hello]: true,
                         "text-md-2": true,
                     })}
+                    style={{ color: "var(--color--text-default)" }}
                 >
-                    Hello,<Text strong={"true"}> Thang</Text>
-                    . Welcome to your Dashboard!
+                    Hello,<Text strong={"true"} style={{ color: "var(--color--text-default)" }}> Thang</Text>. Welcome to your Dashboard!
                 </Text>
-                
             </div>
             <DeltailOverview />
-            <TaskPinned/>
+            <TaskPinned />
         </div>
     );
 }
