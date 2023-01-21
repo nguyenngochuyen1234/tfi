@@ -1,29 +1,39 @@
 import { FilterOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import taskApi from "../../../../api/taskApi";
 import GRTaskList1 from "./components/GRTaskList1";
 import styles from "./styles.module.css";
 GRTasks.propTypes = {
-    tasks: PropTypes.array,
+    idGroup: PropTypes.string,
     handleTask: PropTypes.func,
-    setRender: PropTypes.func,
+  
 };
 GRTasks.defaultProps = {
-    tasks: [],
+    idGroup: "",
     handleTask: null,
-    setRender: null,
 };
 
-function GRTasks({ tasks, handleTask, setRender }) {
+function GRTasks({ idGroup, handleTask}) {
     const navigate = useNavigate();
     const handleAddTask = () => {
-        if (setRender) {
-            setRender("addTask");
-            navigate("./?feature=add");
-        }
+       
+            navigate("./add");
     };
+    const [tasks, setTasks] = useState([]);
+    useEffect(() => {
+        if (idGroup !== "")
+            (async () => {
+                try {
+                    const {tasks} = await taskApi.getAllTask(idGroup);
+                    setTasks(tasks);
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+    }, []);
     return (
         <div className={styles.GRTasks}>
             <div className={styles.filter}>

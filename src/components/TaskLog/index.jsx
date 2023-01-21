@@ -1,4 +1,5 @@
 import { Typography } from "antd";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import React from "react";
 import styles from "./styles.module.css";
@@ -18,7 +19,7 @@ function TaskLog({ task }) {
                 </div>
 
                 <Typography.Text style={{ color: "var(--color--text-drop)" }} className="text-df">
-                    Due on {task.due}
+                    Due on {dayjs(task.deadline).format("DD-MM-YYYY")} at {dayjs(task.deadline).format("HH:MM")}
                 </Typography.Text>
             </div>
 
@@ -30,10 +31,11 @@ function TaskLog({ task }) {
                     About
                 </Typography.Text>
             </div>
-            <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden"}}>
-                <Typography.Paragraph style={{marginBottom:"10px" }}>{task.about}</Typography.Paragraph>
+            <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
+                <Typography.Paragraph style={{ marginBottom: "10px" }}>
+                    {task.description}
+                </Typography.Paragraph>
             </div>
-            
         </div>
     );
 }

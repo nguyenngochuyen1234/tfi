@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
+import queryString from "query-string";
 import PropTypes from "prop-types";
 import { Button, Col, Dropdown, Row, Typography } from "antd";
 import { LeftOutlined, LinkOutlined, PaperClipOutlined, UploadOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import TaskLog from "../../../../components/TaskLog";
 import Options from "../../../../components/Options";
-DetailTask.propTypes = {
-    setRender: PropTypes.func.isRequired,
-    data: PropTypes.object,
-};
-DetailTask.defaultProps = {
-    data: null,
-};
+import taskApi from "../../../../api/taskApi";
+DetailTask.propTypes = {};
+DetailTask.defaultProps = {};
 const items = [
     {
         key: "link",
@@ -23,20 +20,28 @@ const items = [
         label: <Options icon={<UploadOutlined />} label="Upload from this device" config="sm" />,
     },
 ];
-function DetailTask({ data, setRender }) {
+function DetailTask(props) {
+    const location = useLocation();
     const navigate = useNavigate();
     const handleClickBack = () => {
-        navigate("./tasks");
-        if (setRender) setRender("");
+        navigate(-1);
     };
     const onClick = ({ key }) => {
         console.log(key);
     };
-    const [task, setTask] = useState(data);
+    const [task, setTask] = useState();
     useEffect(() => {
-        if (!data) {
-            //get data from api
-        }
+        (async () => {
+            try {
+                const param = location.pathname.split('/')[5];
+                
+                const response = await taskApi.getOnlyTask(param);
+                console.log(response);
+                setTask(response.task)
+            } catch (error) {
+                console.log(error);
+            }
+        })();
     }, []);
     return (
         <div className={styles["detail-task"]}>
@@ -60,7 +65,7 @@ function DetailTask({ data, setRender }) {
                         style={{ padding: "10px", overflowY: "auto", overflowX: "hidden" }}
                     >
                         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                            <TaskLog task={data} />
+                            <TaskLog task={task} />
                             <div>
                                 <Typography.Text
                                     style={{ color: "var(--color--text-drop)", fontWeight: 500 }}
@@ -108,7 +113,7 @@ function DetailTask({ data, setRender }) {
                                 </div>
                                 <div>
                                     <Typography.Paragraph>
-                                        {data.comment || "No comment"}
+                                        {task.comment || "No comment"}
                                     </Typography.Paragraph>
                                 </div>
                             </div>

@@ -20,7 +20,7 @@ GroupBox.propTypes = {
     nameGroup: PropTypes.string,
     describe: PropTypes.string,
     members: PropTypes.array,
-   
+
     status: PropTypes.string.isRequired,
     handleFeatures: PropTypes.func,
     idGroup: PropTypes.string,

@@ -30,7 +30,6 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
     }
     useEffect(()=>{
         setUsers(usersData)
-        console.log(usersData)
     },[usersData])
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import groupRecentlyApi from "../../../../../../../api/groupRecentlyApi";
-import GroupBox from "../../../../../../../components/GroupBox";
+import { useNavigate } from "react-router-dom";
 import GroupAvatar from "../../../../../../../components/Avatar/GroupAvatar";
 import classNames from "classnames";
 import { Tooltip } from "antd";
@@ -8,6 +8,9 @@ import styles from "../styles.module.css";
 ListRecentGroup.propTypes = {};
 
 function ListRecentGroup(props) {
+
+    const navigate = useNavigate()
+
     const [groupRecently, setGroupRecently] = useState([])
     const fetchGroupRecently = async () => {
         try {
@@ -25,6 +28,15 @@ function ListRecentGroup(props) {
     useEffect(() => {
         fetchGroupRecently()
     }, [])
+    const handleOnclick = async(idGroup) => {
+        try{
+            const result = await groupRecentlyApi.updateTimeGroup(idGroup)
+            navigate(`/home/groups/${idGroup}/general`)
+            console.log(result)
+        }catch(err){
+            console.log(err.message)
+        }
+    }
 
     return (
         <div className={styles["wrap"]}>
@@ -34,6 +46,7 @@ function ListRecentGroup(props) {
                         id={group._id}
                         className={styles.item}
                         key={group._id}
+                        onClick={()=>{handleOnclick(group._id)}}
                     >
                         <span
                             className={classNames({
