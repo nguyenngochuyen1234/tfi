@@ -1,34 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
 import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
 
-const InputSearchMember = ({ memberFiltered, setMemberFiltered, setLeader }) => {
+const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
 
-    const user = useSelector((state) => state.user.current);
-    const idUser = user?._id || localStorage.getItem("user_id");
 
     const [users, setUsers] = useState([])
     const [memberSearch, setMemberSearch] = useState([])
     const [valueInput, setValueInput] = useState("")
 
 
-    const fechAllUser = async () => {
-        try {
-            const data = await userApi.getAllUser()
-            if (data.success) {
-                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                const leader = data.allUser.find(dt => dt._id === idUser)
-
-                setLeader(leader)
-                setUsers(dataFilter)
-            }
-        } catch (err) {
-            alert(err.message)
-        }
-    }
     const onChangeHandle = (e) => {
         let value = e.target.value
         setValueInput(value)
@@ -45,15 +28,15 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, setLeader }) => 
         setMemberFiltered(prev => [...prev, userFilter])
         setValueInput("")
     }
-   
+    useEffect(()=>{
+        setUsers(usersData)
+        console.log(usersData)
+    },[usersData])
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)
         setMemberFiltered(newMemberFiltered)
         setUsers(prev => [...prev, member])
     }
-    useEffect(() => {
-        fechAllUser()
-    }, [])
     return (
         <div>
             {memberFiltered.length > 0 && <div className='search-member-filtered'>

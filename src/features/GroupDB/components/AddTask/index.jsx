@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
 import { Button, DatePicker, Form, Input, Typography } from "antd";
@@ -8,6 +8,9 @@ import InputSearchMember from "../../../../components/InputSearchMember/InputSea
 import moment from "moment/moment";
 import taskApi from "../../../../api/taskApi";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import groupApi from "../../../../api/groupApi";
+
 AddTask.propTypes = {
     setRender: PropTypes.func,
 };
@@ -36,26 +39,43 @@ function AddTask({ setRender }) {
     const navigate = useNavigate();
 
     const [memberFiltered, setMemberFiltered] = useState([]);
-    const [leader, setLeader] = useState()
+    const [usersData, setUsersData] = useState([])
+
+
     const params = useParams();
     const idGroup = params.idGroup
+
+    const fetchUserData = async () => {
+        try {
+            const data = await groupApi.getUsersByIds(idGroup)
+            if (data.success) {
+                setUsersData(data.users)
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+    useEffect(() => {
+        fetchUserData()
+    }, [])
+
     const handleClickBack = () => {
         navigate("./tasks");
         if (setRender) setRender("");
     };
-    const onFinish = async(values) => {
-        try{
-            const memberId = memberFiltered?.map(pp=>pp._id)
+    const onFinish = async (values) => {
+        try {
+            const memberId = memberFiltered?.map(pp => pp._id)
             const result = {
                 ...values,
-                member:memberId
+                member: memberId
             };
             console.log("Success:", result);
-            const data = await taskApi.createTask(idGroup,result)
-            if(data.success){
+            const data = await taskApi.createTask(idGroup, result)
+            if (data.success) {
                 alert("create task done")
             }
-        }catch(err){
+        } catch (err) {
             console.log(err.message)
         }
     };
@@ -100,9 +120,9 @@ function AddTask({ setRender }) {
                         <InputSearchMember
                             memberFiltered={memberFiltered}
                             setMemberFiltered={setMemberFiltered}
-                            setLeader={setLeader}
+                            usersData={usersData}
                         />
-                        <Form.Item name="dealine" label="Due on" {...config}>
+                        <Form.Item name="deadline" label="Due on" {...config}>
                             <DatePicker
                                 disabledDate={(current) => {
                                     let customDate = moment().format("DD-MM-YYYY");

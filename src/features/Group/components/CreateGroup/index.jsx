@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Typography } from "antd";
 import groupApi from "../../../../api/groupApi";
@@ -7,15 +7,19 @@ import InputSearchMember from "../../../../components/InputSearchMember/InputSea
 import FormGroup from "./components/FormGroup";
 import notificationApi from "../../../../api/notificationApi";
 import styles from "./styles.module.css";
+import userApi from "../../../../api/userApi";
 
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
 
     let socket = useSelector(state => state.socket.socket)
+    const user = useSelector((state) => state.user.current);
+    const idUser = user?._id || localStorage.getItem("user_id");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [leader, setLeader] = useState()
+    const [usersData, setUsersData] = useState([])
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,18 +43,18 @@ function CreateGroup(props) {
     };
     const handleAdd = async () => {
         const memberid = memberFiltered.map(member => member._id)
-        const updateMember = {member: [...dataGroup.member, ...memberid]};
+        const updateMember = { member: [...dataGroup.member, ...memberid] };
         try {
             const idGroup = dataGroup._id
             await groupApi.updateGroup(idGroup, updateMember)
-            for(let i=0;i<memberid.length;i++){
+            for (let i = 0; i < memberid.length; i++) {
                 let notification = {
-                    receiver:memberid[i],
-                    type:"group",
-                    title:`${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    receiver: memberid[i],
+                    type: "group",
+                    title: `${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
                     link: `groups`,
                 }
-                socket.emit("send-notification",notification)
+                socket.emit("send-notification", notification)
                 await notificationApi.createNotification(notification)
             }
             handleCancel()
@@ -58,6 +62,24 @@ function CreateGroup(props) {
             console.log(err)
         }
     }
+    const fechAllUser = async () => {
+        try {
+            const data = await userApi.getAllUser()
+            if (data.success) {
+                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
+                const leader = data.allUser.find(dt => dt._id === idUser)
+
+                setLeader(leader)
+                setUsersData(dataFilter)
+            }
+        } catch (err) {
+            alert(err.message)
+        }
+    }
+    useEffect(() => {
+        fechAllUser()
+    }, [])
+
     const onFinish = (values) => {
         const result = { name: values.groupname, description: values.description, member: [] };
         async function post() {
@@ -123,7 +145,7 @@ function CreateGroup(props) {
                             <InputSearchMember
                                 memberFiltered={memberFiltered}
                                 setMemberFiltered={setMemberFiltered}
-                                setLeader={setLeader}
+                                usersData={usersData}
                             />
                             <Button type="primary" onClick={handleAdd}>
                                 Add

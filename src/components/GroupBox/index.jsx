@@ -10,7 +10,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import groupRecentlyApi from "../../api/groupRecentlyApi";
 import GroupAvatar from "../Avatar/GroupAvatar";
 import Options from "../Options";
@@ -39,7 +39,7 @@ GroupBox.defaultProps = {
 
 function GroupBox(props) {
     const { idGroup, nameGroup, describe, members, handleFeatures, status } = props;
-
+    const navigate = useNavigate()
     const items = [
         {
             label: <Options icon={<EyeInvisibleOutlined />} label="Hide" config="sm" />,
@@ -60,9 +60,11 @@ function GroupBox(props) {
             key: "delete",
         });
     }
-    const onClickHandle = async() => {
+    const handleOnclick = async() => {
         try{
-            await groupRecentlyApi.updateTimeGroup(idGroup)
+            const result = await groupRecentlyApi.updateTimeGroup(idGroup)
+            navigate(`./${idGroup}/general`)
+            console.log(result)
         }catch(err){
             console.log(err.message)
         }
@@ -70,9 +72,6 @@ function GroupBox(props) {
     const onClick = ({ key }) => {
         if (handleFeatures) handleFeatures(key, idGroup);
     };
-    const handleOnclick=()=>{
-        console.log(idGroup)
-    }
     return (
         <div style={{ position: "relative" }}>
             <Dropdown
@@ -92,11 +91,9 @@ function GroupBox(props) {
                     icon={<MoreOutlined />}
                 />
             </Dropdown>
-            <Link to={`./${idGroup}/general`}>
                 <div onClick={handleOnclick}
                     id={idGroup}
                     className={styles.item}
-                    onClick={onClickHandle}
                     
                 >
                     <span
@@ -130,7 +127,6 @@ function GroupBox(props) {
                         <GroupAvatar arrayId={members} size="large" />
                     </div>
                 </div>
-            </Link>
         </div>
     );
 }

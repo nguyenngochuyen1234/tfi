@@ -15,7 +15,7 @@ function ListRecentGroup(props) {
             if (data.success) {
                 let dataGroup = data.groups.map(item => item.group)
                 setGroupRecently(dataGroup)
-                console.log(dataGroup)
+                console.log(data.groups)
             }
         } catch (err) {
             console.log(err.message)
@@ -30,7 +30,42 @@ function ListRecentGroup(props) {
         <div className={styles["wrap"]}>
             <div className={styles["list-container"]}>
                 {groupRecently.map(group => {
-                    <div>GROUP</div>
+                    return <div
+                        id={group._id}
+                        className={styles.item}
+                        key={group._id}
+                    >
+                        <span
+                            className={classNames({
+                                [styles.name]: true,
+                                "text-md": true,
+                            })}
+                        >
+                            {group.name.length > 30 ? (
+                                <Tooltip title={group.name} key={group.name}>
+                                    {group.name.slice(0, 30)}...
+                                </Tooltip>
+                            ) : (
+                                group.name
+                            )}
+                        </span>
+                        <div
+                            className={classNames({
+                                [styles.describe]: true,
+                                "text-sm": true,
+                            })}
+                        >
+                            {/* {describe} */}
+                        </div>
+                        <div
+                            style={{
+                                position: "absolute",
+                                bottom: "15px",
+                            }}
+                        >
+                            <GroupAvatar arrayId={group.member} size="large" />
+                        </div>
+                    </div>
                 })}
             </div>
         </div>
