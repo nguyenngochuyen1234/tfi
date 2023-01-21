@@ -46,7 +46,6 @@ function GroupDB(props) {
             })();
         }
     }, [data, id]);
-    console.log(group);
     const onChange = (key) => {
         setFeature(key);
         navigate(`./${key.toLowerCase()}`);
@@ -68,7 +67,7 @@ function GroupDB(props) {
         {
             label: <BarItem typeSize={"sm"} label="Tasks Overview" />,
             key: "tasks",
-            children: <GRRouter handleTask={handleTask} idGroup={group?._id} />,
+            children: <GRRouter handleTask={handleTask} idGroup={group?._id} group={group}/>,
         },
         {
             label: <BarItem typeSize={"sm"} label="Timeline" />,

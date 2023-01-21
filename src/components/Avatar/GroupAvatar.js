@@ -1,7 +1,8 @@
 import { Avatar, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import imageApi from '../../api/imageApi';
-const GroupAvatar = ({ arrayId, size }) => {
+const GroupAvatar = ({ arrayId, size="default",config=5 }) => {
+    console.log(arrayId)
     const [baseStringArray, setBaseStringArray] = useState({
         headerGroup: [],
         bodyGroup: null,
@@ -39,13 +40,13 @@ const GroupAvatar = ({ arrayId, size }) => {
         <>
 
             <Avatar.Group
-                maxCount={5}
+                maxCount={config}
                 size={size}
                 maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
             >
                 {baseStringArray.headerGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
                 <Tooltip title="Ant User" placement="top">
-                    {baseStringArray.bodyGroup && <Avatar  src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
+                    {baseStringArray.bodyGroup && <Avatar src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
                 </Tooltip>
                 {baseStringArray.hideGroup.length>0 && baseStringArray.hideGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
             </Avatar.Group>

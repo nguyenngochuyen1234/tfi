@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import queryString from "query-string";
 import PropTypes from "prop-types";
-import { Button, Col, Dropdown, Row, Typography } from "antd";
+import { Button, Col, Collapse, Dropdown, Row, Typography } from "antd";
 import { LeftOutlined, LinkOutlined, PaperClipOutlined, UploadOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import TaskLog from "../../../../components/TaskLog";
 import Options from "../../../../components/Options";
 import taskApi from "../../../../api/taskApi";
+import SingleAvatar from "../../../../components/Avatar/SingleAvatar";
+import GroupAvatar from "../../../../components/Avatar/GroupAvatar";
 DetailTask.propTypes = {};
 DetailTask.defaultProps = {};
 const items = [
@@ -33,11 +35,11 @@ function DetailTask(props) {
     useEffect(() => {
         (async () => {
             try {
-                const param = location.pathname.split('/')[5];
-                
+                const param = location.pathname.split("/")[5];
+
                 const response = await taskApi.getOnlyTask(param);
                 console.log(response);
-                setTask(response.task)
+                setTask(response.task);
             } catch (error) {
                 console.log(error);
             }
@@ -46,7 +48,7 @@ function DetailTask(props) {
     return (
         <div className={styles["detail-task"]}>
             {task && (
-                <div>
+                <div style={{ height: "100%" }}>
                     <div className={styles["task-header"]}>
                         <Button
                             type="link"
@@ -62,7 +64,15 @@ function DetailTask(props) {
                     </div>
                     <Row
                         gutter={[24, 24]}
-                        style={{ padding: "10px", overflowY: "auto", overflowX: "hidden" }}
+                        style={{
+                            padding: "10px 5px",
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                            height: "95%",
+                            marginLeft: "1px",
+                            marginRight: "1px",
+
+                        }}
                     >
                         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                             <TaskLog task={task} />
@@ -98,7 +108,7 @@ function DetailTask(props) {
                                 </div>
                             </Dropdown>
                         </Col>
-                        <Col className={styles.flex} xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                             <div>
                                 <div>
                                     <Typography.Text
@@ -129,6 +139,24 @@ function DetailTask(props) {
                                     >
                                         Result
                                     </Typography.Text>
+                                </div>
+                                <div>
+                                    {task.member.map((member) => (
+                                        <div key={member} className={styles.wrap}>
+                                            <Row gutter={[8,8]} >
+                                                <Col span={6}>
+                                                    <img width={"40px"} src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-cute.jpg?ssl=1" alt="avt"/>
+                                                </Col>
+                                                <Col span={8}>
+                                                    Tên
+                                                </Col>
+                                                <Col span={6}>
+                                                    <Link to="">a.pdf</Link>
+                                                </Col>
+
+                                            </Row>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </Col>

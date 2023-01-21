@@ -23,6 +23,7 @@ export const login = createAsyncThunk(
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.account));
     localStorage.setItem(StorageKeys.USERID,data.account._id);
     localStorage.setItem(StorageKeys.NAMEUSER,data.account.name);
+    console.log(data)
     return data;
   }
 )
@@ -30,7 +31,7 @@ export const login = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
+    current: {account:JSON.parse(localStorage.getItem(StorageKeys.USER))} || {},
 
   },
   reducers: {
