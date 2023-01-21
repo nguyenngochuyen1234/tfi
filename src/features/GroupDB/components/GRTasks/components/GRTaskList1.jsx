@@ -33,10 +33,10 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
     const hideModal = () => {
         setOpen(false);
     };
-    const handleOk=async (id)=>{
-        await handleDelete(id)
+    const handleOk = async (id) => {
+        await handleDelete(id);
         hideModal();
-    }
+    };
     const handleClickTask = (id) => {
         if (handleTask) handleTask(id);
     };
@@ -64,11 +64,20 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                 <div className={styles.main}>
                     {tasks.map((task) => {
                         return (
-                            <Row key={task._id} className={styles.body}>
+                            <Row
+                                onClick={(e) => {
+                                    const target = e.target;
+                                    if (!target.closest("button")) {
+                                        handleClickTask(task._id);
+                                    }
+                                }}
+                                key={task._id}
+                                className={styles.body}
+                            >
                                 <Modal
                                     title="Bạn có chắc chắn muốn xóa"
                                     open={open}
-                                    onOk={()=>handleOk(task._id)}
+                                    onOk={() => handleOk(task._id)}
                                     onCancel={hideModal}
                                     okText="Ok"
                                     cancelText="Cancel"
@@ -78,11 +87,7 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                                         điều này
                                     </p>
                                 </Modal>
-                                <Col
-                                    onClick={() => handleClickTask(task._id)}
-                                    className={styles.box_1}
-                                    span={6}
-                                >
+                                <Col className={styles.box_1} span={6}>
                                     <Typography.Paragraph
                                         strong
                                         style={{ margin: 0 }}
@@ -91,11 +96,7 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                                         {task.name}{" "}
                                     </Typography.Paragraph>
                                 </Col>
-                                <Col
-                                    onClick={() => handleClickTask(task._id)}
-                                    className={styles.box_1}
-                                    span={3}
-                                >
+                                <Col className={styles.box_1} span={3}>
                                     {task.status === "uncomplete" && (
                                         <Tag color="magenta">Uncomplete</Tag>
                                     )}
@@ -112,11 +113,7 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                                         {task.description}
                                     </Typography.Paragraph>
                                 </Col>
-                                <Col
-                                    onClick={() => handleClickTask(task._id)}
-                                    className={styles.box_1}
-                                    span={5}
-                                >
+                                <Col className={styles.box_1} span={5}>
                                     {task.member.length > 0 && (
                                         <GroupAvatar
                                             arrayId={task.member}
@@ -126,11 +123,7 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                                     )}
                                     {task.member.length === 0 && "No member"}
                                 </Col>
-                                <Col
-                                    onClick={() => handleClickTask(task._id)}
-                                    className={styles.box_1}
-                                    span={3}
-                                >
+                                <Col className={styles.box_1} span={3}>
                                     {dayjs(task.deadline).format("DD-MM-YYYY")}
                                 </Col>
                                 <Col span={2}>
