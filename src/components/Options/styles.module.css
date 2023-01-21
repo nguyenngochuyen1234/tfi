@@ -9,3 +9,6 @@
 .m-l-5{
     margin-left: 5px;
 }
+.config{
+    color:var(--color--text-default);
+}

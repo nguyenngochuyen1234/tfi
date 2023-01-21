@@ -16,6 +16,7 @@ function Options({ icon, label,config }) {
     return (
         <div
             className={classNames({
+                [styles.config]:true,
                 [styles.item]: config==="df" ?true:false,
                 [styles.item_sm]: config==="sm" ?true:false,
                 "text-df":  config==="df" ?true:false,

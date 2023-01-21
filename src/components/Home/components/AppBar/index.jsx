@@ -7,12 +7,13 @@ import styles from "./styles.module.css";
 import PropTypes from "prop-types"
 AppBar.propTypes = {
     items:PropTypes.array.isRequired,
+    theme:PropTypes.string
 };
 AppBar.defaultProps = {
-
+    theme:"light"
 }
 
-function AppBar({items}) {
+function AppBar({items,theme}) {
     const { pathname } = useLocation();
     const newPath = pathname.split('/')[2];
     const [feature, setFeature] = useState(newPath===""?"dashboard":newPath);
@@ -31,6 +32,7 @@ function AppBar({items}) {
                 currentFeature={feature}
                 handleClickFeature={handleClickFeature}
                 items={items}
+                theme={theme}
             />
             <HomeRight  feature={feature} />
         </div>

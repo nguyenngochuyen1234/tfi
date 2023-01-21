@@ -3,6 +3,7 @@
     left: 25px;
     scale: 1.2;
     top: -50px;
+    color: var(--color-text-default);
     z-index: 11;
 }
 
@@ -17,6 +18,8 @@
     height: 100%;
     position: relative;
     z-index: 10;
+
+    background-color: var(--color--default);
     font-size: 18px;
     font-weight: bold;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 1px 0px 1px !important;
@@ -27,6 +30,8 @@
     display: flex!important;
     align-items: center!important;
 }
+
+
 .menu li span:first-child{
     scale: 1.2;
 }

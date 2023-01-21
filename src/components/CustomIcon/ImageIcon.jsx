@@ -13,7 +13,7 @@ ImageIcon.defaultProps = {
 };
 
 function ImageIcon({ width, height  }) {
-    const SendSgv = () => (
+    const ImageSgv = () => (
         <svg
             width={width}
             height={height}
@@ -51,6 +51,6 @@ function ImageIcon({ width, height  }) {
             />
         </svg>
     );
-    return <Icon className="icon-cursor" component={SendSgv} />;
+    return <Icon className="icon-cursor" component={ImageSgv} />;
 }
 export default ImageIcon;

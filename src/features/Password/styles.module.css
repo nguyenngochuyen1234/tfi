@@ -13,7 +13,7 @@
 .wrap{
     margin-top: 5px !important;
     overflow-y: auto;
-    overflow-x: auto;
+    overflow-x: hidden;
     height: 95%;
     
 }

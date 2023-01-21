@@ -2,6 +2,9 @@
     flex: 1 1;
     position: relative;
 }
+.u-item-selected{
+    background-color: #49494a !important;
+}
 .ellip-text {
     white-space: nowrap;
     overflow: hidden;
@@ -22,7 +25,9 @@
 }
 .link-back{
     color: var(--color-text-default) !important;
-
+}
+.mg-b_10{
+    margin-bottom: 10px;
 }
 .link-back:hover{
     color: var(--color-text-default) !important;
