@@ -1,5 +1,5 @@
+import { Steps } from 'antd';
 import React, { useState } from 'react';
-import { Button, message, Steps, Form, Input, Checkbox } from 'antd';
 import FirstFormRegister from './FirstFormRegister';
 import SecondFormRegister from './SecondFormRegister';
 

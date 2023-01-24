@@ -2,18 +2,47 @@
     flex: 1 1;
     position: relative;
 }
-.u-item-selected{
+.u-item-selected {
     background-color: #49494a !important;
+}
+.ant-input-affix-wrapper-disabled {
+    background-color: var(--color--disabled) !important;
+}
+.ant-input-affix-wrapper-disabled * {
+    color: var(--color--text-disabled_input) !important;
+}
+.wrap-box *:not(button) {
+    color: var(--color-text-default);
 }
 .ellip-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.wrap-container_config > div:nth-child(1) {
+    margin: 10px 15px !important;
+}
+.wrap-container_config > div:nth-child(2) {
+    box-shadow: var(--color--line) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px !important;
+}
+
+.wrap-container > div:nth-child(1) {
+    margin-bottom: 10px !important;
+}
 .wrap-container {
     padding: 10px 15px !important;
     height: 100%;
     width: 100%;
+}
+.ant-collapse-header {
+    padding: 0 !important;
+    color: #0037ac !important;
+}
+.ant-collapse-content-box {
+    padding: 4px 16px !important;
+}
+.ant-collapse-content-active {
+    margin-top: 4px !important;
 }
 .bar-item-df {
     padding: 5px 15px;
@@ -23,12 +52,60 @@
     padding: 0px 10px;
     font-weight: 500;
 }
-.link-back{
+.link-back {
     color: var(--color-text-default) !important;
 }
-.mg-b_10{
+.mg-b_10 {
     margin-bottom: 10px;
 }
-.link-back:hover{
+.mg-r_5_ct > * {
+    margin-right: 5px;
+    margin-top: 5px;
+}
+.mg-r_5_ct > *:last-child {
+    margin-right: 0px;
+}
+.ant-collapse-content-box {
+    display: flex !important;
+    flex-direction: column !important;
+}
+.link-back:hover {
     color: var(--color-text-default) !important;
+}
+.post {
+    width: 70% !important;
+    max-width: 900px;
+    min-width: 400px;
+}
+.post .ql-container {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background: transparent;
+}
+
+/* Snow Theme */
+.post .ql-snow.ql-toolbar {
+    display: block;
+    background: #eaecec;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+
+/* Bubble Theme */
+.post .ql-bubble .ql-editor {
+    border: 1px solid var(--color-bd-primary);
+    border-radius: 0.5em;
+}
+.ql-toolbar.ql-snow {
+    font-family: "Roboto", sans-serif !important;
+}
+.ql-container.ql-snow {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 18em;
+}
+.post .ql-editor {
+    min-height: 10em;
 }

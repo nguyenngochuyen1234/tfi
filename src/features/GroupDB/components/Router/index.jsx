@@ -9,27 +9,25 @@ import Files from "../Files";
 GRRouter.propTypes = {
     handleTask: PropTypes.func,
     idGroup: PropTypes.string,
-    group:PropTypes.object,
+    group: PropTypes.object,
 };
 GRRouter.defaultProps = {
     handleTask: null,
     idGroup: "",
-    group:null
+    group: null,
 };
 
-function GRRouter({ handleTask, idGroup ,group}) {
+function GRRouter({ handleTask, idGroup, group }) {
     return (
-        <div>
-            <Routes>
-                <Route path="/general" element={<General />} />
-                <Route
-                    path="/tasks"
-                    element={<GRTasks handleTask={handleTask} idGroup={idGroup} group={group} />}
-                />
-                <Route path="/time-line" element={<TimeLine />} />
-                <Route path="/files" element={<Files />} />
-            </Routes>
-        </div>
+        <Routes>
+            <Route path="/general" element={<General />} />
+            <Route
+                path="/tasks"
+                element={<GRTasks handleTask={handleTask} idGroup={idGroup} group={group} />}
+            />
+            <Route path="/time-line" element={<TimeLine />} />
+            <Route path="/files" element={<Files />} />
+        </Routes>
     );
 }
 

@@ -6,22 +6,33 @@
     --color--bg-default: rgb(245, 245, 251);
     --color--border-primary: rgb(6 24 44 / 65%);
     --color--text-drop: rgb(124, 124, 124);
+    --color--bg-drop: rgb(240, 242, 245);
     --color--df-mess: #0084ff;
     --color-bd-primary: #ccc;
-    --color--hover-li:#f0f0f0;
-    --bd-tail:rgba(5, 5, 5, 0.06);
+    --color--hover-li: #f0f0f0;
+    --bd-tail: rgba(5, 5, 5, 0.06);
+    --color--line: rgba(0, 0, 0, 0.02);
+    --color--disabled: rgba(0, 0, 0, 0.04);
+    --color--text-disabled_input: rgba(0, 0, 0, 0.25);
+    --color--tooltip:rgba(0, 0, 0, 0.8);
+
 }
 .dark {
-    --color--default: rgb(36,37,38);
-    --color--text-default: #FFF;
-    --color--bg-default: rgb(24,25,26);
+    --color--default: rgb(36, 37, 38);
+    --color--text-default: #fff;
+    --color--bg-default: rgb(24, 25, 26);
     --color--border-primary: rgba(219, 236, 255, 0.65);
     --color--text-drop: rgb(124, 124, 124);
+    --color--bg-drop: rgb(240, 242, 245);
+
     --color--df-mess: #0084ff;
     --color-bd-primary: #ccc;
-    --color--hover-li:#49494a;
-    --bd-tail:rgb(163, 161, 161);
-
+    --color--hover-li: #49494a;
+    --bd-tail: rgb(163, 161, 161);
+    --color--line: rgba(255, 255, 255, 0.1);
+    --color--disabled: rgba(255, 255, 255, 0.2);
+    --color--text-disabled_input: rgba(255, 255, 255, 0.25);
+    --color--tooltip:rgba(255, 255, 255, 0.7);
 }
 * {
     box-sizing: border-box;
