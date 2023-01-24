@@ -52,7 +52,6 @@ function GroupDB(props) {
     };
     const handleTask = (idTask) => {
         navigate(`./tasks/${idTask}`);
-    
     };
     const handleClickBack = () => {
         navigate("/home/groups/");
@@ -67,7 +66,7 @@ function GroupDB(props) {
         {
             label: <BarItem typeSize={"sm"} label="Tasks Overview" />,
             key: "tasks",
-            children: <GRRouter handleTask={handleTask} idGroup={group?._id} group={group}/>,
+            children: <GRRouter handleTask={handleTask} idGroup={group?._id} group={group} />,
         },
         {
             label: <BarItem typeSize={"sm"} label="Timeline" />,
@@ -100,7 +99,12 @@ function GroupDB(props) {
                             <Typography.Title
                                 level={3}
                                 ellipsis={true}
-                                style={{ margin: "0px", width: "70%", minWidth: "300px" }}
+                                style={{
+                                    color: "var(--color--text-default)",
+                                    margin: "0px",
+                                    width: "70%",
+                                    minWidth: "300px",
+                                }}
                             >
                                 {group.name}
                             </Typography.Title>
@@ -135,7 +139,12 @@ function GroupDB(props) {
                         </Typography.Text>
                     </div>
 
-                    <TabBar onChange={onChange} activeKey={feature} data={item} />
+                    <TabBar
+                        onChange={onChange}
+                        activeKey={feature}
+                        data={item}
+                        config={(()=>feature === "time-line" || feature === "general" ? false : true)()}
+                    />
                 </div>
             )}
         </div>

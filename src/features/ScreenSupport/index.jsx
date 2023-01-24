@@ -8,41 +8,42 @@ import SunIcon from "../../components/CustomIcon/SunIcon";
 ScreenSupport.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
-    setTheme:PropTypes.func.isRequired
+    setTheme: PropTypes.func.isRequired,
 };
-const initSetting =JSON.parse(localStorage.getItem("config")) || {
+const initSetting = JSON.parse(localStorage.getItem("config")) || {
     nightMode: false,
     assistantMode: false,
     soundMode: false,
     animationMode: false,
 };
-function ScreenSupport({ open, setOpen ,setTheme}) {
+function ScreenSupport({ open, setOpen, setTheme }) {
     const [setting, setSetting] = useState(initSetting);
     const onChange = (e) => {
         const target = e.target;
-        const configSetting ={...setting, [target.value]: target.checked }
-        setSetting({...configSetting});
-        localStorage.setItem("config", JSON.stringify({...configSetting}));
-        setTheme(configSetting?.nightMode?"dark":"light")
-
+        const configSetting = { ...setting, [target.value]: target.checked };
+        setSetting({ ...configSetting });
+        localStorage.setItem("config", JSON.stringify({ ...configSetting }));
+        setTheme(configSetting?.nightMode ? "dark" : "light");
     };
-    useEffect(()=>{
-        if(setting.nightMode===true){
+    useEffect(() => {
+        if (setting.nightMode === true) {
             document.body.classList.add("dark");
-        }
-        else{
+        } else {
             if (document.body.classList.contains("dark")) document.body.classList.remove("dark");
-        
         }
-    },[setting.nightMode])
+    }, [setting.nightMode]);
     const onClose = () => {
         setOpen(false);
     };
-  
+
     return (
         <Drawer
-            title="Màn hình & Trợ năng"
             placement="right"
+            title={
+                <span style={{ color: "var(--color--text-default)" }}>"Màn hình & Trợ năng"</span>
+            }
+            style={{ backgroundColor: "var(--color--default)" }}
+            className="wrap-box"
             size={400}
             onClose={onClose}
             open={open}
@@ -50,17 +51,16 @@ function ScreenSupport({ open, setOpen ,setTheme}) {
             <div>
                 <Typography.Title level={5}>Màn hình</Typography.Title>
                 <div className="mg-b_10">
-                    <span style={{marginRight:"10px"}}>Chế độ</span>
+                    <span style={{ marginRight: "10px" }}>Chế độ</span>
                     <Switch
-                        checkedChildren={<MoonIcon width="20px" height="20px"/>}
-                        unCheckedChildren={<SunIcon width="25px" height="25px"/>}
+                        checkedChildren={<MoonIcon width="20px" height="20px" />}
+                        unCheckedChildren={<SunIcon width="25px" height="25px" />}
                         className={classNames({
-                            [styles["switch-checked"]]:setting.nightMode,
-                            [styles["switch"]]:!setting.nightMode
-
+                            [styles["switch-checked"]]: setting.nightMode,
+                            [styles["switch"]]: !setting.nightMode,
                         })}
                         onChange={(checked) =>
-                            onChange({ target: { value: "nightMode" , checked} })
+                            onChange({ target: { value: "nightMode", checked } })
                         }
                         checked={setting.nightMode}
                     />

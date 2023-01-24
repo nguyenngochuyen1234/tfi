@@ -27,7 +27,14 @@ function GRTasks({ idGroup, handleTask, group }) {
         navigate("./add");
     };
     const handleDelete = async (id) => {
-        await taskApi.deleteTask(id);
+        try {
+            await taskApi.deleteTask(id);
+
+            const { tasks } = await taskApi.getAllTask(idGroup);
+            setTasks(tasks);
+        } catch (error) {
+            console.log(error);
+        }
     };
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
@@ -40,7 +47,7 @@ function GRTasks({ idGroup, handleTask, group }) {
                     console.log(error);
                 }
             })();
-    }, [handleDelete]);
+    }, []);
     return (
         <div className={styles.GRTasks}>
             {group && (

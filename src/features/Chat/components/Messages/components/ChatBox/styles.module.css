@@ -25,7 +25,7 @@
     box-shadow: none;
 }
 .typeMess::placeholder {
-    color: rgb(124, 124, 124) !important;
+    color: var(--color--text-drop) !important;
 }
 .icon{
     margin-right: 7px;

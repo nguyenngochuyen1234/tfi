@@ -10,7 +10,7 @@ function FeaturePassword(props) {
         {
             lable: "Mật khẩu hiện tại",
             data: (
-                    <Input.Password value="*********" disabled />
+                    <Input.Password  value="*********" disabled />
             ),
             edit: true,
             config:{
@@ -27,7 +27,7 @@ function FeaturePassword(props) {
                         borderBottom: "1px solid var( --color--text-default)",
                     }}
                 >
-                    <Typography.Title level={3}>Mật khẩu</Typography.Title>
+                    <Typography.Title style={{color:"var(--color--text-default)"}} level={3}>Mật khẩu</Typography.Title>
                 </div>
                 <div
                     className={classNames({

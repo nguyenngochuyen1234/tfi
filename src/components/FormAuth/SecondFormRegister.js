@@ -1,20 +1,34 @@
-import React, { useState } from 'react'
-import { Button, message, Steps, Form, Input, Checkbox, Upload } from 'antd';
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import Uploadingimg from './compoment/UploadImg';
+import { UploadOutlined } from '@ant-design/icons';
+import { Button, Form, Input, message, Upload } from 'antd';
+import React, { useState } from 'react';
 
+import uploadApi from '../../api/uploadApi';
+const config = {
+    beforeUpload: () => {
+        return false;
+    },
+
+}
 const SecondFormRegister = ({ current, steps, prev }) => {
-    const [avatar, setAvatar] = useState()
+    const [avatar, setAvatar] = useState(null)
     const normFile = (e) => {
-        console.log('Upload event:', e);
+        setAvatar(e?.fileList)
         if (Array.isArray(e)) {
             return e;
         }
         return e?.fileList;
+
     };
     const onFinish = (values) => {
-        let data = { avatar: avatar, ...values }
-        console.log('Success:', data);
+        (async () => {
+            let formData = new FormData();
+            formData.append('file', data.avatar[0].originFileObj)
+            const response = await uploadApi.upload(formData)
+            console.log(response.link)
+            let data = { avatar:response.link, ...values }
+            //post ,..
+        })()
+        
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -53,9 +67,18 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 label="Ảnh đại diện"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
+                rules={[
+                    {
+                        required: true,
+                        message: 'Hãy tải lên ảnh đại diên!',
+                    },
+                ]}
             >
-                <Upload name="logo" action="/upload.do" listType="picture">
-                    <Button icon={<UploadOutlined />}>Click to upload</Button>
+
+                <Upload maxCount={1} accept="image/png, image/jpeg,image/jpg"  listType="picture"  {...config}>
+                    <Button icon={<UploadOutlined />}>
+                        Click to upload</Button>
+
                 </Upload>
             </Form.Item>
 
@@ -79,7 +102,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập mã sinh vtên!',
+                        message: 'Nhập mã sinh viên!',
                     },
                 ]}
             >
@@ -93,7 +116,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập Trưtên!',
+                        message: 'Nhập Trường!',
                     },
                 ]}
             >
@@ -107,7 +130,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập gmtên!',
+                        message: 'Nhập gmail!',
                     },
                 ]}
             >
@@ -121,7 +144,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập số điện thtên!',
+                        message: 'Nhập số điện thoại!',
                     },
                 ]}
             >
@@ -131,7 +154,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
             <Form.Item>
                 <div className="steps-action" style={{ margin: "20px 0" }}>
                     {current === steps.length - 1 && (
-                        <Button type="primary" onClick={() => message.success('Processing complete!')} htmlType="submit">
+                        <Button type="primary" htmlType="submit">
                             Done
                         </Button>
                     )}

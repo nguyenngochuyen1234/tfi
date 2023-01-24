@@ -8,6 +8,12 @@ const GroupAvatar = ({ arrayId, size="default",config=5 }) => {
         bodyGroup: null,
         hideGroup: []
     })
+
+    const x={
+        id: 'default',
+        name:"thang",
+        
+    }
     const fetchGroupImage = async () => {
         try {
             const data = await imageApi.getGroupImage({ arrayId: arrayId })

@@ -26,7 +26,9 @@ function SettingPrivacy({ open, setOpen }) {
     };
     return (
         <Drawer
-            title="Cài đặt & Quyền riêng tư"
+            title={<span style={{color:"var(--color--text-default)"}}>Cài đặt & Quyền riêng tư</span>}
+            style={{backgroundColor:"var(--color--default)"}}
+            className="wrap-box"
             placement="right"
             size={400}
             onClose={onClose}
@@ -39,7 +41,7 @@ function SettingPrivacy({ open, setOpen }) {
                 </Space>
             }
         >
-            <div>
+            <div style={{color:"var(--color--text-default)"}}>
                 <Typography.Title level={5}>Tài khoản</Typography.Title>
                 <div className="mg-b_10">
                     <Checkbox value="hideAccount" onChange={onChange} checked={setting.hideAccount}>

@@ -39,7 +39,7 @@ function FeatureInfor(props) {
                 >
                     <Row>
                         <Col span={19}>
-                            <Typography.Title level={3}>Thông tin cá nhân</Typography.Title>
+                            <Typography.Title style={{color:"var(--color--text-default)"}} level={3}>Thông tin cá nhân</Typography.Title>
                         </Col>
                         <Col span={5}>
                             <Button type="link" icon={<EditOutlined />}>
