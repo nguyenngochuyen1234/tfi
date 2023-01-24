@@ -1,0 +1,26 @@
+td,
+tbody,
+table {
+    border: 1px solid rgb(189 189 189);
+    border-collapse: collapse;
+}
+.tr-month-name td{
+    border: 1px solid rgb(189 189 189);
+    border-bottom: none;
+    text-align: left;
+    
+}
+
+table {
+    width: 100%;
+}
+
+tbody {
+    height: 280px;
+    overflow: auto;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}

@@ -2,6 +2,10 @@
 import axiosClient from "./axiosClient"
 
 const imageApi ={
+    uploadImg(data){
+        const url = '/image'
+        return axiosClient.post(url,data)
+    },
     getSingleImage(data){
         const url='/image/singleImage'
         return axiosClient.post(url,data)

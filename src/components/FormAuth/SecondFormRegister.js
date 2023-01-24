@@ -2,22 +2,45 @@ import React, { useState } from 'react'
 import { Button, message, Steps, Form, Input, Checkbox, Upload } from 'antd';
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import Uploadingimg from './compoment/UploadImg';
+import imageApi from '../../api/imageApi';
 
 const SecondFormRegister = ({ current, steps, prev }) => {
     const [avatar, setAvatar] = useState()
+    const [fileList, setFileList] = useState([]);
+    const handleChange = ({ file }) => {
+        setAvatar(file)
+    };
     const normFile = (e) => {
         console.log('Upload event:', e);
+        setAvatar(e.file)
         if (Array.isArray(e)) {
             return e;
         }
         return e?.fileList;
     };
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         let data = { avatar: avatar, ...values }
         console.log('Success:', data);
+        try {
+            await imageApi.uploadImg({
+                "testImage": avatar,
+                "name": values.name
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
     };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+    const onFinishFailed = async (errorInfo) => {
+
+
+        try {
+            const formData = new FormData();
+            formData.append("testImage", avatar);
+            console.log(avatar)
+            await imageApi.uploadImg(formData)
+        } catch (err) {
+            console.log(err.message)
+        }
     };
     return (
         <Form
@@ -54,8 +77,16 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
             >
-                <Upload name="logo" action="/upload.do" listType="picture">
-                    <Button icon={<UploadOutlined />}>Click to upload</Button>
+                <Upload
+                    // action="http://localhost:8000/api/image"
+                    listType="picture"
+                    maxCount={1}
+                    status="done"
+                    onChange={handleChange}
+                    beforeUpload={() => false}
+                    name="testImage"
+                >
+                    <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
                 </Upload>
             </Form.Item>
 
@@ -93,7 +124,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập Trưtên!',
+                        message: 'Nhập tên!',
                     },
                 ]}
             >
@@ -107,7 +138,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập gmtên!',
+                        message: 'Nhập gmail!',
                     },
                 ]}
             >
@@ -121,7 +152,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Nhập số điện thtên!',
+                        message: 'Nhập số điện thoại!',
                     },
                 ]}
             >

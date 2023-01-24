@@ -40,7 +40,7 @@ function GRTasks({ idGroup, handleTask, group }) {
                     console.log(error);
                 }
             })();
-    }, [handleDelete]);
+    }, []);
     return (
         <div className={styles.GRTasks}>
             {group && (
