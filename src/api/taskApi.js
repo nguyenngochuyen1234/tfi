@@ -14,6 +14,10 @@ const taskApi ={
         const url=`/task/find/${idTask}`
         return axiosClient.get(url)
     },
+    getTaskTimeline(idGroup,data){
+        const url=`/task/timeline/${idGroup}`
+        return axiosClient.post(url, data)
+    },
     updateTask(idTask, newData){
         const url=`/task/${idTask}`
         return axiosClient.put(url,newData)
