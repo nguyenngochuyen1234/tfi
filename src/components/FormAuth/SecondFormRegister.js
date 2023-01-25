@@ -27,6 +27,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
             console.log(response.link)
             let data = { avatar:response.link, ...values }
             //post ,..
+            console.log(data)
         })()
         
     };

@@ -199,6 +199,7 @@ function DetailTask(props) {
                                 onChange={handleChange}
                                 maxCount={1}
                                 listType="picture"
+                                className="uploadTask"
                                 beforeUpload={() => false}
                             >
                                 <span className={styles.upload} ref={upload}></span>
