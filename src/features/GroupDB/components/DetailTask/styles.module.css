@@ -12,3 +12,26 @@
 .result{
     height: 400px;
 }
+.rocket{
+    position: absolute;
+    top:5px;
+    right: 10px;
+    width: 60%;
+    max-width: 500px;
+    min-width: 300px;
+    z-index: 20;
+    pointer-events: none;
+}
+.upload{
+    position: relative;
+    top: -5px;
+    width: 100%;
+    max-width: 200px;
+    min-width: 100px;
+}
+.btn-form{
+    margin: 0px;
+    display: flex;
+    justify-content: flex-end;
+    padding:10px;
+}

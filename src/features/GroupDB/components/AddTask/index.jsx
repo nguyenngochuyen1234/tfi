@@ -65,6 +65,7 @@ function AddTask(props) {
             const data = await taskApi.createTask(idGroup, result)
             if (data.success) {
                 alert("create task done")
+                navigate(-1);
             }
         } catch (err) {
             console.log(err.message)
@@ -125,7 +126,7 @@ function AddTask(props) {
                         </Form.Item>
                         <Form.Item>
                             <div className={styles["btn-form"]}>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary"  htmlType="submit">
                                     Create
                                 </Button>
                             </div>

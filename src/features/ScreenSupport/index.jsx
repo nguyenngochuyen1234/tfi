@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Button, Checkbox, Drawer, Space, Switch, Typography } from "antd";
+import { Checkbox, Drawer, Switch, Typography } from "antd";
 import classNames from "classnames";
-import styles from "./styles.module.css";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import MoonIcon from "../../components/CustomIcon/MoonIcon";
 import SunIcon from "../../components/CustomIcon/SunIcon";
+import styles from "./styles.module.css";
 ScreenSupport.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,

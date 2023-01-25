@@ -48,6 +48,14 @@
     padding: 5px 15px;
     font-weight: 500;
 }
+.ant-upload-list-item{
+    width: 100%;
+    max-width: 400px;
+    min-width: 200px;
+}
+.ant-upload-wrapper .ant-upload-list .ant-upload-list-item{
+    margin-top: -10px !important;
+}
 .bar-item-sm {
     padding: 0px 10px;
     font-weight: 500;

@@ -3,6 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
+import { Input } from 'antd';
 
 const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
 
@@ -59,7 +60,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
             </div>}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
                 <div style={{ position: "relative", width: "80%" }}>
-                    <input
+                    <Input
                         onChange={onChangeHandle}
                         value={valueInput}
                         name="member"

@@ -22,7 +22,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
     const onFinish = (values) => {
         (async () => {
             let formData = new FormData();
-            formData.append('file', data.avatar[0].originFileObj)
+            formData.append('file', avatar[0].originFileObj)
             const response = await uploadApi.upload(formData)
             console.log(response.link)
             let data = { avatar:response.link, ...values }
