@@ -2,11 +2,14 @@ import React from 'react'
 import { Button, message, Steps, Form, Input, Checkbox } from 'antd';
 import axios from 'axios';
 import userApi from '../../api/userApi';
-const FirstFormRegister = ({ next }) => {
+const FirstFormRegister = ({ next, setDataFirstForm }) => {
+
+
   const onFinish = async (values) => {
     const data = await userApi.register(values);
-    if(data.success){
-        next()
+    if (data.success) {
+      setDataFirstForm(values)
+      next()
     }
     try {
     } catch (err) {

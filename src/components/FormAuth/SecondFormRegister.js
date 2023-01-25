@@ -3,13 +3,14 @@ import { Button, Form, Input, message, Upload } from 'antd';
 import React, { useState } from 'react';
 import uploadApi from '../../api/uploadApi';
 import imageApi from '../../api/imageApi';
+import userApi from '../../api/userApi';
 const config = {
     beforeUpload: () => {
         return false;
     },
 
 }
-const SecondFormRegister = ({ current, steps, prev }) => {
+const SecondFormRegister = ({ current, steps, prev, dataFirstForm }) => {
     const [avatar, setAvatar] = useState(null)
     const normFile = (e) => {
         setAvatar(e?.fileList)
@@ -19,29 +20,32 @@ const SecondFormRegister = ({ current, steps, prev }) => {
         return e?.fileList;
 
     };
-    const onFinish = (values) => {
-        (async () => {
-            let formData = new FormData();
-            formData.append('file', data.avatar[0].originFileObj)
-            const response = await uploadApi.upload(formData)
-            console.log(response.link)
-            let data = { avatar:response.link, ...values }
-            console.log(data)
-            //post ,..
-        })()
-        
-    };
-    const onFinishFailed = async (errorInfo) => {
-
-
+    const onFinish = async (values) => {
         try {
-            const formData = new FormData();
-            formData.append("testImage", avatar);
-            console.log(avatar)
-            await imageApi.uploadImg(formData)
+            let formData = new FormData();
+            formData.append('file', avatar[0].originFileObj)
+            const response = await uploadApi.upload(formData)
+            const linkAvatar = response.link;
+            let data = {
+                username: dataFirstForm.username,
+                password: dataFirstForm.password,
+                avatarImg: linkAvatar,
+                ...values
+            }
+            const result = await userApi.updateAccount(data)
+            alert(result.message)
         } catch (err) {
             console.log(err.message)
+            alert("Đăng ký không thành công")
         }
+        //post ,..
+
+    };
+    const onFinishFailed = (err) => {
+
+
+
+        console.log(err)
     };
     return (
         <Form
@@ -85,7 +89,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 ]}
             >
 
-                <Upload maxCount={1} accept="image/png, image/jpeg,image/jpg"  listType="picture"  {...config}>
+                <Upload maxCount={1} accept="image/png, image/jpeg,image/jpg" listType="picture"  {...config}>
                     <Button icon={<UploadOutlined />}>
                         Click to upload</Button>
 

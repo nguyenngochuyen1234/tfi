@@ -1,36 +1,30 @@
 import { Avatar, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import imageApi from '../../api/imageApi';
-const GroupAvatar = ({ arrayId, size="default",config=5 }) => {
+const GroupAvatar = ({ arrayId, size = "default", config = 5 }) => {
     // console.log(arrayId)
-    const [baseStringArray, setBaseStringArray] = useState({
+    const [linksAvatar, setlinksAvatar] = useState({
         headerGroup: [],
         bodyGroup: null,
         hideGroup: []
     })
 
-    const x={
+    const x = {
         id: 'default',
-        name:"thang",
-        
+        name: "thang",
+
     }
     const fetchGroupImage = async () => {
         try {
             const data = await imageApi.getGroupImage({ arrayId: arrayId })
             if (data.success) {
-                let lengthData = data.groupName.length
-                const base64StringLength = data.groupName.map(name => {
-                    return (
-                        btoa(
-                            String.fromCharCode(...new Uint8Array(name.img.data.data))
-                        )
-                    )
-                })
+                let groupImageLink = data.groupImg
+                let lengthData = groupImageLink.length
                 if (lengthData <= 5) {
-                    setBaseStringArray(prev => ({ ...prev, headerGroup: base64StringLength }))
+                    setlinksAvatar(prev => ({ ...prev, headerGroup: groupImageLink }))
                 }
                 else {
-                    setBaseStringArray(prev => ({ headerGroup: base64StringLength.slice(0, 5), bodyGroup: base64StringLength[5], hideGroup: (base64StringLength.slice(6, lengthData) || []) }))
+                    setlinksAvatar(prev => ({ headerGroup: groupImageLink.slice(0, 5), bodyGroup: groupImageLink[5], hideGroup: (groupImageLink.slice(6, lengthData) || []) }))
 
                 }
             }
@@ -41,6 +35,7 @@ const GroupAvatar = ({ arrayId, size="default",config=5 }) => {
     useEffect(() => {
         fetchGroupImage()
     }, [])
+    console.log(linksAvatar)
 
     return (
         <>
@@ -50,11 +45,11 @@ const GroupAvatar = ({ arrayId, size="default",config=5 }) => {
                 size={size}
                 maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
             >
-                {baseStringArray.headerGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
+                {linksAvatar.headerGroup?.map((linkAvatar, idx) => <Avatar key={idx} src={linkAvatar} />)}
                 <Tooltip title="Ant User" placement="top">
-                    {baseStringArray.bodyGroup && <Avatar src={`data:image/png;base64,${baseStringArray.bodyGroup}`} />}
+                    {linksAvatar.bodyGroup && <Avatar src={linksAvatar.bodyGroup} />}
                 </Tooltip>
-                {baseStringArray.hideGroup.length>0 && baseStringArray.hideGroup?.map((baseString,idx) => <Avatar key={idx} src={`data:image/png;base64,${baseString}`} />)}
+                {linksAvatar.hideGroup.length > 0 && linksAvatar.hideGroup?.map((linkAvatar, idx) => <Avatar key={idx} src={linkAvatar} />)}
             </Avatar.Group>
         </>
     );

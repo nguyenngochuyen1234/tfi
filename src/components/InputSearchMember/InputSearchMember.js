@@ -3,8 +3,9 @@ import { CloseOutlined } from '@ant-design/icons';
 import userApi from '../../api/userApi';
 import SingleAvatar from '../Avatar/SingleAvatar';
 import "./style.css";
+import { Input, Avatar } from 'antd';
 
-const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
+const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData }) => {
 
 
     const [users, setUsers] = useState([])
@@ -28,9 +29,9 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
         setMemberFiltered(prev => [...prev, userFilter])
         setValueInput("")
     }
-    useEffect(()=>{
+    useEffect(() => {
         setUsers(usersData)
-    },[usersData])
+    }, [usersData])
     const deleteMember = (member) => {
         const newMemberFiltered = memberFiltered.filter(user => user.username !== member.username)
         setMemberFiltered(newMemberFiltered)
@@ -43,7 +44,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
                     return (
                         <div key={member.username} className='search-member-filtered-item'>
                             <div style={{ padding: "5px" }}>
-                                <SingleAvatar username={member.username} size="small" />
+                                <Avatar src={member.avatar} size={"small"} />
                             </div>
                             <h4 style={{ fontSize: 10, padding: "5px" }}>{member.name}</h4>
                             <p style={{ opacity: "0.6", fontSize: 10, padding: "5px" }}>{member.username}</p>
@@ -59,7 +60,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
             </div>}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
                 <div style={{ position: "relative", width: "80%" }}>
-                    <input
+                    <Input
                         onChange={onChangeHandle}
                         value={valueInput}
                         name="member"
@@ -79,7 +80,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
                             return (
                                 <div key={user.username} className='search-member-item' onClick={() => handleOnclick(user)}>
                                     <div style={{ padding: "10px" }}>
-                                        <SingleAvatar username={user.username} size="default" />
+                                    <Avatar src={user.avatar} size="default" />
                                     </div>
                                     <div style={{ padding: "10px" }}>
                                         <h4>{user.name}</h4>
@@ -91,7 +92,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData}) => {
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
     )

@@ -4,6 +4,7 @@
     height: 100%;
 
 }
+
 .form{
     margin-left:10px;
     padding-right: 10px;
@@ -11,8 +12,9 @@
     
     overflow-y: auto;
     height: 95%;
+}.form *:not(input) {
+    color: var(--color--text-default) ;
 }
-.form *:not(input){
-    color: var(--color--text-default) !important;
-
+.btn-form *{
+    color:#fff !important;
 }

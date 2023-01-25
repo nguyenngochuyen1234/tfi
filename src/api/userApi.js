@@ -6,6 +6,10 @@ const userApi = {
         const url = '/auth/register'
         return axiosClient.post(url, data)
     },
+    updateAccount(account){
+        const url = '/auth/register/add'
+        return axiosClient.post(url, account)    
+    },
     login(data) {
         const url = '/auth/login'
         return axiosClient.post(url, data)

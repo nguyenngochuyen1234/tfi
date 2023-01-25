@@ -16,6 +16,8 @@ const steps = [
 ];
 const Registerform = () => {
   const [current, setCurrent] = useState(0);
+  const [dataFirstForm, setDataFirstForm] = useState([])
+
   const next = () => {
     setCurrent(current + 1);
   };
@@ -30,7 +32,7 @@ const Registerform = () => {
   return (
     <>
       <Steps style={{ margin: "20px 0" }} current={current} items={items} />
-      {steps[current].title === 'First' ? <FirstFormRegister next={next} /> : <SecondFormRegister current={current} steps={steps} prev={prev} />}
+      {steps[current].title === 'First' ? <FirstFormRegister next={next} setDataFirstForm={setDataFirstForm} /> : <SecondFormRegister current={current} steps={steps} prev={prev} dataFirstForm={dataFirstForm}/>}
     </>
   );
 };
