@@ -5,6 +5,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { formats, modules } from "../../../../../components/EditorToolbar";
+import { useParams } from "react-router-dom";
+import postApi from "../../../../../api/postApi";
+
 
 ModalPost.propTypes = {
     isModalOpen: PropTypes.bool,
@@ -19,12 +22,24 @@ ModalPost.defaultProps = {
 
 function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
     const [dataPost,setDataPost]=useState("")
+    const params = useParams();
+    const idGroup = params.idGroup
+
     const onChangeValue = (value) => {
+        setDataPost(value)
         console.log(value);
     };
-    const onSubmit = (e) => {
+    const onSubmit = async(e) => {
         e.preventDefault();
-        console.log(e)
+        try{
+            const result = await postApi.createPost(idGroup,{about:dataPost})
+            if(result.success){
+                alert('Post done')
+                handleCancel()
+            }
+        }catch(err){
+            console.log(err.message)
+        }
 
     };
     const handleOk = () => {
@@ -43,7 +58,7 @@ function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
             footer={null}
             onCancel={handleCancel}
         >
-            <form onSubmit={onSubmit} className="post__forms">
+            <form className="post__forms">
                 <ReactQuill
                     theme={"snow"}
                     onChange={onChangeValue}
@@ -53,7 +68,7 @@ function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
                     bounds={".post"}
                     placeholder={"Start a new post. Type @ to mention member"}
                 />
-                <Button type="primary" size="large" style={{width:"100%",marginTop:"10px"}} >
+                <Button type="primary" size="large" style={{width:"100%",marginTop:"10px"}} onClick={onSubmit}>
                     Post
                 </Button>
             </form>

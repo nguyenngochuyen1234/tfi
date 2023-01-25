@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import React, { useState } from 'react'
-import { Button, message, Steps, Form, Input, Checkbox, Upload } from 'antd';
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import Uploadingimg from './compoment/UploadImg';
-import imageApi from '../../api/imageApi';
-=======
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Upload } from 'antd';
 import React, { useState } from 'react';
->>>>>>> dfa5c1c7a559a6dd2382fcd7c809c1918c9d7d23
-
 import uploadApi from '../../api/uploadApi';
+import imageApi from '../../api/imageApi';
 const config = {
     beforeUpload: () => {
         return false;
@@ -18,39 +10,15 @@ const config = {
 
 }
 const SecondFormRegister = ({ current, steps, prev }) => {
-<<<<<<< HEAD
-    const [avatar, setAvatar] = useState()
-    const [fileList, setFileList] = useState([]);
-    const handleChange = ({ file }) => {
-        setAvatar(file)
-    };
-    const normFile = (e) => {
-        console.log('Upload event:', e);
-        setAvatar(e.file)
-=======
     const [avatar, setAvatar] = useState(null)
     const normFile = (e) => {
         setAvatar(e?.fileList)
->>>>>>> dfa5c1c7a559a6dd2382fcd7c809c1918c9d7d23
         if (Array.isArray(e)) {
             return e;
         }
         return e?.fileList;
 
     };
-<<<<<<< HEAD
-    const onFinish = async (values) => {
-        let data = { avatar: avatar, ...values }
-        console.log('Success:', data);
-        try {
-            await imageApi.uploadImg({
-                "testImage": avatar,
-                "name": values.name
-            })
-        } catch (err) {
-            console.log(err.message)
-        }
-=======
     const onFinish = (values) => {
         (async () => {
             let formData = new FormData();
@@ -58,10 +26,10 @@ const SecondFormRegister = ({ current, steps, prev }) => {
             const response = await uploadApi.upload(formData)
             console.log(response.link)
             let data = { avatar:response.link, ...values }
+            console.log(data)
             //post ,..
         })()
         
->>>>>>> dfa5c1c7a559a6dd2382fcd7c809c1918c9d7d23
     };
     const onFinishFailed = async (errorInfo) => {
 
@@ -116,24 +84,11 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                     },
                 ]}
             >
-<<<<<<< HEAD
-                <Upload
-                    // action="http://localhost:8000/api/image"
-                    listType="picture"
-                    maxCount={1}
-                    status="done"
-                    onChange={handleChange}
-                    beforeUpload={() => false}
-                    name="testImage"
-                >
-                    <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
-=======
 
                 <Upload maxCount={1} accept="image/png, image/jpeg,image/jpg"  listType="picture"  {...config}>
                     <Button icon={<UploadOutlined />}>
                         Click to upload</Button>
 
->>>>>>> dfa5c1c7a559a6dd2382fcd7c809c1918c9d7d23
                 </Upload>
             </Form.Item>
 
@@ -171,11 +126,7 @@ const SecondFormRegister = ({ current, steps, prev }) => {
                 rules={[
                     {
                         required: true,
-<<<<<<< HEAD
-                        message: 'Nhập tên!',
-=======
                         message: 'Nhập Trường!',
->>>>>>> dfa5c1c7a559a6dd2382fcd7c809c1918c9d7d23
                     },
                 ]}
             >
