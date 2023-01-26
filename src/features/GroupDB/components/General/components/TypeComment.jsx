@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Mentions } from "antd";
 import styles from "./styles.module.css";
@@ -9,13 +9,19 @@ import { useState } from "react";
 import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
 import SendIcon from "../../../../../components/CustomIcon/SendIcon";
 import commentApi from "../../../../../api/commentApi";
+import { useParams } from "react-router-dom";
 
 TypeComment.propTypes = {};
 
-function TypeComment({ idPost, setComment }) {
+function TypeComment({ idPost, setComment, group }) {
     const [value, setValue] = useState("")
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
     const [send, setSend] = useState(false);
+
+    const params = useParams();
+    const idGroup = params.idGroup
+
+
     const toggleEmoji = () => {
         setIsComponentVisible(!isComponentVisible);
     };
@@ -29,7 +35,6 @@ function TypeComment({ idPost, setComment }) {
         setValue(value);
     };
     const handleSend = async () => {
-        console.log(value)
         try {
             const result = await commentApi.createComment(idPost, { data: value })
             if (result.success) {
@@ -44,6 +49,7 @@ function TypeComment({ idPost, setComment }) {
                     comment: [],
                 }])
             }
+            setValue("")
         } catch (err) {
             console.log(err.meesage)
         }
@@ -54,7 +60,9 @@ function TypeComment({ idPost, setComment }) {
             return newValue;
         });
     };
-
+    useEffect(()=>{
+        console.log({group})
+    },[])
     return (
         <div>
             <Mentions

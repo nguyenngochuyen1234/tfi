@@ -3,6 +3,7 @@ import { Button, Collapse, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import reactApi from "../../../../../api/reactApi";
 import tick from "../../../../../Effects/assets_Effect_click.ogg";
 import CommentPost from "./CommentPost";
 import styles from "./styles.module.css";
@@ -11,29 +12,39 @@ PostDetail.propTypes = {
     post: PropTypes.object.isRequired,
 };
 
-function PostDetail({ post }) {
+function PostDetail({ post, group }) {
     console.log(post)
     const user =
         useSelector((state) => state.user.current?.account) || localStorage.getItem("user");
-    const userName = user.name;
+        const userName = user.name;
     const userId = user._id;
+    
+    const reacted = post.react.find(item=>item._id === userId)
 
-    const [newComment, setNewComment] = useState([])
-
-    const [love, setLove] = useState(false);
+    const [love, setLove] = useState(!!reacted);
     const [react, setReact] = useState(post.react);
-    const handleLove = () => {
-        const sound = new Audio(tick);
-        sound.play();
+    const handleLove = async () => {
+        try {
+            const sound = new Audio(tick);
+            sound.play();
+            if (!love) {
+                const resultCreate = await reactApi.createReact(post.idPost)
+                if (resultCreate.success) {
+                    setReact([...react, { _id: userId, name: userName }]);
+                }
+            } else {
+                const resultDelete = await reactApi.deleteReact(post.idPost)
+                if (resultDelete.success) {
+                    const reactClone = [...react];
+                    const reactFilter = reactClone.filter((item) => item._id !== userId);
+                    setReact(reactFilter);
+                }
+            }
+            setLove(!love);
 
-        if (!love) {
-            setReact([...react, { _id: userId, name: userName }]);
-        } else {
-            const reactClone = [...react];
-            const reactFilter = reactClone.filter((item) => item._id !== userId);
-            setReact(reactFilter);
+        } catch (err) {
+            console.log(err.message)
         }
-        setLove(!love);
     };
     const [comment, setComment] = useState(post.comment);
     const [collapse, setCollapse] = useState(false);
@@ -115,7 +126,7 @@ function PostDetail({ post }) {
                         }
                     >
                         <CommentPost comment={comment} />
-                        <TypeComment idPost={post.idPost} setComment={setComment} />
+                        <TypeComment idPost={post.idPost} setComment={setComment} group={group}/>
                     </Collapse.Panel>
                 </Collapse>
             </div>

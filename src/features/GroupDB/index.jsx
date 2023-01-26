@@ -61,7 +61,7 @@ function GroupDB(props) {
         {
             label: <BarItem typeSize={"sm"} label="General" />,
             key: "general",
-            children: <GRRouter />,
+            children: <GRRouter group={group}/>,
         },
         {
             label: <BarItem typeSize={"sm"} label="Tasks Overview" />,
