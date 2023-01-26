@@ -13,13 +13,12 @@ import { useParams } from "react-router-dom";
 
 TypeComment.propTypes = {};
 
-function TypeComment({ idPost, setComment, group }) {
+function TypeComment({ idPost, setComment, arrName }) {
     const [value, setValue] = useState("")
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
     const [send, setSend] = useState(false);
+    const [options, setOptions] = useState([])
 
-    const params = useParams();
-    const idGroup = params.idGroup
 
 
     const toggleEmoji = () => {
@@ -60,9 +59,13 @@ function TypeComment({ idPost, setComment, group }) {
             return newValue;
         });
     };
-    useEffect(()=>{
-        console.log({group})
-    },[])
+    useEffect(() => {
+        const optionsData = arrName?.map(name => ({
+            value: name,
+            label: name
+        }))
+        setOptions(optionsData)
+    }, [])
     return (
         <div>
             <Mentions
@@ -71,20 +74,7 @@ function TypeComment({ idPost, setComment, group }) {
                 className={styles.comment_input}
                 value={value}
                 onChange={handleChangeInput}
-                options={[
-                    {
-                        value: "afc163",
-                        label: "afc163",
-                    },
-                    {
-                        value: "zombieJ",
-                        label: "zombieJ",
-                    },
-                    {
-                        value: "yesmeck",
-                        label: "yesmeck",
-                    },
-                ]}
+                options={options}
             />
             <div className={styles.feature}>
                 {isComponentVisible && (

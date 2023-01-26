@@ -12,7 +12,7 @@ PostDetail.propTypes = {
     post: PropTypes.object.isRequired,
 };
 
-function PostDetail({ post, group }) {
+function PostDetail({ post, arrName }) {
     console.log(post)
     const user =
         useSelector((state) => state.user.current?.account) || localStorage.getItem("user");
@@ -126,7 +126,7 @@ function PostDetail({ post, group }) {
                         }
                     >
                         <CommentPost comment={comment} />
-                        <TypeComment idPost={post.idPost} setComment={setComment} group={group}/>
+                        <TypeComment idPost={post.idPost} setComment={setComment} arrName={arrName}/>
                     </Collapse.Panel>
                 </Collapse>
             </div>

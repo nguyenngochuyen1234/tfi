@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import postApi from "../../../../api/postApi";
 import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
+import groupApi from "../../../../api/groupApi";
 General.propTypes = {};
 
 function General({group}) {
@@ -27,6 +28,11 @@ function General({group}) {
     };
     const fetchData = async () => {
         try {
+            const data = await groupApi.getUsersByIds(idGroup)
+            if (data.success) {
+                const names = data.users?.map(user=>user.name) 
+                setArrName(names)
+            }
             const result = await postApi.getAllPost(idGroup)
             if (result.success) {
                 console.log(result.posts)
@@ -86,7 +92,7 @@ function General({group}) {
             </div>
             <div className={styles.general_body}>
                 {iniiData.map((data) => (
-                    <PostDetail key={data.idPost} post={data} group={group} />
+                    <PostDetail key={data.idPost} post={data} arrName={arrName} />
                 ))}
             </div>
         </div>
