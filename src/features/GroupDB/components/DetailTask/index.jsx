@@ -1,11 +1,27 @@
 import {
+    CheckCircleOutlined,
+    CloseCircleOutlined,
     CloudUploadOutlined,
     LeftOutlined,
     LinkOutlined,
     PaperClipOutlined,
+    PlusOutlined,
     UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Dropdown, Form, Input, Modal, Row, Typography, Upload } from "antd";
+import {
+    Button,
+    Checkbox,
+    Col,
+    Dropdown,
+    Form,
+    Input,
+    Modal,
+    Radio,
+    Row,
+    Tag,
+    Typography,
+    Upload,
+} from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -15,9 +31,14 @@ import uploadApi from "../../../../api/uploadApi";
 import Options from "../../../../components/Options";
 import TaskLog from "../../../../components/TaskLog";
 import styles from "./styles.module.css";
-const rocket = require("../../../../Effects/rocket.gif");
-DetailTask.propTypes = {};
-DetailTask.defaultProps = {};
+import PropTypes from "prop-types";
+import groupApi from "../../../../api/groupApi";
+DetailTask.propTypes = {
+    leader: PropTypes.string,
+};
+DetailTask.defaultProps = {
+    leader: "",
+};
 const items = [
     {
         key: "link",
@@ -28,35 +49,36 @@ const items = [
         label: <Options icon={<UploadOutlined />} label="Upload from this device" config="sm" />,
     },
 ];
-function DetailTask(props) {
-
+function DetailTask({ leader }) {
     const params = useParams();
-    const idTask = params.idTask
-
-
+    const idTask = params.idTask;
+    const [admin, setAdmin] = useState(leader);
     const user =
         useSelector((state) => state.user.current.account) ||
         JSON.parse(localStorage.getItem("user"));
     const [loading, setLoading] = useState({ status: "", load: false });
-    const location = useLocation();
     const upload = useRef(null);
     const navigate = useNavigate();
-    const [data, setData] = useState();
-    const [initData, SetInitData] = useState();
+    const [initData, setInitData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [task, setTask] = useState();
+    const handleSetCompleted = (e)=>{
+        const tg=e.target
+        console.log(tg.checked?"completed":"uncompleted")
+    }
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
         setIsModalOpen(false);
-        initData(value);
+        setInitData(value);
+        console.log(initData);
     };
     const onFinishFailed = (e) => {
         console.log(e);
     };
     const handleChange = (file) => {
-        SetInitData({ data: file?.fileList || [], type: "file" });
+        setInitData({ data: file?.fileList || [], type: "file" });
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -72,18 +94,32 @@ function DetailTask(props) {
             showModal();
         }
     };
-    const [task, setTask] = useState();
+    const handleRemove = () => {
+        setInitData(null);
+        console.log(initData);
+        return true;
+    };
     useEffect(() => {
         (async () => {
             try {
-                const param = location.pathname.split("/")[5];
-                const response = await taskApi.getOnlyTask(param);
+                const response = await taskApi.getOnlyTask(idTask);
                 setTask(response.task);
             } catch (error) {
                 console.log(error);
             }
         })();
+        if (!leader) {
+            (async () => {
+                try {
+                    const { group } = await groupApi.getOnlyGroup(params.idGroup);
+                    setAdmin(group.leader);
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+        }
     }, []);
+    console.log(task);
     const handleSubmit = () => {
         if (initData.type === "file") {
             (async () => {
@@ -92,40 +128,40 @@ function DetailTask(props) {
                     setLoading({ ...loading, load: true });
                     formData.append("file", initData.data[0]?.originFileObj);
                     const { link } = await uploadApi.upload(formData);
-                    await exerciseApi.submitExecrcise(idTask,{data:link, type:"file"})
+                    const response = await exerciseApi.submitExecrcise(idTask, {
+                        data: link,
+                        type: "file",
+                        title: "",
+                    });
                     setLoading({ status: "done", load: false });
-                    setTimeout(() => {
-                        setLoading({ status: "", load: false });
-                    }, 4000);
-                    // upload apu
+                    console.log(response);
                 } catch (error) {
                     console.log(error);
                 }
             })();
         }
         if (initData.type === "link") {
-            const result = {
-                createAt: Date.now(),
-                name: user.name,
-                avatar: user.avatar,
-                file: {
-                    type: "file",
-                    data: initData.link,
-                },
-                _idUser: user.id,
-                _id: Math.floor(Math.random() * 10),
-            };
-            console.log(result);
+            (async () => {
+                try {
+                    setLoading({ ...loading, load: true });
+                    const response = await exerciseApi.submitExecrcise(idTask, {
+                        data: initData.link,
+                        type: "link",
+                        title: initData.title,
+                    });
+                    setLoading({ status: "done", load: false });
+
+                    console.log(response);
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
         }
     };
     return (
         <div className={styles["detail-task"]}>
             {task && (
                 <div style={{ height: "100%" }}>
-                    {loading.status === "done" && rocket && (
-                        <img className={styles.rocket} src={rocket} alt="rocket" />
-                    )}
-
                     <div className={styles["task-header"]}>
                         <Button
                             type="link"
@@ -135,16 +171,35 @@ function DetailTask(props) {
                         >
                             Back
                         </Button>
+                        <div>
+                            {task.status === "uncomplete" && <Tag color="magenta">Uncomplete</Tag>}
+                            {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
+                            {task.status === "complete" && <Tag color="green">Completed</Tag>}
+                            {task.member.includes(user._id) ? (
+                                <Tag icon={<CheckCircleOutlined />} color="success">
+                                    {admin===user._id ?"Trưởng nhóm":"Thành viên" }
+                                </Tag>
+                            ) : (
+                                <Tag icon={<CloseCircleOutlined />} color="error">
+                                    Không là thành viên
+                                </Tag>
+                            )}
                             <Button
-                                style={{ marginRight: "20px" }}
+                                style={{ margin: "0px 20px" }}
                                 onClick={handleSubmit}
                                 type="primary"
                                 icon={<CloudUploadOutlined />}
                                 loading={loading.load}
-                                disabled={initData?.link || initData?.data ? false : true}
+                                disabled={
+                                    task.member.includes(user.id) &&
+                                    (initData?.link || initData?.data.length) !== 0
+                                        ? false
+                                        : true
+                                }
                             >
                                 Submit
                             </Button>
+                        </div>
                     </div>
                     <Row
                         gutter={[24, 24]}
@@ -194,6 +249,8 @@ function DetailTask(props) {
                                 onChange={handleChange}
                                 maxCount={1}
                                 listType="picture"
+                                className="uploadTask"
+                                onRemove={handleRemove}
                                 beforeUpload={() => false}
                             >
                                 <span className={styles.upload} ref={upload}></span>
@@ -269,7 +326,16 @@ function DetailTask(props) {
                                         }}
                                         className="text-sm"
                                     >
-                                        Comment
+                                        Comment{" "}
+                                        {user._id === admin && (
+                                            <Button
+                                                type="text"
+                                                size="small"
+                                                style={{ color: "inherit" }}
+                                                className="text-ssm"
+                                                icon={<PlusOutlined />}
+                                            ></Button>
+                                        )}
                                     </Typography.Text>
                                 </div>
                                 <div>
@@ -278,6 +344,24 @@ function DetailTask(props) {
                                     </Typography.Paragraph>
                                 </div>
                             </div>
+                            {admin === user._id && (
+                                <div style={{marginBottom:"16px"}}>
+                                    <div>
+                                        <Typography.Text
+                                            style={{
+                                                color: "var(--color--text-drop)",
+                                                fontWeight: 500,
+                                            }}
+                                            className="text-sm"
+                                        >
+                                            Status
+                                        </Typography.Text>
+                                    </div>
+                                    <div>
+                                        <Checkbox onChange={handleSetCompleted}>Completed</Checkbox>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className={styles.result}>
                                 <div>

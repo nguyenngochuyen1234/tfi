@@ -1,20 +1,18 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./styles.module.css";
-import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import PostDetail from "./components/PostDetail";
-import ModalPost from "./components/ModalPost";
-import { useEffect } from "react";
-import postApi from "../../../../api/postApi";
+import { Button } from "antd";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import groupApi from "../../../../api/groupApi";
+import postApi from "../../../../api/postApi";
+import ModalPost from "./components/ModalPost";
+import PostDetail from "./components/PostDetail";
+import styles from "./styles.module.css";
 General.propTypes = {};
 
 function General({group}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [iniiData, setIniiData] = useState([])
+    const [initData, setInitData] = useState([])
     const [arrName, setArrName] = useState([])
     const params = useParams();
     const idGroup = params.idGroup
@@ -48,7 +46,7 @@ function General({group}) {
                         avatar: comment.avatar,
                         name: comment.name,
                         data: comment.data,
-                        createdAt: dayjs(comment.time).format("DD/MM/YYYY HH:mm:ss"),
+                        createdAt: dayjs(comment.time).format("DD/MM/YYYY HH:mm"),
                         comment: [],
 
                     }))
@@ -58,13 +56,13 @@ function General({group}) {
                         avatar: user.avatar,
                         name: user.name,
                         about: post.about,
-                        createdAt: dayjs(post.time).format("DD/MM/YYYY HH:mm:ss"),
+                        createdAt: dayjs(post.time).format("DD/MM/YYYY HH:mm"),
                         react: reactFormat || [],
                         comment: commentFormat || [],
 
                     }
                 })
-                setIniiData(dataUser)
+                setInitData(dataUser)
             }
         } catch (err) {
             console.log(err.message)
@@ -91,7 +89,7 @@ function General({group}) {
                 />
             </div>
             <div className={styles.general_body}>
-                {iniiData.map((data) => (
+                {initData.map((data) => (
                     <PostDetail key={data.idPost} post={data} arrName={arrName} />
                 ))}
             </div>

@@ -4,7 +4,6 @@
 }
 .content{
     padding:2px 3px;
-    cursor: pointer;
     display: flex;
     align-items: center;
 }

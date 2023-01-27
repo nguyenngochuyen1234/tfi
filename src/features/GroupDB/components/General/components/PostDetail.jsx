@@ -1,7 +1,7 @@
 import { HeartFilled, HeartOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button, Collapse, Tooltip } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import reactApi from "../../../../../api/reactApi";
 import tick from "../../../../../Effects/assets_Effect_click.ogg";

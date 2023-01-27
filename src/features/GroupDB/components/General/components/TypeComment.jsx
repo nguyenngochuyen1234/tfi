@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { Mentions } from "antd";
-import styles from "./styles.module.css";
-import LaughIcon from "../../../../../components/CustomIcon/LaughIcon";
-import useComponentVisible from "../../../../../customHook/ComponentVisible";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
-import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
-import SendIcon from "../../../../../components/CustomIcon/SendIcon";
+import React, { useEffect, useState } from "react";
 import commentApi from "../../../../../api/commentApi";
-import { useParams } from "react-router-dom";
+import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
+import LaughIcon from "../../../../../components/CustomIcon/LaughIcon";
+import SendIcon from "../../../../../components/CustomIcon/SendIcon";
+import useComponentVisible from "../../../../../customHook/ComponentVisible";
+import styles from "./styles.module.css";
 
 TypeComment.propTypes = {};
 
