@@ -8,7 +8,8 @@ import {
 import { Button, Col, Dropdown, Form, Input, Modal, Row, Typography, Upload } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import exerciseApi from "../../../../api/exerciseApi";
 import taskApi from "../../../../api/taskApi";
 import uploadApi from "../../../../api/uploadApi";
 import Options from "../../../../components/Options";
@@ -28,6 +29,11 @@ const items = [
     },
 ];
 function DetailTask(props) {
+
+    const params = useParams();
+    const idTask = params.idTask
+
+
     const user =
         useSelector((state) => state.user.current.account) ||
         JSON.parse(localStorage.getItem("user"));
@@ -93,18 +99,7 @@ function DetailTask(props) {
                     setLoading({ ...loading, load: true });
                     formData.append("file", initData.data[0]?.originFileObj);
                     const { link } = await uploadApi.upload(formData);
-                    const result = {
-                        createAt: Date.now(),
-                        name: user.name,
-                        avatar: user.avatar,
-                        file: {
-                            type: "file",
-                            data: link,
-                        },
-                        _idUser: user.id,
-                        _id: Math.floor(Math.random() * 10),
-                    };
-                    console.log(result);
+                    await exerciseApi.submitExecrcise(idTask,{data:link, type:"file"})
                     setLoading({ status: "done", load: false });
                     setTimeout(() => {
                         setLoading({ status: "", load: false });
