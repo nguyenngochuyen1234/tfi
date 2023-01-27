@@ -14,8 +14,8 @@ CreateGroup.defaultProps = {};
 function CreateGroup(props) {
 
     let socket = useSelector(state => state.socket.socket)
-    const user = useSelector((state) => state.user.current);
-    const idUser = user?._id || localStorage.getItem("user_id");
+    const user = useSelector((state) => state.user.current?.account);
+    const idUser = user._id ||localStorage.getItem("user_id");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [leader, setLeader] = useState()
@@ -68,7 +68,6 @@ function CreateGroup(props) {
             if (data.success) {
                 const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
                 const leader = data.allUser.find(dt => dt._id === idUser)
-
                 setLeader(leader)
                 setUsersData(dataFilter)
             }

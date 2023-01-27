@@ -2,18 +2,13 @@ import { Avatar, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import imageApi from '../../api/imageApi';
 const GroupAvatar = ({ arrayId, size = "default", config = 5 }) => {
-    // console.log(arrayId)
     const [linksAvatar, setlinksAvatar] = useState({
         headerGroup: [],
         bodyGroup: null,
         hideGroup: []
     })
 
-    const x = {
-        id: 'default',
-        name: "thang",
-
-    }
+   
     const fetchGroupImage = async () => {
         try {
             const data = await imageApi.getGroupImage({ arrayId: arrayId })
@@ -35,7 +30,6 @@ const GroupAvatar = ({ arrayId, size = "default", config = 5 }) => {
     useEffect(() => {
         fetchGroupImage()
     }, [])
-    console.log(linksAvatar)
 
     return (
         <>

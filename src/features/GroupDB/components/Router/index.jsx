@@ -20,7 +20,7 @@ GRRouter.defaultProps = {
 function GRRouter({ handleTask, idGroup, group }) {
     return (
         <Routes>
-            <Route path="/general" element={<General />} />
+            <Route path="/general" element={<General group={group} />} />
             <Route
                 path="/tasks"
                 element={<GRTasks handleTask={handleTask} idGroup={idGroup} group={group} />}

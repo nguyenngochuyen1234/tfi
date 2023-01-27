@@ -36,21 +36,23 @@ function DetailTask(props) {
     const upload = useRef(null);
     const navigate = useNavigate();
     const [data, setData] = useState();
-    const [initData, SetInitData] = useState();
+    const [initData, setInitData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [task, setTask] = useState();
 
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
         setIsModalOpen(false);
-        initData(value);
+        setInitData(value);
+        console.log(initData)
     };
     const onFinishFailed = (e) => {
         console.log(e);
     };
     const handleChange = (file) => {
-        SetInitData({ data: file?.fileList || [], type: "file" });
+        setInitData({ data: file?.fileList || [], type: "file" });
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -66,7 +68,11 @@ function DetailTask(props) {
             showModal();
         }
     };
-    const [task, setTask] = useState();
+    const handleRemove =() => {
+        setInitData(null);
+        console.log(initData)
+        return true;
+    }
     useEffect(() => {
         (async () => {
             try {
@@ -78,6 +84,7 @@ function DetailTask(props) {
             }
         })();
     }, []);
+    console.log(task);
     const handleSubmit = () => {
         if (initData.type === "file") {
             (async () => {
@@ -200,6 +207,7 @@ function DetailTask(props) {
                                 maxCount={1}
                                 listType="picture"
                                 className="uploadTask"
+                                onRemove={handleRemove}
                                 beforeUpload={() => false}
                             >
                                 <span className={styles.upload} ref={upload}></span>

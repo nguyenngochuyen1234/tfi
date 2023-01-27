@@ -1,21 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Mentions } from "antd";
-import styles from "./styles.module.css";
-import LaughIcon from "../../../../../components/CustomIcon/LaughIcon";
-import useComponentVisible from "../../../../../customHook/ComponentVisible";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
-import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
-import SendIcon from "../../../../../components/CustomIcon/SendIcon";
+import React, { useEffect, useState } from "react";
 import commentApi from "../../../../../api/commentApi";
+import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
+import LaughIcon from "../../../../../components/CustomIcon/LaughIcon";
+import SendIcon from "../../../../../components/CustomIcon/SendIcon";
+import useComponentVisible from "../../../../../customHook/ComponentVisible";
+import styles from "./styles.module.css";
 
 TypeComment.propTypes = {};
 
-function TypeComment({ idPost, setComment }) {
+function TypeComment({ idPost, setComment, arrName }) {
     const [value, setValue] = useState("")
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
     const [send, setSend] = useState(false);
+    const [options, setOptions] = useState([])
+
+
+
     const toggleEmoji = () => {
         setIsComponentVisible(!isComponentVisible);
     };
@@ -29,7 +31,6 @@ function TypeComment({ idPost, setComment }) {
         setValue(value);
     };
     const handleSend = async () => {
-        console.log(value)
         try {
             const result = await commentApi.createComment(idPost, { data: value })
             if (result.success) {
@@ -44,6 +45,7 @@ function TypeComment({ idPost, setComment }) {
                     comment: [],
                 }])
             }
+            setValue("")
         } catch (err) {
             console.log(err.meesage)
         }
@@ -54,7 +56,13 @@ function TypeComment({ idPost, setComment }) {
             return newValue;
         });
     };
-
+    useEffect(() => {
+        const optionsData = arrName?.map(name => ({
+            value: name,
+            label: name
+        }))
+        setOptions(optionsData)
+    }, [])
     return (
         <div>
             <Mentions
@@ -63,20 +71,7 @@ function TypeComment({ idPost, setComment }) {
                 className={styles.comment_input}
                 value={value}
                 onChange={handleChangeInput}
-                options={[
-                    {
-                        value: "afc163",
-                        label: "afc163",
-                    },
-                    {
-                        value: "zombieJ",
-                        label: "zombieJ",
-                    },
-                    {
-                        value: "yesmeck",
-                        label: "yesmeck",
-                    },
-                ]}
+                options={options}
             />
             <div className={styles.feature}>
                 {isComponentVisible && (
