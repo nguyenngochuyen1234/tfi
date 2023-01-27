@@ -23,6 +23,8 @@ function GRTasks({ idGroup, handleTask, group }) {
     const userId =
         useSelector((state) => state.user.current?.account._id) || localStorage.getItem("user_id");
     const navigate = useNavigate();
+    const [tasks, setTasks] = useState([]);
+
     const handleAddTask = () => {
         navigate("./add");
     };
@@ -36,7 +38,6 @@ function GRTasks({ idGroup, handleTask, group }) {
             console.log(error);
         }
     };
-    const [tasks, setTasks] = useState([]);
     useEffect(() => {
         if (idGroup !== "")
             (async () => {
@@ -48,6 +49,7 @@ function GRTasks({ idGroup, handleTask, group }) {
                 }
             })();
     }, []);
+    console.log(tasks)
     return (
         <div className={styles.GRTasks}>
             {group && (

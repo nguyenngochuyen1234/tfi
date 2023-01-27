@@ -5,12 +5,14 @@ import { Button, Col, Row, Typography } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 InforItem.propTypes = {
     label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     data: PropTypes.node.isRequired,
+
     edit: PropTypes.bool.isRequired,
     config: PropTypes.object,
 };
 
-function InforItem({ label, data, edit, config = {} }) {
+function InforItem({ label,name, data, edit, config = {} }) {
     const initText=data
     const [editable, setEditable] = useState(data);
    
@@ -18,8 +20,7 @@ function InforItem({ label, data, edit, config = {} }) {
         setEditable(initText)
     }
     const handleEdit= (value)=>{
-        setEditable(value)
-        console.log(value)
+        console.log({[name]:value})
         //goi patch api
     }
     return (

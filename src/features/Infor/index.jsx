@@ -68,13 +68,13 @@ function FeatureInfor(props) {
         }
     };
     const data = [
-        { lable: "Tên", data: user.name, edit: true },
-        { lable: "Gmail", data: user.gmail, edit: true },
-        { lable: "Group đã tham gia", data: user.groupJoin.length, edit: false },
-        { lable: "Group đã tạo", data: user.groupMade.length, edit: false },
-        { lable: "Chuyên ngành/Lớp", data: user.major, edit: true },
-        { lable: "Trường", data: user.school, edit: true },
-        { lable: "Liên hệ", data: String(user.phoneNumber), edit: true },
+        { lable: "Tên", data: user.name, edit: true ,name: "name"},
+        { lable: "Gmail", data: user.gmail, edit: true, name:"gmail" },
+        { lable: "Group đã tham gia", data: user.groupJoin.length, edit: false ,name: "gmail"},
+        { lable: "Group đã tạo", data: user.groupMade.length, edit: false ,name:"groupCreate" },
+        { lable: "Chuyên ngành/Lớp", data: user.major, edit: true ,name: "groupJoined"},
+        { lable: "Trường", data: user.school, edit: true ,name: "school"},
+        { lable: "Liên hệ", data: String(user.phoneNumber), edit: true  ,name: "phoneNumber"},
     ];
     return (
         <div className="feature-container_right">
@@ -117,7 +117,7 @@ function FeatureInfor(props) {
                     })}
                 >
                     {data.map((item, idx) => (
-                        <InforItem key={idx} label={item.lable} data={item.data} edit={item.edit} />
+                        <InforItem key={idx} name={item.name} label={item.lable} data={item.data} edit={item.edit} />
                     ))}
                     <div className={styles.tab}>
                         <Row gutter={[4, 4]} className={styles.content}>
