@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "../../../../features/Auth/userSlice";
 import Notification from "./components/Notification";
 import Profile from "./components/Profile";
@@ -33,7 +33,7 @@ function Header({setOpenSetting,setOpenScreen}) {
     return (
         <div className={styles.root}>
             <div className={styles["flex-container"]}>
-                <img className={styles.logo} src="../../../../img/logo.png" alt="Logo" />
+                <Link to="/home/dashboard"><img  className={styles.logo} src="../../../../img/logo.png" alt="Logo" /></Link>
                 <span className={styles.project}>Task manager</span>
             </div>
             <div className={styles["flex-container"]}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { SearchOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Input, Button } from 'antd'
 import dayjs from 'dayjs';
@@ -6,12 +6,17 @@ import { useEffect } from 'react';
 import "./style.css";
 import taskApi from '../../../../api/taskApi';
 import { useParams } from "react-router-dom";
+import TaskItem from './components/TaskItem';
 const { Search } = Input;
 
 function TimeLine(props) {
     const currentDay = dayjs()
     const params = useParams();
     const idGroup = params.idGroup
+    const ref = useRef(null)
+
+    const [dataTask, setDataTask] = useState([])
+    const [widthTd, setWidthTd] = useState(0)
 
     var isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
     dayjs.extend(isSameOrAfter)
@@ -50,21 +55,44 @@ function TimeLine(props) {
                 data.tasks.forEach(task => {
                     getDayStartAndGetLength(task)
                 })
+                const dataTaskItem = data.tasks.map(dt => getDayStartAndGetLength(dt))
+                setDataTask(dataTaskItem)
             }
             console.log(data)
         } catch (err) {
             console.log(err.message)
         }
     }
-    const getDayStartAndGetLength = (data) => {
-        let dayStart = ''
-        let lengthItem = ''
-        console.log(firstDay)
-        if (firstDay.isSameOrAfter(data.dayStart, 'date')) {
-            console.log("lon hon")
-        }
 
+    const getLengthTaskItem = (length) => {
+        if (length === 0) {
+            return 1;
+        } else if (length > 15) {
+            return length - 15;
+        }
     }
+
+    const getDayStartAndGetLength = (data) => {
+        let dayStartFormat = dayjs(data.dayStart)
+        let deadlineFormat = dayjs(data.deadline)
+        if (dayStartFormat.isSameOrAfter(firstDay, 'date')) {
+            return ({
+                dayStartTask: dayStartFormat.diff(firstDay, 'Day'),
+                lengthItem: deadlineFormat.diff(dayStartFormat, 'Day') === 0 ? 1 : deadlineFormat.diff(dayStartFormat, 'Day') + 2,
+                ...data,
+            })
+        } else {
+            return ({
+                dayStartTask: 0,
+                lengthItem: deadlineFormat.diff(dayStartFormat, 'Day') === 0 ? 1 : deadlineFormat.diff(dayStartFormat, 'Day') + 2,
+                ...data,
+            })
+        }
+    }
+    useEffect(() => {
+        setWidthTd(ref.current.clientWidth)
+        console.log(ref.current.clientWidth)
+    }, [])
     useEffect(() => {
         fetchData()
     }, [firstDay])
@@ -91,14 +119,22 @@ function TimeLine(props) {
                             {numberOfDaysNextMonth > 0 && <td colSpan={numberOfDaysNextMonth}>{monthNames[firstDay.add(1, 'M').month()]}</td>}
                         </tr>
                         <tr>
-                            {arrayDay?.map((day, id) => <td key={id}
+                            {arrayDay?.map((day, id) => <td key={id} ref={ref}
                                 style={{ borderRight: id === (numberOfDaysLastMonth - 1) ? "1px solid rgb(189 189 189)" : "none" }}>
                                 {`${WeekDayNames[day.day()]} ${day.date()}`}
                             </td>)}
                         </tr>
                     </thead>
                     <tbody>
-                        {arrayDay?.map((day, id) => <td key={id}>{ }</td>)}
+                        {arrayDay?.map((day, id) => <td key={id}>{
+                        }</td>)}
+                        <span style={{position:"absolute", left:0}}>
+                            {
+                                dataTask.map((task, idx) => {
+                                    return <TaskItem task={task} key={idx}/>
+                                })
+                            }
+                        </span>
                     </tbody>
                 </table>
 

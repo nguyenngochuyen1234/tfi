@@ -117,3 +117,19 @@
 .post .ql-editor {
     min-height: 10em;
 }
+.uploadAvt .ant-upload-list-item{
+    border: none !important;
+    padding: none !important;
+    width: 150px !important;
+    height: 150px !important;
+    max-width: none !important;
+    min-width: none !important;
+}
+
+
+
+.uploadAvt .ant-upload-select{
+    width: 0!important;
+    height: 0!important;
+    border: none !important;
+}

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 InforItem.propTypes = {
     label: PropTypes.string.isRequired,
@@ -11,29 +11,49 @@ InforItem.propTypes = {
 };
 
 function InforItem({ label, data, edit, config = {} }) {
+    const initText=data
+    const [editable, setEditable] = useState(data);
+   
+    const handleCancel= ()=>{
+        setEditable(initText)
+    }
+    const handleEdit= (value)=>{
+        setEditable(value)
+        console.log(value)
+        //goi patch api
+    }
     return (
+    
         <div className={styles.tab}>
-            <Row gutter={[4,4]} className={styles.content}>
+            <Row gutter={[4, 4]} className={styles.content}>
                 <Col xs={24} sm={24} md={6} lg={6} xl={6} xxl={6} style={{ fontWeight: 500 }}>
                     {label}
                 </Col>
                 <Col
-                    xs={19}
-                    sm={19}
-                    md={13}
-                    lg={13}
-                    xl={13}
-                    xxl={13}
+                    xs={24}
+                    sm={24}
+                    md={18}
+                    lg={18}
+                    xl={18}
+                    xxl={18}
                     style={{ fontWeight: 500, color: "var(--color--text-drop)" }}
                 >
-                    <div style={{ ...config }}>{data}</div>
-                </Col>
-                <Col span={5}>
-                    {edit && (
-                        <Button type="link" icon={<EditOutlined />}>
-                            Chỉnh sửa
-                        </Button>
-                    )}
+                    <Typography.Text
+                        editable={{
+                            icon: (
+                                <span>
+                                    {edit&&<Button type="link" icon={<EditOutlined />}>
+                                    Chỉnh sửa
+                                </Button>}
+                                </span>
+                            ),
+                            onChange: handleEdit,
+                            onCancel:handleCancel,
+                            text:editable
+                        }}
+
+                        style={{ ...config ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
+                    >{editable}</Typography.Text>
                 </Col>
             </Row>
         </div>

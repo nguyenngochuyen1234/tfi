@@ -12,10 +12,14 @@ PostDetail.propTypes = {
 };
 
 function PostDetail({ post }) {
+    console.log(post)
     const user =
         useSelector((state) => state.user.current?.account) || localStorage.getItem("user");
     const userName = user.name;
     const userId = user._id;
+
+    const [newComment, setNewComment] = useState([])
+
     const [love, setLove] = useState(false);
     const [react, setReact] = useState(post.react);
     const handleLove = () => {
@@ -26,7 +30,7 @@ function PostDetail({ post }) {
             setReact([...react, { _id: userId, name: userName }]);
         } else {
             const reactClone = [...react];
-            const reactFilter=reactClone.filter((item) =>item._id !== userId);
+            const reactFilter = reactClone.filter((item) => item._id !== userId);
             setReact(reactFilter);
         }
         setLove(!love);
@@ -75,22 +79,22 @@ function PostDetail({ post }) {
             <div className={styles.post_body} dangerouslySetInnerHTML={{ __html: post.about }} />
             {react.length > 0 && (
                 <div style={{ display: "flex", alignItems: "center", margin: "5px 0px 0px 0px" }}>
-                    <Tooltip arrow={false} color="var(--color--tooltip)" title={<ul style={{listStyleType:"none"}}>
-                        {react.map((item,idx)=>(idx<20&&<li key={item._id} className="text-ssm">{item.name}</li>))}
-                        {react.length>20 && <li className="text-ssm">{react.length-20} other peoples</li>}
+                    <Tooltip arrow={false} color="var(--color--tooltip)" title={<ul style={{ listStyleType: "none" }}>
+                        {react.map((item, idx) => (idx < 20 && <li key={item._id} className="text-ssm">{item.name}</li>))}
+                        {react.length > 20 && <li className="text-ssm">{react.length - 20} other peoples</li>}
                     </ul>}>
 
-                    <div
-                        style={{
-                            border: "1px solid var(--color-bd-primary)",
-                            padding: "0px 7px",
-                            borderRadius: "10px",
-                            cursor: "default",
-                        }}
-                    >
-                        {react.length}
-                        <span style={{ fontSize: "15px", marginLeft: "1px" }}>❤</span>
-                    </div>
+                        <div
+                            style={{
+                                border: "1px solid var(--color-bd-primary)",
+                                padding: "0px 7px",
+                                borderRadius: "10px",
+                                cursor: "default",
+                            }}
+                        >
+                            {react.length}
+                            <span style={{ fontSize: "15px", marginLeft: "1px" }}>❤</span>
+                        </div>
                     </Tooltip>
 
                 </div>
@@ -111,7 +115,7 @@ function PostDetail({ post }) {
                         }
                     >
                         <CommentPost comment={comment} />
-                        <TypeComment />
+                        <TypeComment idPost={post.idPost} setComment={setComment} />
                     </Collapse.Panel>
                 </Collapse>
             </div>

@@ -14,7 +14,7 @@ function FeaturePassword(props) {
             ),
             edit: true,
             config:{
-                width:"200px",
+                width:"300px",
             }
         },
     ];

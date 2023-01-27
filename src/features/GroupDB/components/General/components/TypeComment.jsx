@@ -8,13 +8,14 @@ import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
 import ImageIcon from "../../../../../components/CustomIcon/ImageIcon";
 import SendIcon from "../../../../../components/CustomIcon/SendIcon";
+import commentApi from "../../../../../api/commentApi";
 
 TypeComment.propTypes = {};
 
-function TypeComment(props) {
-    const [value,setValue]=useState("")
+function TypeComment({ idPost, setComment }) {
+    const [value, setValue] = useState("")
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-    const [send,setSend]=useState(false);
+    const [send, setSend] = useState(false);
     const toggleEmoji = () => {
         setIsComponentVisible(!isComponentVisible);
     };
@@ -27,8 +28,25 @@ function TypeComment(props) {
         }
         setValue(value);
     };
-    const handleSend = () => {
+    const handleSend = async () => {
         console.log(value)
+        try {
+            const result = await commentApi.createComment(idPost, { data: value })
+            if (result.success) {
+                const dataComment = result.comment
+                setComment(prev => [...prev, {
+                    idPeoplePost: dataComment.idUser,
+                    avatar: dataComment.avatar,
+                    name: dataComment.name,
+                    idComment: dataComment._id,
+                    data: dataComment.data,
+                    createdAt: dataComment.time,
+                    comment: [],
+                }])
+            }
+        } catch (err) {
+            console.log(err.meesage)
+        }
     }
     const handleEmojiClick = (data) => {
         setValue((value) => {
@@ -62,7 +80,7 @@ function TypeComment(props) {
             />
             <div className={styles.feature}>
                 {isComponentVisible && (
-                    <div ref={ref} style={{ position: "absolute",zIndex:1 }}>
+                    <div ref={ref} style={{ position: "absolute", zIndex: 1 }}>
                         <EmojiPicker
                             onEmojiClick={handleEmojiClick}
                             emojiStyle="native"
@@ -79,7 +97,7 @@ function TypeComment(props) {
                     <ImageIcon width="20px" height="20px" />
                 </div>
                 <div>
-                    <SendIcon handleSend={handleSend} width="32px" height="32px" active={send}/>
+                    <SendIcon handleSend={handleSend} width="32px" height="32px" active={send} />
                 </div>
             </div>
         </div>
