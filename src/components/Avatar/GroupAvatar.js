@@ -35,7 +35,6 @@ const GroupAvatar = ({ arrayId, size = "default", config = 5 }) => {
     useEffect(() => {
         fetchGroupImage()
     }, [])
-    console.log(linksAvatar)
 
     return (
         <>

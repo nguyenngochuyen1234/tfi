@@ -1,10 +1,11 @@
 
+
 import axiosClient from "./axiosClient"
 
 
-const commentApi = {
-    createComment(idPost, data) {
-        const url = `/comment/${idPost}`
+const exerciseApi = {
+    submitExecrcise(idTask, data) {
+        const url = `/exercise/${idTask}`
         return axiosClient.post(url, data)
     },
     getAllPost(idGroup) {
@@ -12,4 +13,4 @@ const commentApi = {
         return axiosClient.get(url)
     }
 }
-export default commentApi;
+export default exerciseApi;
