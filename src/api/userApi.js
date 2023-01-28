@@ -21,6 +21,10 @@ const userApi = {
     getOnlyUser(id) {
         const url = `/auth/find/${id}`
         return axiosClient.get(url)
-    }
+    },
+    updatePatchAccount(data){
+        const url = `/auth/update`
+        return axiosClient.patch(url, data)
+    },
 }
 export default userApi;

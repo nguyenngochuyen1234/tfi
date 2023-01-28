@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, Avatar } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
@@ -37,7 +37,6 @@ function Contacts(props) {
         const data = users.filter(user => {
             return user?.name.includes(value) || user?.username.includes(value);
         })
-        console.log(data)
         setMemberSearch(data)
     }
 
@@ -50,7 +49,6 @@ function Contacts(props) {
             lastSend: "",
             active: true,
         }
-        console.log(newPeople)
         if (userExist) {
 
         } else {
@@ -78,7 +76,7 @@ function Contacts(props) {
                 return (
                     <div key={user.username} className='search-member-item' onClick={() => handleOnclick(user)}>
                         <div style={{ padding: "10px" }}>
-                            <SingleAvatar username={user.username} size="default" />
+                        <Avatar src={user.avatar} />
                         </div>
                         <div style={{ padding: "10px" }}>
                             <h4>{user.name}</h4>

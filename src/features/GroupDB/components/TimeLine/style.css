@@ -11,16 +11,12 @@ table {
     
 }
 
-table {
-    width: 100%;
-}
-
 tbody {
     height: 280px;
-    overflow: auto;
 }
 
 td {
     text-align: center;
     padding: 5px;
+    min-width: 110px;
 }

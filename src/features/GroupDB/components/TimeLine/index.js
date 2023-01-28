@@ -10,7 +10,7 @@ import TaskItem from './components/TaskItem';
 const { Search } = Input;
 
 function TimeLine(props) {
-    const currentDay = dayjs()
+    const currentDay = dayjs().startOf('date')
     const params = useParams();
     const idGroup = params.idGroup
     const ref = useRef(null)
@@ -48,47 +48,56 @@ function TimeLine(props) {
     const fetchData = async () => {
         try {
             let firstDayString = firstDay.year() + '-' + (firstDay.month() + 1) + '-' + firstDay.date()
-            let lastDay = firstDay.add(14, 'd')
+            let lastDay = firstDay.add(9, 'd')
             let lastDayString = lastDay.year() + '-' + (lastDay.month() + 1) + '-' + lastDay.date()
             const data = await taskApi.getTaskTimeline(idGroup, { firstDayString, lastDayString })
             if (data.success) {
-                data.tasks.forEach(task => {
-                    getDayStartAndGetLength(task)
-                })
                 const dataTaskItem = data.tasks.map(dt => getDayStartAndGetLength(dt))
                 setDataTask(dataTaskItem)
             }
-            console.log(data)
         } catch (err) {
             console.log(err.message)
         }
     }
 
-    const getLengthTaskItem = (length) => {
-        if (length === 0) {
-            return 1;
-        } else if (length > 15) {
-            return length - 15;
+    const getDayStartAndGetLength = (data) => {
+        let dayStartTask = 0, lengthItem = 0
+        let dayStartFormat = dayjs(data.dayStart).startOf('date') //Ngày bắt đầu deadline
+        let deadlineFormat = dayjs(data.deadline).startOf('date') //Ngày kết thúc deadline
+
+        let lastDay = firstDay.add(9, 'd').startOf('date')
+
+        let deadlineDiffStart = deadlineFormat.diff(dayStartFormat, 'Day') // Khoảng cách giữa ngày bắt đầu deadline đến ngày kết thúc deadline 
+
+        if (dayStartFormat.isSameOrAfter(firstDay, 'date')) {
+            dayStartTask = (dayStartFormat.diff(firstDay, 'Day'))*110 + 10
+            if (deadlineDiffStart === 0) lengthItem = 110
+            else if (deadlineFormat.isAfter(lastDay)) {
+                lengthItem = (10 - dayStartTask)*110 + 20
+            }
+            else { lengthItem = (deadlineDiffStart + 1)*110 - 20 }
+        } else {
+            dayStartTask = -10
+            let deadlineDiffFirstDay = deadlineFormat.diff(firstDay, 'Day') //Khoảng cách giữa ngày kết thúc deadline với ngày đầu tiên
+            console.log({deadlineDiffFirstDay})
+            if (deadlineDiffFirstDay + 1 > 10) {
+                lengthItem = 10*110 + 20
+            } else if (deadlineDiffFirstDay < 2) {
+                lengthItem = (deadlineDiffFirstDay + 1)*110
+            }
+            else {
+                lengthItem = (deadlineDiffFirstDay + 1)*110 - 20
+            }
+        }
+
+        return {
+            dayStartTask,
+            lengthItem,
+            ...data
         }
     }
 
-    const getDayStartAndGetLength = (data) => {
-        let dayStartFormat = dayjs(data.dayStart)
-        let deadlineFormat = dayjs(data.deadline)
-        if (dayStartFormat.isSameOrAfter(firstDay, 'date')) {
-            return ({
-                dayStartTask: dayStartFormat.diff(firstDay, 'Day'),
-                lengthItem: deadlineFormat.diff(dayStartFormat, 'Day') === 0 ? 1 : deadlineFormat.diff(dayStartFormat, 'Day') + 2,
-                ...data,
-            })
-        } else {
-            return ({
-                dayStartTask: 0,
-                lengthItem: deadlineFormat.diff(dayStartFormat, 'Day') === 0 ? 1 : deadlineFormat.diff(dayStartFormat, 'Day') + 2,
-                ...data,
-            })
-        }
-    }
+
     useEffect(() => {
         setWidthTd(ref.current.clientWidth)
         console.log(ref.current.clientWidth)
@@ -111,8 +120,8 @@ function TimeLine(props) {
                 <Button icon={<LeftOutlined />} onClick={() => { setFirstDay(prev => prev.subtract(10, "d")) }} />
                 <Button icon={<RightOutlined />} onClick={() => { setFirstDay(prev => prev.add(10, "d")) }} />
             </div>
-            <div className='table-timeline'>
-                <table>
+            <div className='table-timeline' style={{ display: "flex", justifyContent: "center" }}>
+                <table style={{ position: "relative" }}>
                     <thead>
                         <tr className='tr-month-name'>
                             <td colSpan={numberOfDaysLastMonth}>{monthNames[monthOfFirstDay]}</td>
@@ -128,10 +137,10 @@ function TimeLine(props) {
                     <tbody>
                         {arrayDay?.map((day, id) => <td key={id}>{
                         }</td>)}
-                        <span style={{position:"absolute", left:0}}>
+                        <span style={{ position: "absolute", left: 0, overflow: "auto", width: "100%", height: "280px", overflowX:"hidden" }}>
                             {
                                 dataTask.map((task, idx) => {
-                                    return <TaskItem task={task} key={idx}/>
+                                    return <TaskItem task={task} key={idx} marginItem={task.dayStartTask} widthItem={task.lengthItem} />
                                 })
                             }
                         </span>

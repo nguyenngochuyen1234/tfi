@@ -1,5 +1,5 @@
-import { LeftOutlined, SettingOutlined, UserAddOutlined } from "@ant-design/icons";
-import { Button, Typography } from "antd";
+import { LeftOutlined, SettingOutlined, UserAddOutlined, CopyOutlined } from "@ant-design/icons";
+import { Button, Typography, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,21 +9,38 @@ import BarItem from "../../components/BarItem";
 import TabBar from "../../components/TabBar";
 import GRRouter from "./components/Router";
 import styles from "./styles.module.css";
+import notificationApi from "../../api/notificationApi";
+import InputSearchMember from "../../components/InputSearchMember/InputSearchMember";
+import userApi from "../../api/userApi";
 GroupDB.propTypes = {};
 
 function GroupDB(props) {
+    let socket = useSelector(state => state.socket.socket)
+
     const location = useLocation();
     const navigate = useNavigate();
     const id = location.pathname.split("/")[3];
+    const leader = localStorage.getItem("name_user")
+
+    const [memberFiltered, setMemberFiltered] = useState([]);
+    const [usersData, setUsersData] = useState([])
+    const [allUser, setAllUser] = useState([])
     const [feature, setFeature] = useState();
+    const [oldMember, setOldMember] = useState([])
+
     const user = useSelector((state) => state.user.current.account);
     const idUser = user?._id || localStorage.getItem("user_id");
     const [group, setGroup] = useState(null);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const data = useSelector((state) => state.group.current);
     useEffect(() => {
         setFeature(location.pathname.split("/")[4]);
     }, [location]);
-
+    useEffect(() => {
+        fetchAllMember()
+    }, [])
     useEffect(() => {
         if (JSON.stringify(data) !== "{}") {
             const result = {
@@ -46,6 +63,33 @@ function GroupDB(props) {
             })();
         }
     }, [data, id]);
+
+    const fetchAllMember = async () => {
+        try {
+            const allMember = await userApi.getAllUser()
+            if (allMember.success) {
+                setAllUser(allMember.allUser)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const showModal = () => {
+        const oldUsers = group.member
+        setOldMember(oldUsers)
+        const newUsers = allUser?.filter(user => !oldUsers.includes(user._id))
+        setUsersData(newUsers)
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const onChange = (key) => {
         setFeature(key);
         navigate(`./${key.toLowerCase()}`);
@@ -56,12 +100,41 @@ function GroupDB(props) {
     const handleClickBack = () => {
         navigate("/home/groups/");
     };
+    const handleAdd = async () => {
+        const memberid = memberFiltered.map(member => member._id)
+        const updateMember = { member: [...oldMember, ...memberid] };
+        try {
+            await groupApi.updateGroup(id, updateMember)
+            for (let i = 0; i < memberid.length; i++) {
+                let notification = {
+                    receiver: memberid[i],
+                    type: "group",
+                    title: `${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    link: `groups`,
+                }
+                socket.emit("send-notification", notification)
+                await notificationApi.createNotification(notification)
+            }
+            alert("Add member done")
+            handleCancel()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const copyCode = (e) => {
+        navigator.clipboard.writeText(id).then(() => {
+            // Alert the user that the action took place.
+            // Nobody likes hidden stuff being done under the hood!
+            alert("Copied !");
+        });
+    }
 
     const item = [
         {
             label: <BarItem typeSize={"sm"} label="General" />,
             key: "general",
-            children: <GRRouter group={group}/>,
+            children: <GRRouter group={group} />,
         },
         {
             label: <BarItem typeSize={"sm"} label="Tasks Overview" />,
@@ -82,6 +155,16 @@ function GroupDB(props) {
 
     return (
         <div className="feature-container_right">
+            <Modal title="Add member" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+                <InputSearchMember
+                    memberFiltered={memberFiltered}
+                    setMemberFiltered={setMemberFiltered}
+                    usersData={usersData}
+                />
+                <Button type="primary" onClick={handleAdd}>
+                    Add
+                </Button>
+            </Modal>
             {group && (
                 <div id={group._id} style={{ backgroundColor: "var(--color--default)" }}>
                     <div className={styles["group-header"]}>
@@ -107,6 +190,12 @@ function GroupDB(props) {
                                 }}
                             >
                                 {group.name}
+                                <Button
+                                    style={{ outline: "none", border: "none" }}
+                                    size="large"
+                                    icon={<CopyOutlined />}
+                                    onClick={copyCode}
+                                />
                             </Typography.Title>
 
                             <div className={styles.box_2}>
@@ -116,6 +205,7 @@ function GroupDB(props) {
                                     size="large"
                                     shape="circle"
                                     icon={<UserAddOutlined />}
+                                    onClick={showModal}
                                 />
                                 <Button
                                     style={{ marginLeft: "20px" }}
@@ -143,7 +233,7 @@ function GroupDB(props) {
                         onChange={onChange}
                         activeKey={feature}
                         data={item}
-                        config={(()=>feature === "time-line" || feature === "general" ? false : true)()}
+                        config={(() => feature === "time-line" || feature === "general" ? false : true)()}
                     />
                 </div>
             )}

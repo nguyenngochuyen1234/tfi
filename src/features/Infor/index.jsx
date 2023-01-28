@@ -5,6 +5,7 @@ import classNames from "classnames";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import uploadApi from "../../api/uploadApi";
+import userApi from "../../api/userApi";
 import InforItem from "../../components/InforItem/InforItem";
 import FormInfor from "./components/FormInfor";
 import styles from "./styles.module.css";
@@ -41,7 +42,7 @@ function FeatureInfor(props) {
         } else {
             // upload api ảnh
             (async () => {
-                try{
+                try {
                     setLoading(true);
                     let formData = new FormData();
                     formData.append("file", avt[0].originFileObj);
@@ -49,12 +50,13 @@ function FeatureInfor(props) {
                     console.log({ link: link });
                     setChangeAvt(false);
                     setAvtLink(link);
+                    await userApi.updatePatchAccount({ avatar: link })
                     setLoading(false);
                     uploadDOM.querySelector(
                         ".ant-upload-list-item-container"
                     ).innerHTML = "";
                 }
-                catch (e){
+                catch (e) {
                     console.log(e);
                     setChangeAvt(false);
                     setLoading(false);
@@ -62,19 +64,19 @@ function FeatureInfor(props) {
                         ".ant-upload-list-item-container"
                     ).innerHTML = "";
                 }
-                
+
                 // Upload Patch Thong tin
             })();
         }
     };
     const data = [
-        { lable: "Tên", data: user.name, edit: true ,name: "name"},
-        { lable: "Gmail", data: user.gmail, edit: true, name:"gmail" },
-        { lable: "Group đã tham gia", data: user.groupJoin.length, edit: false ,name: "gmail"},
-        { lable: "Group đã tạo", data: user.groupMade.length, edit: false ,name:"groupCreate" },
-        { lable: "Chuyên ngành/Lớp", data: user.major, edit: true ,name: "groupJoined"},
-        { lable: "Trường", data: user.school, edit: true ,name: "school"},
-        { lable: "Liên hệ", data: String(user.phoneNumber), edit: true  ,name: "phoneNumber"},
+        { lable: "Tên", data: user.name, edit: true, name: "name" },
+        { lable: "Gmail", data: user.gmail, edit: true, name: "gmail" },
+        { lable: "Group đã tham gia", data: user.groupJoin.length, edit: false, name: "gmail" },
+        { lable: "Group đã tạo", data: user.groupMade.length, edit: false, name: "groupCreate" },
+        { lable: "Chuyên ngành/Lớp", data: user.major, edit: true, name: "groupJoined" },
+        { lable: "Trường", data: user.school, edit: true, name: "school" },
+        { lable: "Liên hệ", data: String(user.phoneNumber), edit: true, name: "phoneNumber" },
     ];
     return (
         <div className="feature-container_right">

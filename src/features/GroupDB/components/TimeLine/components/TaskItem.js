@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 
 
-function TaskItem({ task }) {
+function TaskItem({ task, marginItem, widthItem }) {
     const userId =
         useSelector((state) => state.user.current?.account._id) || localStorage.getItem("user_id");
     const [open, setOpen] = useState(false);
@@ -37,6 +37,7 @@ function TaskItem({ task }) {
             //     }
             // }}
             key={task._id}
+            style={{ marginLeft: `${marginItem}px`, width: `${widthItem}px` }}
             className={styles.body}
         >
 

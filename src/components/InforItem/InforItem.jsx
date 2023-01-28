@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./styles.module.css";
 import { Button, Col, Row, Typography } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import userApi from "../../api/userApi";
 InforItem.propTypes = {
     label: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -19,8 +20,14 @@ function InforItem({ label,name, data, edit, config = {} }) {
     const handleCancel= ()=>{
         setEditable(initText)
     }
-    const handleEdit= (value)=>{
+    const handleEdit= async(value)=>{
         console.log({[name]:value})
+        try{
+            await userApi.updatePatchAccount({[name]:value})
+            alert("Update done")
+        }catch(err){
+            console.log(err.message)
+        }
         //goi patch api
     }
     return (

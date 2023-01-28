@@ -2,16 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import styles from "../styles.module.css";
+import userApi from '../../../api/userApi';
 FormInfor.propTypes = {
-    data:PropTypes.object.isRequired,
-    handleOk:PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    handleOk: PropTypes.func.isRequired,
 };
 
-function FormInfor({data,handleOk}) {
-    const onFinish=(value)=>{
-        console.log(value);
+function FormInfor({ data, handleOk }) {
+    const onFinish = async (value) => {
+        try {
+            await userApi.updatePatchAccount(value)
+            alert("update done!")
+            handleOk()
+        } catch (err) {
+            console.log(err.message)
+        }
     }
-    const onFinishFailed=(err)=>{
+    const onFinishFailed = (err) => {
         console.log(err)
     }
     return (
@@ -27,7 +34,7 @@ function FormInfor({data,handleOk}) {
             <Form.Item
                 label="Tên"
                 initialValue={data.name}
-                
+
                 name="name"
             >
                 <Input placeholder="Your name" />
