@@ -41,6 +41,7 @@ function FeatureGroup(props) {
                
                const response= await dispatch(getAll());
                 const data=response.payload
+                console.log({data})
                 setAllGroups(data);
                 setFilterGroups(data.groupMade);
             } catch (error) {

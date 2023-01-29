@@ -10,6 +10,8 @@ import taskApi from "../../../../api/taskApi";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import groupApi from "../../../../api/groupApi";
+import notificationApi from "../../../../api/notificationApi";
+import { useSelector } from "react-redux";
 
 AddTask.propTypes = {
 };
@@ -28,9 +30,12 @@ function AddTask(props) {
         ],
     };
     const navigate = useNavigate();
+    let socket = useSelector(state => state.socket.socket)
 
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [usersData, setUsersData] = useState([])
+
+    const leader = localStorage.getItem("name_user")
 
 
     const params = useParams();
@@ -62,6 +67,17 @@ function AddTask(props) {
                 member: memberId
             };
             console.log("Success:", result);
+            for (let i = 0; i < memberId.length; i++) {
+                let notification = {
+                    receiver: memberId[i],
+                    type: "task",
+                    title: `${leader || "Có người"} đã thêm nhiệm vụ`,
+                    description: values.name,
+                    link: `groups/${idGroup}/tasks`,
+                }
+                socket.emit("send-notification", notification)
+                await notificationApi.createNotification(notification)
+            }
             const data = await taskApi.createTask(idGroup, result)
             if (data.success) {
                 alert("create task done")

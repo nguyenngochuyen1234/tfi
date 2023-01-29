@@ -1,4 +1,4 @@
-import { BellFilled, UsergroupAddOutlined, WechatOutlined } from "@ant-design/icons";
+import { BellFilled, UsergroupAddOutlined, WechatOutlined, FileAddOutlined } from "@ant-design/icons";
 import { Badge, Button, Dropdown } from "antd";
 import classNames from "classnames";
 import React, { useState, useEffect } from "react";
@@ -6,13 +6,16 @@ import { useNavigate } from "react-router-dom";
 import notificationApi from "../../../../../../api/notificationApi";
 import styles from "../../styles.module.css";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs"
 Notification.propTypes = {};
 
 function IconNotification({ type }) {
     if (type === "group") {
         return <UsergroupAddOutlined className={styles.iconNotification} />
-    } else {
+    } else if (type === "message") {
         return <WechatOutlined className={styles.iconNotification} />
+    } else if (type === "task") {
+        return <FileAddOutlined className={styles.iconNotification} />
     }
 }
 function Notification(props) {
@@ -27,6 +30,19 @@ function Notification(props) {
         setShow(show);
     };
 
+    const Notification = ({ data }) => {
+        return (
+            <>
+                <IconNotification type={data.type} />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <h3>{data.title}</h3>
+                    {data.description && <span>{data.description}</span>}
+                    <p>{dayjs(data.updatedAt).format("DD/MM/YYYY HH:mm")}</p>
+                </div>
+            </>
+        )
+    }
+
     const fetchNotification = async () => {
         try {
             const data = await notificationApi.getAllNotification()
@@ -38,11 +54,7 @@ function Notification(props) {
                         key: idx,
                         label: (
                             <div style={{ display: "flex", flexDirection: "row", backgroundColor: dt.seen ? "#fff" : "rgba(0,0,0,0.2)" }} onClick={() => handleClickNotification(dt, idx)}>
-                                <IconNotification type={dt.type} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <h3>{dt.title}</h3>
-                                    <p>{dt.time}</p>
-                                </div>
+                                <Notification data={dt} />
                             </div>
 
                         )
@@ -67,20 +79,16 @@ function Notification(props) {
                         key: prev.length,
                         label: (
                             <div style={{ display: "flex", flexDirection: "row", backgroundColor: "#fff" }} onClick={() => handleClickNotification(msg, prev.length)}>
-                                <IconNotification type={msg.type} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <h3>{msg.title}</h3>
-                                    <p>{msg.updatedAt}</p>
-                                </div>
+                                <Notification data={msg} />
                             </div>
                         )
                     }
                 ])
-                
-    
+
+
             })
-            
-            
+
+
         }
     }, [socket])
     const handleClickNotification = async (dt, key) => {
@@ -94,11 +102,7 @@ function Notification(props) {
                         key: key,
                         label: (
                             <div style={{ display: "flex", flexDirection: "row", backgroundColor: "#fff" }} onClick={() => handleClickNotification(dt, idx)}>
-                                <IconNotification type={dt.type} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <h3>{dt.title}</h3>
-                                    <p>{dt.updatedAt}</p>
-                                </div>
+                                <Notification data={item} />
                             </div>
                         )
                     } : item)

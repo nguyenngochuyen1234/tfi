@@ -109,7 +109,8 @@ function GroupDB(props) {
                 let notification = {
                     receiver: memberid[i],
                     type: "group",
-                    title: `${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    title: `${leader || "Có người"} đã thêm bạn vào nhóm`,
+                    description: group.name,
                     link: `groups`,
                 }
                 socket.emit("send-notification", notification)

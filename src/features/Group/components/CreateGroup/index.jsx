@@ -15,7 +15,7 @@ function CreateGroup(props) {
 
     let socket = useSelector(state => state.socket.socket)
     const user = useSelector((state) => state.user.current?.account);
-    const idUser = user._id ||localStorage.getItem("user_id");
+    const idUser = user._id || localStorage.getItem("user_id");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [leader, setLeader] = useState()
@@ -46,12 +46,14 @@ function CreateGroup(props) {
         const updateMember = { member: [...dataGroup.member, ...memberid] };
         try {
             const idGroup = dataGroup._id
+            const nameGroup = dataGroup.name
             await groupApi.updateGroup(idGroup, updateMember)
             for (let i = 0; i < memberid.length; i++) {
                 let notification = {
                     receiver: memberid[i],
                     type: "group",
                     title: `${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
+                    description: nameGroup,
                     link: `groups`,
                 }
                 socket.emit("send-notification", notification)

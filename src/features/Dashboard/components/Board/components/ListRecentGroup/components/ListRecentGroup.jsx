@@ -41,7 +41,7 @@ function ListRecentGroup(props) {
     return (
         <div className={styles["wrap"]}>
             <div className={styles["list-container"]}>
-                {groupRecently.map(group => {
+                {groupRecently?.map(group => {
                     return <div
                         id={group._id}
                         className={styles.item}
