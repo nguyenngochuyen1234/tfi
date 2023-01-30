@@ -7,7 +7,7 @@ const taskApi ={
         return axiosClient.post(url,data)
     },
     getAllTaskOfUser(){
-        const url = ` /findAllTask/allTaskOfUser`
+        const url = `/task/findAllTask/allTaskOfUser`
         return axiosClient.get(url)
     },
     getAllTask(idGroup){

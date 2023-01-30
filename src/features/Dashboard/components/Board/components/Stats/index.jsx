@@ -22,7 +22,7 @@ Stats.defaultProps = {
 function Stats(props) {
     const date = new Date();
     const statement = [
-        "Total Starts Earned:",
+        "Total Stars Earned:",
         `Total Tasks Submitted (${date.getFullYear()}):`,
         "Total Groups joined:",
         "Total Groups Created:",

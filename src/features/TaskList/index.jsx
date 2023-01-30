@@ -4,58 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TabBar from "../../components/TabBar";
 import BarItem from "../../components/BarItem";
 import Tasks from "./components/Tasks";
+import taskApi from "../../api/taskApi";
 FeatureTaskList.propTypes = {};
-
-const initTasks = [
-    {
-        key: "1",
-        name: "Làm bài 10 trang 19 sách Giải Tích 5",
-        status: "completed",
-        nameGroup: "GT_2_Thanglong_K2N3_MA111",
-        due: "10-01-2023",
-    },
-    {
-        key: "6",
-        name: "Làm get dữ liệu từ api bằng Axios",
-        status: "uncompleted",
-        nameGroup: "LT_UNGDUNGWEB_K2N3_IT",
-
-        due: "11-01-2023",
-    },
-    {
-        key: "2",
-
-        name: "Sử dụng redux để quản lý state",
-        status: "uncompleted",
-        nameGroup: "LT_UNGDUNGWEB_K2N3_IT",
-
-        due: "02-01-2023",
-    },
-    {
-        key: "3",
-        name: "Dùng react-hook-form để quản lý form và check validate",
-        status: "completed",
-        nameGroup: "LT_UNGDUNGWEB_K2N3_IT",
-
-        due: "09-01-2023",
-    },
-    {
-        key: "4",
-        name: "Viết giao diện Dashboard",
-        status: "past-due",
-        nameGroup: "LT_UNGDUNGWEB_K2N3_IT",
-
-        due: "15-12-2022",
-    },
-    {
-        key: "5",
-        name: "Bài kiểm tra quá trình môn tin đại cương",
-        status: "past-due",
-
-        nameGroup: "TINDC_ThangLong_Testing_K2N3",
-        due: "20-12-2022",
-    },
-];
 
 function FeatureTaskList(props) {
     const location = useLocation();
@@ -65,19 +15,32 @@ function FeatureTaskList(props) {
         const param = queryString.parse(location.search);
         return param.status || "all";
     });
-
-    const [tasks, setTask] = useState(initTasks);
+    const [tasksBase, setTasksBase] = useState([]);
+    const [tasks, setTasks] = useState();
 
     useEffect(() => {
         const queryParam = queryString.parse(location.search);
         const key = queryParam.status || "all";
 
         setFilter(key);
-        const myTasks = [...initTasks];
+        console.log(key)
+        const myTasks = [...tasksBase];
+        console.log(myTasks)
         const filterTasks = myTasks.filter((item) => item.status === key || key === "all");
-        setTask(filterTasks);
-    }, [location.search]);
-
+        console.log(filterTasks)
+        setTasks(filterTasks);
+    }, [location.search,tasksBase]);
+    useEffect(() => {
+        (async () => {
+            try {
+                const { tasks } = await taskApi.getAllTaskOfUser();
+                setTasksBase(tasks);
+                
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, []);
     const onChange = (key) => {
         const param = queryString.stringify({ status: key });
         navigate(`./?${param}`);
@@ -90,25 +53,25 @@ function FeatureTaskList(props) {
             children: <Tasks tasks={tasks} />,
         },
         {
-            label: <BarItem label="Past Due Task" />,
+            label: <BarItem label="Past Due Tasks" />,
             key: "past-due",
             children: <Tasks tasks={tasks} />,
         },
         {
-            label: <BarItem label="Uncompleted Task" />,
-            key: "uncompleted",
+            label: <BarItem label="Uncomplete Task" />,
+            key: "uncomplete",
             children: <Tasks tasks={tasks} />,
         },
         {
-            label: <BarItem label="Completed Tasks" />,
-            key: "completed",
+            label: <BarItem label="Complete Tasks" />,
+            key: "complete",
             children: <Tasks tasks={tasks} />,
         },
     ];
 
     return (
-        <div className="feature-container_right" >
-            <TabBar onChange={onChange} activeKey={filter} data={item} />
+        <div className="feature-container_right">
+            {tasks && <TabBar onChange={onChange} activeKey={filter} data={item} />}
         </div>
     );
 }

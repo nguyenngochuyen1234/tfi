@@ -6,33 +6,31 @@ import {
     LinkOutlined,
     PaperClipOutlined,
     PlusOutlined,
-    UploadOutlined,
+    UploadOutlined
 } from "@ant-design/icons";
 import {
     Button,
     Checkbox,
     Col,
     Dropdown,
-    Form,
-    Input,
-    Modal,
-    Radio,
-    Row,
+    Form, Input,
+    Modal, Row,
     Tag,
     Typography,
-    Upload,
+    Upload
 } from "antd";
+import dayjs from "dayjs";
+import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import exerciseApi from "../../../../api/exerciseApi";
+import groupApi from "../../../../api/groupApi";
 import taskApi from "../../../../api/taskApi";
 import uploadApi from "../../../../api/uploadApi";
 import Options from "../../../../components/Options";
 import TaskLog from "../../../../components/TaskLog";
 import styles from "./styles.module.css";
-import PropTypes from "prop-types";
-import groupApi from "../../../../api/groupApi";
 DetailTask.propTypes = {
     leader: PropTypes.string,
 };
@@ -61,11 +59,14 @@ function DetailTask({ leader }) {
     const navigate = useNavigate();
     const [initData, setInitData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModal2Open, setIsModal2Open] = useState(false);
+    const [comment,setComment]=useState("");
+
     const [task, setTask] = useState();
-    const handleSetCompleted = (e)=>{
-        const tg=e.target
-        console.log(tg.checked?"completed":"uncompleted")
-    }
+    const handleSetCompleted = (e) => {
+        const tg = e.target;
+        console.log(tg.checked ? "completed" : "uncompleted");
+    };
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -73,6 +74,11 @@ function DetailTask({ leader }) {
         setIsModalOpen(false);
         setInitData(value);
         console.log(initData);
+    };
+    const onFinishComment = (value) => {
+        console.log(value);
+        setIsModal2Open(false);
+        setComment(value.comment)
     };
     const onFinishFailed = (e) => {
         console.log(e);
@@ -102,8 +108,9 @@ function DetailTask({ leader }) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await taskApi.getOnlyTask(idTask);
-                setTask(response.task);
+                const {task} = await taskApi.getOnlyTask(idTask);
+                setTask(task);
+                setComment(task?.comment||"")
             } catch (error) {
                 console.log(error);
             }
@@ -177,7 +184,7 @@ function DetailTask({ leader }) {
                             {task.status === "complete" && <Tag color="green">Completed</Tag>}
                             {task.member.includes(user._id) ? (
                                 <Tag icon={<CheckCircleOutlined />} color="success">
-                                    {admin===user._id ?"Trưởng nhóm":"Thành viên" }
+                                    {admin === user._id ? "Trưởng nhóm" : "Thành viên"}
                                 </Tag>
                             ) : (
                                 <Tag icon={<CloseCircleOutlined />} color="error">
@@ -188,16 +195,17 @@ function DetailTask({ leader }) {
                                 style={{ margin: "0px 20px" }}
                                 onClick={handleSubmit}
                                 type="primary"
-                                icon={<CloudUploadOutlined />}
+                                icon={!task?.exercise?.data && <CloudUploadOutlined />}
                                 loading={loading.load}
                                 disabled={
-                                    task.member.includes(user.id) &&
-                                    (initData?.link || initData?.data.length) !== 0
+                                    task.member.includes(user._id) &&
+                                    ((initData?.link || initData?.data.length) !== 0 ||
+                                        task?.exercise?.data)
                                         ? false
                                         : true
                                 }
                             >
-                                Submit
+                                {task?.exercise?.data ? "Undo" : "Submit"}
                             </Button>
                         </div>
                     </div>
@@ -276,7 +284,7 @@ function DetailTask({ leader }) {
                             >
                                 <Form
                                     className={styles["form-container"]}
-                                    name="basic"
+                                    name="LinkForm"
                                     layout="vertical"
                                     onFinish={onFinish}
                                     onFinishFailed={onFinishFailed}
@@ -323,29 +331,66 @@ function DetailTask({ leader }) {
                                         style={{
                                             color: "var(--color--text-drop)",
                                             fontWeight: 500,
+                                            display:"flex"
                                         }}
                                         className="text-sm"
                                     >
-                                        Comment{" "}
+                                        Comment
                                         {user._id === admin && (
-                                            <Button
-                                                type="text"
-                                                size="small"
-                                                style={{ color: "inherit" }}
-                                                className="text-ssm"
-                                                icon={<PlusOutlined />}
-                                            ></Button>
+                                            <div style={{marginLeft:"5px"}}>
+                                                <Button
+                                                    type="text"
+                                                    size="small"
+                                                    style={{ color: "inherit" }}
+                                                    className="text-ssm"
+                                                    onClick={() => setIsModal2Open(true)}
+                                                    icon={<PlusOutlined />}
+                                                ></Button>
+                                                <Modal
+                                                    title="Type your comment"
+                                                    open={isModal2Open}
+                                                    onCancel={() => setIsModal2Open(false)}
+                                                    footer={null}
+                                                >
+                                                    <Form
+                                                        className={styles["form-container"]}
+                                                        name="CommentForm"
+                                                        layout="vertical"
+                                                        onFinish={onFinishComment}
+                                                        onFinishFailed={onFinishFailed}
+                                                        autoComplete="off"
+                                                    >
+                                                        <Form.Item label="Comment" name="comment">
+                                                            <Input.TextArea
+                                                                rows={4}
+                                                                style={{maxHeight:"250px", overflow:"hidden auto"}}
+                                                                placeholder="Type your comment"
+                                                            ></Input.TextArea>
+                                                        </Form.Item>
+                                                        <Form.Item>
+                                                            <div className={styles["btn-form"]} style={{padding:"0px",marginBottom:"-15px"}}>
+                                                                <Button
+                                                                    type="primary"
+                                                                    htmlType="submit"
+                                                                >
+                                                                    Ok
+                                                                </Button>
+                                                            </div>
+                                                        </Form.Item>
+                                                    </Form>
+                                                </Modal>
+                                            </div>
                                         )}
                                     </Typography.Text>
                                 </div>
                                 <div>
                                     <Typography.Paragraph>
-                                        {task.comment || "No comment"}
+                                        {comment || "No comment"}
                                     </Typography.Paragraph>
                                 </div>
                             </div>
                             {admin === user._id && (
-                                <div style={{marginBottom:"16px"}}>
+                                <div style={{ marginBottom: "16px" }}>
                                     <div>
                                         <Typography.Text
                                             style={{
@@ -375,25 +420,37 @@ function DetailTask({ leader }) {
                                         Result
                                     </Typography.Text>
                                 </div>
-                                <div>
-                                    {task.member.map((member) => (
-                                        <div key={member} className={styles.wrap}>
-                                            <Row gutter={[8, 8]}>
-                                                <Col span={6}>
-                                                    <img
-                                                        width={"40px"}
-                                                        src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-cute.jpg?ssl=1"
-                                                        alt="avt"
-                                                    />
-                                                </Col>
-                                                <Col span={8}>Tên</Col>
-                                                <Col span={6}>
-                                                    <Link to="">a.pdf</Link>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    ))}
-                                </div>
+                                {task.exercise ? (
+                                    <div className={styles.resultContent}>
+                                        <Row gutter={[8, 8]}>
+                                            <Col span={4}>
+                                                <img
+                                                    style={{
+                                                        width: "50px",
+                                                        height: "50px",
+                                                        borderRadius: "50%",
+                                                    }}
+                                                    src={task.exercise.avatar}
+                                                    alt="avt"
+                                                />
+                                            </Col>
+                                            <Col span={8}>{task.exercise.name}</Col>
+                                            <Col span={6}>
+                                                {dayjs(task.exercise.time).format("DD-MM-YY HH:MM")}
+                                            </Col>
+
+                                            <Col span={6}>
+                                                <Link to={task.exercise.data}>
+                                                    {task.exercise.title === ""
+                                                        ? "File"
+                                                        : task.exercise.title}
+                                                </Link>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                ) : (
+                                    "Chưa có ai nộp"
+                                )}
                             </div>
                         </Col>
                     </Row>

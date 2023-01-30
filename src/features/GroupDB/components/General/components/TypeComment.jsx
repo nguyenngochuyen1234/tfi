@@ -1,4 +1,5 @@
 import { Mentions } from "antd";
+import dayjs from "dayjs";
 import EmojiPicker from "emoji-picker-react";
 import React, { useEffect, useState } from "react";
 import commentApi from "../../../../../api/commentApi";
@@ -41,7 +42,7 @@ function TypeComment({ idPost, setComment, arrName }) {
                     name: dataComment.name,
                     idComment: dataComment._id,
                     data: dataComment.data,
-                    createdAt: dataComment.time,
+                    createdAt: dayjs(dataComment.time).format("DD/MM/YYYY HH:mm"),
                     comment: [],
                 }])
             }

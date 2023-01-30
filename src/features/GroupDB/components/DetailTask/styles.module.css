@@ -1,5 +1,5 @@
 .detail-task{
-    width: 100%;
+    flex:  1 1;
     padding:10px;
     height: 100%;
 }
@@ -34,4 +34,15 @@
     display: flex;
     justify-content: flex-end;
     padding:10px;
+}
+.resultContent{
+    margin-top: 10px;
+    width: 100%;
+    border:1px solid var(--color-bd-primary);
+    border-radius: 10px;
+    padding:5px 10px;
+
+}
+.resultContent >*{
+    align-items: center;
 }
