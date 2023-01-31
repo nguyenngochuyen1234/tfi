@@ -45,7 +45,7 @@ function CreateGroup(props) {
         try {
             const idGroup = dataGroup._id;
             const nameGroup = dataGroup.name;
-            setStep(3);
+            setStep(4);
             await groupApi.updateGroup(idGroup, updateMember);
             for (let i = 0; i < memberid.length; i++) {
                 let notification = {

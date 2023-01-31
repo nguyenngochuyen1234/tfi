@@ -62,6 +62,7 @@ function Notification(props) {
     const fetchNotification = async () => {
         try {
             const data = await notificationApi.getAllNotification();
+            
             if (data.success) {
                 const countSeen = data.notifications?.filter((dt) => dt.seen === false);
                 setCountSeen(countSeen.length || 0);
@@ -128,7 +129,7 @@ function Notification(props) {
                 let id = uuidv4();
                 return {
                     items: [
-                        ...prevNotification,
+                        
                         {
                             key: id,
                             label: (
@@ -156,6 +157,7 @@ function Notification(props) {
                                 </div>
                             ),
                         },
+                        ...prevNotification,
                     ],
                 };
             });
@@ -170,24 +172,27 @@ function Notification(props) {
                 await notificationApi.updateNotification(id, { seen: "true" });
                 setMenuProps((prev) => {
                     return {
-                        items: prev.items.map((item) =>
-                            item.key == key
-                                ? {
-                                      key: item.key,
-                                      label: (
-                                          <div
-                                              style={{
-                                                  display: "flex",
-                                                  flexDirection: "row",
-                                                  backgroundColor: "#fff",
-                                              }}
-                                              onClick={() => handleClickNotification(dt, item.key)}
-                                          >
-                                              <Notification data={item} />
-                                          </div>
-                                      ),
-                                  }
-                                : item
+                        items: prev.items.map((item) =>{
+                            console.log(item)
+                           return item.key === key
+                            ? {
+                                  key: item.key,
+                                  label: (
+                                      <div
+                                          style={{
+                                              display: "flex",
+                                              flexDirection: "row",
+                                              backgroundColor: "#fff",
+                                          }}
+                                          onClick={() => handleClickNotification(dt, item.key)}
+                                      >
+                                          <Notification data={dt} />
+                                      </div>
+                                  ),
+                              }
+                            : item
+                        }
+                            
                         ),
                     };
                 });

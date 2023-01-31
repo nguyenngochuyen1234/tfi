@@ -63,13 +63,14 @@ function DetailTask({ leader }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModal2Open, setIsModal2Open] = useState(false);
     const [comment, setComment] = useState("");
-
+    const [statusTask,setStatusTask] = useState("")
     const [task, setTask] = useState();
     const handleSetCompleted = async (e) => {
         try {
 
             const tg = e.target;
-            const status = (tg.checked ? "complete" : "uncomplete");
+            const status = (tg.checked ? "completed" : "uncomplete");
+            setStatusTask(status)
             await taskApi.updateTaskPatch(idTask, { status })
         } catch (err) {
             console.log(err)
@@ -89,6 +90,7 @@ function DetailTask({ leader }) {
             await taskApi.updateTaskPatch(idTask, {comment})
             setIsModal2Open(false);
             setComment(value.comment)
+
         } catch (err) {
             console.log(err.message)
         }
@@ -124,6 +126,8 @@ function DetailTask({ leader }) {
                 const { task } = await taskApi.getOnlyTask(idTask);
                 setTask(task);
                 setComment(task?.comment || "")
+                setStatusTask(task?.status || "uncomplete")
+
             } catch (error) {
                 console.log(error);
             }
@@ -139,6 +143,8 @@ function DetailTask({ leader }) {
             })();
         }
     }, []);
+    console.log(task);
+
     const handleSubmit = () => {
         console.log(initData);
         if (initData.type === "file") {
@@ -424,7 +430,7 @@ function DetailTask({ leader }) {
                                     <div>
                                         <Checkbox
                                             onChange={handleSetCompleted}
-                                            checked={task.status === "complete" ? true : false}
+                                            checked={statusTask=== "complete" ? true : false}
                                         >
                                             Completed
                                         </Checkbox>
