@@ -7,6 +7,7 @@ import notificationApi from "../../../../../../api/notificationApi";
 import styles from "../../styles.module.css";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs"
+import { v4 as uuidv4 } from "uuid";
 Notification.propTypes = {};
 
 function IconNotification({ type }) {
@@ -24,7 +25,8 @@ function Notification(props) {
 
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
-    const [items, setItems] = useState([])
+    const [menuProps, setMenuProps] = useState({ items: [] })
+    const [notificationSocket, setNotificationSocket] = useState()
     const [countSeen, setCountSeen] = useState(0)
     const handleOpenChange = (show) => {
         setShow(show);
@@ -50,17 +52,19 @@ function Notification(props) {
                 const countSeen = data.notifications?.filter(dt => dt.seen === false)
                 setCountSeen(countSeen.length || 0)
                 const itemsData = data.notifications?.map((dt, idx) => {
+                    let id = uuidv4()
                     return {
-                        key: idx,
+                        key: id,
                         label: (
-                            <div style={{ display: "flex", flexDirection: "row", backgroundColor: dt.seen ? "#fff" : "rgba(0,0,0,0.2)" }} onClick={() => handleClickNotification(dt, idx)}>
+                            <div style={{ display: "flex", flexDirection: "row", backgroundColor: dt.seen ? "#fff" : "rgba(0,0,0,0.2)" }} onClick={() => handleClickNotification(dt, id)}>
                                 <Notification data={dt} />
                             </div>
 
                         )
                     }
                 })
-                setItems(itemsData)
+                console.log(itemsData)
+                setMenuProps({ items: itemsData })
             }
         } catch (err) {
             console.log(err)
@@ -73,39 +77,52 @@ function Notification(props) {
     useEffect(() => {
         if (socket) {
             socket.on("notification-recieve", (msg) => {
-                setItems(prev => [
-                    ...prev,
-                    {
-                        key: prev.length,
-                        label: (
-                            <div style={{ display: "flex", flexDirection: "row", backgroundColor: "#fff" }} onClick={() => handleClickNotification(msg, prev.length)}>
-                                <Notification data={msg} />
-                            </div>
-                        )
-                    }
-                ])
-
-
+                console.log({ msg })
+                setNotificationSocket(msg)
             })
-
-
         }
     }, [socket])
+    useEffect(() => {
+        if (notificationSocket) {
+            console.log({ notificationSocket })
+            setCountSeen(1);
+            setMenuProps(prev => {
+                const prevNotification = [...prev.items]
+                let id = uuidv4()
+                return {
+                    items: [
+                        ...prevNotification,
+                        {
+                            key: id,
+                            label: (
+                                <div style={{ display: "flex", flexDirection: "row", backgroundColor: "rgba(0,0,0,0.2)" }} onClick={() => handleClickNotification(notificationSocket, id)}>
+                                    <Notification data={notificationSocket} />
+                                </div>
+                            )
+                        }
+                    ]
+                }
+            })
+        }
+    }, [notificationSocket])
     const handleClickNotification = async (dt, key) => {
+        console.log({ dt, key })
         try {
             const id = dt._id
             if (!dt.seen) {
                 setCountSeen(prev => prev - 1 < 0 ? 0 : prev - 1)
                 await notificationApi.updateNotification(id, { seen: "true" })
-                setItems(prev => {
-                    return prev.map((item, idx) => item.key === key ? {
-                        key: key,
-                        label: (
-                            <div style={{ display: "flex", flexDirection: "row", backgroundColor: "#fff" }} onClick={() => handleClickNotification(dt, idx)}>
-                                <Notification data={item} />
-                            </div>
-                        )
-                    } : item)
+                setMenuProps(prev => {
+                    return {
+                        items: prev.items.map((item) => item.key == key ? {
+                            key: item.key,
+                            label: (
+                                <div style={{ display: "flex", flexDirection: "row", backgroundColor: "#fff" }} onClick={() => handleClickNotification(dt, item.key)}>
+                                    <Notification data={item} />
+                                </div>
+                            )
+                        } : item)
+                    }
                 })
             }
             navigate(dt.link)
@@ -115,11 +132,10 @@ function Notification(props) {
             console.log(err.message)
         }
     }
+    console.log(menuProps)
     return (
         <Dropdown
-            menu={{
-                items,
-            }}
+            menu={menuProps}
             open={show}
             placement="bottomRight"
             arrow={false}

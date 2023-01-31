@@ -60,25 +60,35 @@ function DetailTask({ leader }) {
     const [initData, setInitData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModal2Open, setIsModal2Open] = useState(false);
-    const [comment,setComment]=useState("");
+    const [comment, setComment] = useState("");
 
     const [task, setTask] = useState();
-    const handleSetCompleted = (e) => {
-        const tg = e.target;
-        console.log(tg.checked ? "completed" : "uncompleted");
+    const handleSetCompleted = async (e) => {
+        try {
+
+            const tg = e.target;
+            const status = (tg.checked ? "completed" : "uncompleted");
+            await taskApi.updateTaskPatch(idTask, { status })
+        } catch (err) {
+            console.log(err)
+        }
     };
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
-        setIsModalOpen(false);
-        setInitData(value);
-        console.log(initData);
+            setIsModalOpen(false);
+            setInitData(value);
     };
-    const onFinishComment = (value) => {
-        console.log(value);
-        setIsModal2Open(false);
-        setComment(value.comment)
+    const onFinishComment = async (value) => {
+        try {
+            const comment = value.comment
+            await taskApi.updateTaskPatch(idTask, {comment})
+            setIsModal2Open(false);
+            setComment(value.comment)
+        } catch (err) {
+            console.log(err.message)
+        }
     };
     const onFinishFailed = (e) => {
         console.log(e);
@@ -108,9 +118,9 @@ function DetailTask({ leader }) {
     useEffect(() => {
         (async () => {
             try {
-                const {task} = await taskApi.getOnlyTask(idTask);
+                const { task } = await taskApi.getOnlyTask(idTask);
                 setTask(task);
-                setComment(task?.comment||"")
+                setComment(task?.comment || "")
             } catch (error) {
                 console.log(error);
             }
@@ -126,7 +136,6 @@ function DetailTask({ leader }) {
             })();
         }
     }, []);
-    console.log(task);
     const handleSubmit = () => {
         if (initData.type === "file") {
             (async () => {
@@ -199,8 +208,8 @@ function DetailTask({ leader }) {
                                 loading={loading.load}
                                 disabled={
                                     task.member.includes(user._id) &&
-                                    ((initData?.link || initData?.data.length) !== 0 ||
-                                        task?.exercise?.data)
+                                        ((initData?.link || initData?.data.length) !== 0 ||
+                                            task?.exercise?.data)
                                         ? false
                                         : true
                                 }
@@ -331,13 +340,13 @@ function DetailTask({ leader }) {
                                         style={{
                                             color: "var(--color--text-drop)",
                                             fontWeight: 500,
-                                            display:"flex"
+                                            display: "flex"
                                         }}
                                         className="text-sm"
                                     >
                                         Comment
                                         {user._id === admin && (
-                                            <div style={{marginLeft:"5px"}}>
+                                            <div style={{ marginLeft: "5px" }}>
                                                 <Button
                                                     type="text"
                                                     size="small"
@@ -363,12 +372,12 @@ function DetailTask({ leader }) {
                                                         <Form.Item label="Comment" name="comment">
                                                             <Input.TextArea
                                                                 rows={4}
-                                                                style={{maxHeight:"250px", overflow:"hidden auto"}}
+                                                                style={{ maxHeight: "250px", overflow: "hidden auto" }}
                                                                 placeholder="Type your comment"
                                                             ></Input.TextArea>
                                                         </Form.Item>
                                                         <Form.Item>
-                                                            <div className={styles["btn-form"]} style={{padding:"0px",marginBottom:"-15px"}}>
+                                                            <div className={styles["btn-form"]} style={{ padding: "0px", marginBottom: "-15px" }}>
                                                                 <Button
                                                                     type="primary"
                                                                     htmlType="submit"

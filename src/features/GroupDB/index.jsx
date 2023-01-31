@@ -113,8 +113,8 @@ function GroupDB(props) {
                     description: group.name,
                     link: `groups`,
                 }
-                socket.emit("send-notification", notification)
-                await notificationApi.createNotification(notification)
+                const result = await notificationApi.createNotification(notification)
+                socket.emit("send-notification", result)
             }
             alert("Add member done")
             handleCancel()

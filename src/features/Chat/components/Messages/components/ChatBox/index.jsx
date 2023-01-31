@@ -67,8 +67,9 @@ function ChatBox({ current, handleChangeChat, conversationCurrent, setConversati
                 title:`${nameUser ? nameUser : "Có người"} đã nhắn tin cho bạn`,
                 link: `chat/${idUser}`,
             }
-            await notificationApi.createNotification(notification)
+            const resultNoti = await notificationApi.createNotification(notification)
             socket.emit("send-msg",{...configValue, receiverId: current.id})
+            socket.emit("send-notification",resultNoti.data)
             setValue("");
             setSend(false);
         } catch (err) {
