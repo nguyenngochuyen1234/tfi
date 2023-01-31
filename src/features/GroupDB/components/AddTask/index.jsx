@@ -57,7 +57,7 @@ function AddTask(props) {
 
     const handleClickBack = () => {
         navigate(-1);
-     
+
     };
     const onFinish = async (values) => {
         try {
@@ -75,8 +75,8 @@ function AddTask(props) {
                     description: values.name,
                     link: `groups/${idGroup}/tasks`,
                 }
-                socket.emit("send-notification", notification)
-                await notificationApi.createNotification(notification)
+                const resultNoti = await notificationApi.createNotification(notification)
+                socket.emit("send-notification", resultNoti.data)
             }
             const data = await taskApi.createTask(idGroup, result)
             if (data.success) {
@@ -142,7 +142,7 @@ function AddTask(props) {
                         </Form.Item>
                         <Form.Item>
                             <div className={styles["btn-form"]}>
-                                <Button type="primary"  htmlType="submit">
+                                <Button type="primary" htmlType="submit">
                                     Create
                                 </Button>
                             </div>

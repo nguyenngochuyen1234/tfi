@@ -12,6 +12,7 @@ import notificationApi from "../../../../../../api/notificationApi";
 import styles from "../../styles.module.css";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
 Notification.propTypes = {};
 
 function IconNotification({ type, color }) {
@@ -35,7 +36,8 @@ function Notification(props) {
 
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
-    const [items, setItems] = useState([]);
+    const [menuProps, setMenuProps] = useState({ items: [] });
+    const [notificationSocket, setNotificationSocket] = useState();
     const [countSeen, setCountSeen] = useState(0);
     const handleOpenChange = (show) => {
         setShow(show);
@@ -64,8 +66,9 @@ function Notification(props) {
                 const countSeen = data.notifications?.filter((dt) => dt.seen === false);
                 setCountSeen(countSeen.length || 0);
                 const itemsData = data.notifications?.map((dt, idx) => {
+                    let id = uuidv4();
                     return {
-                        key: idx,
+                        key: id,
                         label: (
                             <div
                                 style={{
@@ -73,19 +76,19 @@ function Notification(props) {
                                     flexDirection: "row",
                                     position: "relative",
                                 }}
-                                onClick={() => handleClickNotification(dt, idx)}
+                                onClick={() => handleClickNotification(dt, id)}
                             >
                                 {!dt.seen && (
                                     <div
                                         style={{
-                                            width: "12px",
-                                            height: "12px",
+                                            width: "10px",
+                                            height: "10px",
                                             borderRadius: "50%",
                                             position: "absolute",
                                             backgroundColor: "#0084ff",
-                                            top: "50%",
+                                            top: "85%",
                                             transform: "translateY(-50%)",
-                                            right: "20px",
+                                            right: "0px",
                                         }}
                                     ></div>
                                 )}
@@ -97,7 +100,8 @@ function Notification(props) {
                         ),
                     };
                 });
-                setItems(itemsData);
+
+                setMenuProps({ items: itemsData });
             }
         } catch (err) {
             console.log(err);
@@ -110,53 +114,82 @@ function Notification(props) {
     useEffect(() => {
         if (socket) {
             socket.on("notification-recieve", (msg) => {
-                setItems((prev) => [
-                    ...prev,
-                    {
-                        key: prev.length,
-                        label: (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    backgroundColor: "#fff",
-                                }}
-                                onClick={() => handleClickNotification(msg, prev.length)}
-                            >
-                                <Notification data={msg} />
-                            </div>
-                        ),
-                    },
-                ]);
+                console.log({ msg });
+                setNotificationSocket(msg);
             });
         }
     }, [socket]);
+    useEffect(() => {
+        if (notificationSocket) {
+            console.log({ notificationSocket });
+            setCountSeen(1);
+            setMenuProps((prev) => {
+                const prevNotification = [...prev.items];
+                let id = uuidv4();
+                return {
+                    items: [
+                        ...prevNotification,
+                        {
+                            key: id,
+                            label: (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        position: "relative",
+                                    }}
+                                    onClick={() => handleClickNotification(notificationSocket, id)}
+                                >
+                                    <div
+                                        style={{
+                                            width: "10px",
+                                            height: "10px",
+                                            borderRadius: "50%",
+                                            position: "absolute",
+                                            backgroundColor: "#0084ff",
+                                            top: "85%",
+                                            transform: "translateY(-50%)",
+                                            right: "0px",
+                                        }}
+                                    ></div>
+                                    <Notification data={notificationSocket} color={"#0084ff"} />
+                                </div>
+                            ),
+                        },
+                    ],
+                };
+            });
+        }
+    }, [notificationSocket]);
     const handleClickNotification = async (dt, key) => {
+        console.log({ dt, key });
         try {
             const id = dt._id;
             if (!dt.seen) {
                 setCountSeen((prev) => (prev - 1 < 0 ? 0 : prev - 1));
                 await notificationApi.updateNotification(id, { seen: "true" });
-                setItems((prev) => {
-                    return prev.map((item, idx) =>
-                        item.key === key
-                            ? {
-                                  key: key,
-                                  label: (
-                                      <div
-                                          style={{
-                                              display: "flex",
-                                              flexDirection: "row",
-                                              backgroundColor: "#fff",
-                                          }}
-                                          onClick={() => handleClickNotification(dt, idx)}
-                                      >
-                                          <Notification data={item} />
-                                      </div>
-                                  ),
-                              }
-                            : item
-                    );
+                setMenuProps((prev) => {
+                    return {
+                        items: prev.items.map((item) =>
+                            item.key == key
+                                ? {
+                                      key: item.key,
+                                      label: (
+                                          <div
+                                              style={{
+                                                  display: "flex",
+                                                  flexDirection: "row",
+                                                  backgroundColor: "#fff",
+                                              }}
+                                              onClick={() => handleClickNotification(dt, item.key)}
+                                          >
+                                              <Notification data={item} />
+                                          </div>
+                                      ),
+                                  }
+                                : item
+                        ),
+                    };
                 });
             }
             navigate(dt.link);
@@ -165,19 +198,17 @@ function Notification(props) {
             console.log(err.message);
         }
     };
+    console.log(menuProps);
     return (
         <Dropdown
-            menu={{
-                items,
-            }}
-            overlayClassName={styles.main}
+            menu={menuProps}
             open={show}
             placement="bottomRight"
             arrow={false}
             overlayStyle={{
-                overflow: "hidden scroll",
+                overflow: "hidden auto",
                 maxHeight: "80vh",
-                borderRadius:"8px",
+                borderRadius: "8px",
                 boxShadow:
                     "0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%), 0 9px 28px 8px rgb(0 0 0 / 5%)",
             }}

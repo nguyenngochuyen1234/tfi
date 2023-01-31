@@ -65,23 +65,33 @@ function DetailTask({ leader }) {
     const [comment, setComment] = useState("");
 
     const [task, setTask] = useState();
-    const handleSetCompleted = (e) => {
-        const tg = e.target;
-        console.log(tg.checked ? "complete" : "uncomplete");
+    const handleSetCompleted = async (e) => {
+        try {
+
+            const tg = e.target;
+            const status = (tg.checked ? "complete" : "uncomplete");
+            await taskApi.updateTaskPatch(idTask, { status })
+        } catch (err) {
+            console.log(err)
+        }
     };
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
-        setIsModalOpen(false);
-        const rs = { ...value, type: "link" };
-        setInitData(rs);
-        console.log(initData);
+            setIsModalOpen(false);
+            const rs={...value,type:"link"};
+            setInitData(rs);
     };
-    const onFinishComment = (value) => {
-        console.log(value);
-        setIsModal2Open(false);
-        setComment(value.comment);
+    const onFinishComment = async (value) => {
+        try {
+            const comment = value.comment
+            await taskApi.updateTaskPatch(idTask, {comment})
+            setIsModal2Open(false);
+            setComment(value.comment)
+        } catch (err) {
+            console.log(err.message)
+        }
     };
     const onFinishFailed = (e) => {
         console.log(e);
@@ -113,7 +123,7 @@ function DetailTask({ leader }) {
             try {
                 const { task } = await taskApi.getOnlyTask(idTask);
                 setTask(task);
-                setComment(task?.comment || "");
+                setComment(task?.comment || "")
             } catch (error) {
                 console.log(error);
             }
@@ -129,7 +139,6 @@ function DetailTask({ leader }) {
             })();
         }
     }, []);
-    console.log(task);
     const handleSubmit = () => {
         console.log(initData);
         if (initData.type === "file") {
@@ -209,8 +218,8 @@ function DetailTask({ leader }) {
                                 loading={loading.load}
                                 disabled={
                                     task.member.includes(user._id) &&
-                                    ((initData?.link || initData?.data.length) !== 0 ||
-                                        task?.exercise?.data)
+                                        ((initData?.link || initData?.data.length) !== 0 ||
+                                            task?.exercise?.data)
                                         ? false
                                         : true
                                 }
@@ -341,7 +350,7 @@ function DetailTask({ leader }) {
                                         style={{
                                             color: "var(--color--text-drop)",
                                             fontWeight: 500,
-                                            display: "flex",
+                                            display: "flex"
                                         }}
                                         className="text-sm"
                                     >
@@ -373,21 +382,12 @@ function DetailTask({ leader }) {
                                                         <Form.Item label="Comment" name="comment">
                                                             <Input.TextArea
                                                                 rows={4}
-                                                                style={{
-                                                                    maxHeight: "250px",
-                                                                    overflow: "hidden auto",
-                                                                }}
+                                                                style={{ maxHeight: "250px", overflow: "hidden auto" }}
                                                                 placeholder="Type your comment"
                                                             ></Input.TextArea>
                                                         </Form.Item>
                                                         <Form.Item>
-                                                            <div
-                                                                className={styles["btn-form"]}
-                                                                style={{
-                                                                    padding: "0px",
-                                                                    marginBottom: "-15px",
-                                                                }}
-                                                            >
+                                                            <div className={styles["btn-form"]} style={{ padding: "0px", marginBottom: "-15px" }}>
                                                                 <Button
                                                                     type="primary"
                                                                     htmlType="submit"

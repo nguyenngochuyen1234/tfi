@@ -1,33 +1,37 @@
 
 import axiosClient from "./axiosClient"
 
-const taskApi ={
-    createTask(idGroup,data){
-        const url=`/task/${idGroup}`
-        return axiosClient.post(url,data)
+const taskApi = {
+    createTask(idGroup, data) {
+        const url = `/task/${idGroup}`
+        return axiosClient.post(url, data)
     },
-    getAllTaskOfUser(){
+    getAllTaskOfUser() {
         const url = `/task/findAllTask/allTaskOfUser`
         return axiosClient.get(url)
     },
-    getAllTask(idGroup){
-        const url=`/task/${idGroup}`
+    getAllTask(idGroup) {
+        const url = `/task/${idGroup}`
         return axiosClient.get(url)
     },
-    getOnlyTask(idTask){
-        const url=`/task/find/${idTask}`
+    getOnlyTask(idTask) {
+        const url = `/task/find/${idTask}`
         return axiosClient.get(url)
     },
-    getTaskTimeline(idGroup,data){
-        const url=`/task/timeline/${idGroup}`
+    getTaskTimeline(idGroup, data) {
+        const url = `/task/timeline/${idGroup}`
         return axiosClient.post(url, data)
     },
-    updateTask(idTask, newData){
-        const url=`/task/${idTask}`
-        return axiosClient.put(url,newData)
+    updateTask(idTask, newData) {
+        const url = `/task/${idTask}`
+        return axiosClient.put(url, newData)
     },
-    deleteTask(idTask){
-        const url=`/task/${idTask}`
+    updateTaskPatch(idTask, newData) {
+        const url = `/task/${idTask}`
+        return axiosClient.patch(url, newData)
+    },
+    deleteTask(idTask) {
+        const url = `/task/${idTask}`
         return axiosClient.delete(url)
     }
 }

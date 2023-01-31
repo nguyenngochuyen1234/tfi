@@ -56,8 +56,8 @@ function CreateGroup(props) {
                     description: nameGroup,
                     link: `groups`,
                 }
-                socket.emit("send-notification", notification)
-                await notificationApi.createNotification(notification)
+                const resultNotificaton = await notificationApi.createNotification(notification)
+                socket.emit("send-notification", resultNotificaton.data)
             }
             handleCancel()
         } catch (err) {
@@ -82,10 +82,10 @@ function CreateGroup(props) {
     }, [])
 
     const onFinish = (values) => {
-        const result = { name: values.groupname, description: values.description, member: [] };
+        const Notificaton = { name: values.groupname, description: values.description, member: [] };
         async function post() {
             try {
-                const response = await groupApi.createGroup(result);
+                const response = await groupApi.createGroup(Notificaton);
                 alert(response.message);
                 setDataGroup(response.group);
                 nextStep();
