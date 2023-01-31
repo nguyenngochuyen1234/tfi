@@ -11,20 +11,19 @@ import postApi from "../../../../../api/postApi";
 
 ModalPost.propTypes = {
     isModalOpen: PropTypes.bool,
-    handleAddPost: PropTypes.func,
+    setPost: PropTypes.func.isRequired,
     setIsModalOpen: PropTypes.func,
 };
 ModalPost.defaultProps = {
     isModalOpen: false,
-    handleAddPost: null,
     setIsModalOpen: null,
 };
 
-function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
+function ModalPost({ isModalOpen, setPost, setIsModalOpen }) {
     const [dataPost,setDataPost]=useState("")
     const params = useParams();
-    const idGroup = params.idGroup
-
+    const idGroup = params.idGroup;
+    const [load,setLoad]=useState(false)
     const onChangeValue = (value) => {
         setDataPost(value)
         console.log(value);
@@ -32,20 +31,22 @@ function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
     const onSubmit = async(e) => {
         e.preventDefault();
         try{
+            setLoad(true)
             const result = await postApi.createPost(idGroup,{about:dataPost})
             if(result.success){
-                alert('Post done')
-                handleCancel()
+                setPost(true)
+                
+                setTimeout(()=>{
+                    setLoad(false)
+                    handleCancel()},500) 
             }
         }catch(err){
             console.log(err.message)
+
         }
 
     };
-    const handleOk = () => {
-        if (setIsModalOpen) setIsModalOpen(false);
-        if (handleAddPost) handleAddPost();
-    };
+
     const handleCancel = () => {
         if (setIsModalOpen) setIsModalOpen(false);
     };
@@ -68,7 +69,7 @@ function ModalPost({ isModalOpen, handleAddPost, setIsModalOpen }) {
                     bounds={".post"}
                     placeholder={"Start a new post. Type @ to mention member"}
                 />
-                <Button type="primary" size="large" style={{width:"100%",marginTop:"10px"}} onClick={onSubmit}>
+                <Button type="primary" size="large" style={{width:"100%",marginTop:"10px"}} loading={load} disabled={load} onClick={onSubmit}>
                     Post
                 </Button>
             </form>

@@ -6,18 +6,20 @@ import {
     LinkOutlined,
     PaperClipOutlined,
     PlusOutlined,
-    UploadOutlined
+    UploadOutlined,
 } from "@ant-design/icons";
 import {
     Button,
     Checkbox,
     Col,
     Dropdown,
-    Form, Input,
-    Modal, Row,
+    Form,
+    Input,
+    Modal,
+    Row,
     Tag,
     Typography,
-    Upload
+    Upload,
 } from "antd";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
@@ -60,25 +62,26 @@ function DetailTask({ leader }) {
     const [initData, setInitData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModal2Open, setIsModal2Open] = useState(false);
-    const [comment,setComment]=useState("");
+    const [comment, setComment] = useState("");
 
     const [task, setTask] = useState();
     const handleSetCompleted = (e) => {
         const tg = e.target;
-        console.log(tg.checked ? "completed" : "uncompleted");
+        console.log(tg.checked ? "complete" : "uncomplete");
     };
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
         setIsModalOpen(false);
-        setInitData(value);
+        const rs = { ...value, type: "link" };
+        setInitData(rs);
         console.log(initData);
     };
     const onFinishComment = (value) => {
         console.log(value);
         setIsModal2Open(false);
-        setComment(value.comment)
+        setComment(value.comment);
     };
     const onFinishFailed = (e) => {
         console.log(e);
@@ -108,9 +111,9 @@ function DetailTask({ leader }) {
     useEffect(() => {
         (async () => {
             try {
-                const {task} = await taskApi.getOnlyTask(idTask);
+                const { task } = await taskApi.getOnlyTask(idTask);
                 setTask(task);
-                setComment(task?.comment||"")
+                setComment(task?.comment || "");
             } catch (error) {
                 console.log(error);
             }
@@ -128,6 +131,7 @@ function DetailTask({ leader }) {
     }, []);
     console.log(task);
     const handleSubmit = () => {
+        console.log(initData);
         if (initData.type === "file") {
             (async () => {
                 try {
@@ -141,6 +145,9 @@ function DetailTask({ leader }) {
                         title: "",
                     });
                     setLoading({ status: "done", load: false });
+                    const { task } = await taskApi.getOnlyTask(idTask);
+                    setTask(task);
+                    setComment(task?.comment || "");
                     console.log(response);
                 } catch (error) {
                     console.log(error);
@@ -159,6 +166,9 @@ function DetailTask({ leader }) {
                     setLoading({ status: "done", load: false });
 
                     console.log(response);
+                    const { task } = await taskApi.getOnlyTask(idTask);
+                    setTask(task);
+                    setComment(task?.comment || "");
                 } catch (error) {
                     console.log(error);
                 }
@@ -331,13 +341,13 @@ function DetailTask({ leader }) {
                                         style={{
                                             color: "var(--color--text-drop)",
                                             fontWeight: 500,
-                                            display:"flex"
+                                            display: "flex",
                                         }}
                                         className="text-sm"
                                     >
                                         Comment
                                         {user._id === admin && (
-                                            <div style={{marginLeft:"5px"}}>
+                                            <div style={{ marginLeft: "5px" }}>
                                                 <Button
                                                     type="text"
                                                     size="small"
@@ -363,12 +373,21 @@ function DetailTask({ leader }) {
                                                         <Form.Item label="Comment" name="comment">
                                                             <Input.TextArea
                                                                 rows={4}
-                                                                style={{maxHeight:"250px", overflow:"hidden auto"}}
+                                                                style={{
+                                                                    maxHeight: "250px",
+                                                                    overflow: "hidden auto",
+                                                                }}
                                                                 placeholder="Type your comment"
                                                             ></Input.TextArea>
                                                         </Form.Item>
                                                         <Form.Item>
-                                                            <div className={styles["btn-form"]} style={{padding:"0px",marginBottom:"-15px"}}>
+                                                            <div
+                                                                className={styles["btn-form"]}
+                                                                style={{
+                                                                    padding: "0px",
+                                                                    marginBottom: "-15px",
+                                                                }}
+                                                            >
                                                                 <Button
                                                                     type="primary"
                                                                     htmlType="submit"
@@ -403,7 +422,12 @@ function DetailTask({ leader }) {
                                         </Typography.Text>
                                     </div>
                                     <div>
-                                        <Checkbox onChange={handleSetCompleted}>Completed</Checkbox>
+                                        <Checkbox
+                                            onChange={handleSetCompleted}
+                                            checked={task.status === "complete" ? true : false}
+                                        >
+                                            Completed
+                                        </Checkbox>
                                     </div>
                                 </div>
                             )}
@@ -440,11 +464,15 @@ function DetailTask({ leader }) {
                                             </Col>
 
                                             <Col span={6}>
-                                                <Link to={task.exercise.data}>
+                                                <a
+                                                    href={task.exercise.data}
+                                                    rel="noreferrer"
+                                                    target="_blank"
+                                                >
                                                     {task.exercise.title === ""
                                                         ? "File"
                                                         : task.exercise.title}
-                                                </Link>
+                                                </a>
                                             </Col>
                                         </Row>
                                     </div>

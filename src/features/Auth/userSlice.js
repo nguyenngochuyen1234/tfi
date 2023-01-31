@@ -11,7 +11,7 @@ export const register = createAsyncThunk(
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.account));
     localStorage.setItem(StorageKeys.USERID, JSON.stringify(data.user._id));
     
-    return data.account;
+    return data;
   }
 )
 export const login = createAsyncThunk(

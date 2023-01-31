@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { json, useNavigate } from "react-router-dom";
 import Loginform from "../../components/FormAuth/Loginform";
 import Registerform from "../../components/FormAuth/Registerform";
 import "./style.css";
@@ -16,7 +17,7 @@ Auth.defaultProps = {
 
 function Auth({ authRoute }) {
     const navigate = useNavigate();
-    
+   
 
     return (
         <div className="auth-body">

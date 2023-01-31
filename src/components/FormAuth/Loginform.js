@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Spin, Steps, Form, Input, Checkbox, message } from 'antd';
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"
+import { Button, Form, Input, notification, Spin } from 'antd';
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { login } from '../../features/Auth/userSlice';
 const Loginform = () => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [api, contextHolder] = notification.useNotification();
+  const [loading,setLoading]=useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleOnLogin = async (values) => {
     try {
         const action = login(values);
+        setLoading(true)
         const resultAction = await dispatch(action);
+        setLoading(false)
         if(resultAction.payload.success){
-          alert("Đăng nhập thành công")
           navigate("/home");
+          
         }else{
-          alert("Đăng nhập khong thành công")
         }
     } catch (e) {
         console.log(e);
-        alert("Đăng nhập khong thành công")
+        api.error({
+          message: `Đăng nhập thất bại`,
+          description: "Hãy kiểm tra lại tên đăng nhập hoặc mật khẩu",
+          duration:2,
+        });
 
     }
 };
@@ -27,7 +33,7 @@ const Loginform = () => {
     console.log('Failed:', errorInfo);
   };
   return (
-    <>
+    <Spin spinning={loading} delay={500}>
       {contextHolder}
       <Form
         name="basic"
@@ -74,7 +80,7 @@ const Loginform = () => {
           <Button type="primary" htmlType="submit">Đăng nhập</Button>
         </Form.Item>
       </Form>
-    </>
+    </Spin>
   );
 }
 

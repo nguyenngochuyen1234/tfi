@@ -21,9 +21,6 @@ function General({group}) {
         setIsModalOpen(true);
     };
 
-    const handleAddPost = () => {
-        console.log("add post");
-    };
     const fetchData = async () => {
         try {
             const data = await groupApi.getUsersByIds(idGroup)
@@ -68,9 +65,10 @@ function General({group}) {
             console.log(err.message)
         }
     }
+    const [post,setPost]=useState(false)
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [post])
     return (
         <div className={styles.general}>
             <div className={styles.general_header}>
@@ -83,7 +81,8 @@ function General({group}) {
                     New post
                 </Button>
                 <ModalPost
-                    handleAddPost={handleAddPost}
+                    setPost={setPost}
+                    
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                 />

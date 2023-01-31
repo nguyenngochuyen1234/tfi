@@ -17,13 +17,14 @@ function App() {
   };
   localStorage.setItem("config", JSON.stringify(setting));
   const theme=setting?.nightMode?"dark":"light";
-
+  const check=Boolean(useSelector(state=>state.user.current?.account));
   return (
+    
     <Routes>
-      <Route path="/" element={<Navigate to='/login' replace />} />
-      <Route path="/home/*" element={<Home theme={theme} />} />
-      <Route path="/login" element={<Auth authRoute={"login"} />} />
-      <Route path="/register" element={<Auth authRoute={"register"} />} />
+      <Route path="/" element={check?<Navigate to='/home'  replace/> :<Navigate to='/login' replace />} />
+      {check && <Route path="/home/*" element={<Home theme={theme} />} />}
+      {!check &&<Route path="/login" element={<Auth authRoute={"login"} />} />}
+      {!check &&<Route path="/register" element={<Auth authRoute={"register"} />} />}
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

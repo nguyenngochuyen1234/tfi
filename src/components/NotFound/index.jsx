@@ -22,7 +22,7 @@ function NotFound(props) {
                 subTitle="Xin lỗi có vẻ đường dẫn bạn tới không tìm thấy"
                 extra={
                     <Button type="primary">
-                        <Link to="/login" style={{color:"#FFFFFF"}}>Back Home</Link>
+                        <Link to="/" style={{color:"#FFFFFF"}}>Back Home</Link>
                     </Button>
                 }
             />

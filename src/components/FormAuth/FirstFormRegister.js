@@ -1,9 +1,8 @@
-import React from 'react'
-import { Button, message, Steps, Form, Input, Checkbox } from 'antd';
-import axios from 'axios';
+import { Button, Form, Input } from 'antd';
+import React from 'react';
 import userApi from '../../api/userApi';
 const FirstFormRegister = ({ next, setDataFirstForm }) => {
-
+  
 
   const onFinish = async (values) => {
     const data = await userApi.register(values);

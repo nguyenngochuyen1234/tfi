@@ -13,7 +13,6 @@ PostDetail.propTypes = {
 };
 
 function PostDetail({ post, arrName }) {
-    console.log(post)
     const user =
         useSelector((state) => state.user.current?.account) || localStorage.getItem("user");
         const userName = user.name;
