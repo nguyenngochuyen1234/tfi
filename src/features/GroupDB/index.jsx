@@ -15,71 +15,62 @@ import userApi from "../../api/userApi";
 GroupDB.propTypes = {};
 
 function GroupDB(props) {
-    let socket = useSelector(state => state.socket.socket)
+    let socket = useSelector((state) => state.socket.socket);
 
     const location = useLocation();
     const navigate = useNavigate();
     const id = location.pathname.split("/")[3];
-    const leader = localStorage.getItem("name_user")
+    const leader = localStorage.getItem("name_user");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
-    const [usersData, setUsersData] = useState([])
-    const [allUser, setAllUser] = useState([])
+    const [usersData, setUsersData] = useState([]);
+    const [allUser, setAllUser] = useState([]);
     const [feature, setFeature] = useState();
-    const [oldMember, setOldMember] = useState([])
+    const [oldMember, setOldMember] = useState([]);
 
-    const user = useSelector((state) => state.user.current.account);
+    const user = useSelector((state) => state.user.current?.account);
     const idUser = user?._id || localStorage.getItem("user_id");
     const [group, setGroup] = useState(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const data = useSelector((state) => state.group.current);
     useEffect(() => {
         setFeature(location.pathname.split("/")[4]);
     }, [location]);
     useEffect(() => {
-        fetchAllMember()
-    }, [])
+        fetchAllMember();
+    }, []);
     useEffect(() => {
-        if (JSON.stringify(data) !== "{}") {
-            const result = {
-                success: data.success,
-                data: [...data.groupMade, ...data.groupJoined],
-            };
-            setGroup(result.data.filter((group) => group._id === id)[0]);
-        } else {
-            (async () => {
-                try {
-                    const { group } = await groupApi.getOnlyGroup(id);
-                    if (group.member.find((mem) => mem === idUser)) {
-                        setGroup(group);
-                    } else {
-                        navigate("/404");
-                    }
-                } catch (error) {
-                    console.log(error);
+        (async () => {
+            try {
+                const { group } = await groupApi.getOnlyGroup(id);
+                if (group.member.find((mem) => mem === idUser)) {
+                    setGroup(group);
+                } else {
+                    navigate("/404");
                 }
-            })();
-        }
-    }, [data, id]);
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, [id]);
 
     const fetchAllMember = async () => {
         try {
-            const allMember = await userApi.getAllUser()
+            const allMember = await userApi.getAllUser();
             if (allMember.success) {
-                setAllUser(allMember.allUser)
+                setAllUser(allMember.allUser);
             }
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
-    }
+    };
 
     const showModal = () => {
-        const oldUsers = group.member
-        setOldMember(oldUsers)
-        const newUsers = allUser?.filter(user => !oldUsers.includes(user._id))
-        setUsersData(newUsers)
+        const oldUsers = group.member;
+        setOldMember(oldUsers);
+        const newUsers = allUser?.filter((user) => !oldUsers.includes(user._id));
+        setUsersData(newUsers);
         setIsModalOpen(true);
     };
 
@@ -101,10 +92,10 @@ function GroupDB(props) {
         navigate("/home/groups/");
     };
     const handleAdd = async () => {
-        const memberid = memberFiltered.map(member => member._id)
+        const memberid = memberFiltered.map((member) => member._id);
         const updateMember = { member: [...oldMember, ...memberid] };
         try {
-            await groupApi.updateGroup(id, updateMember)
+            await groupApi.updateGroup(id, updateMember);
             for (let i = 0; i < memberid.length; i++) {
                 let notification = {
                     receiver: memberid[i],
@@ -112,18 +103,16 @@ function GroupDB(props) {
                     title: `${leader || "Có người"} đã thêm bạn vào nhóm`,
                     description: group.name,
                     link: `groups`,
-                }
-                const result = await notificationApi.createNotification(notification)
-                socket.emit("send-notification", result)
+                };
+                const result = await notificationApi.createNotification(notification);
+                socket.emit("send-notification", result);
             }
-            alert("Add member done")
-            handleCancel()
+            alert("Add member done");
+            handleCancel();
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
-    }
-
-   
+    };
 
     const item = [
         {
@@ -150,7 +139,13 @@ function GroupDB(props) {
 
     return (
         <div className="feature-container_right">
-            <Modal title="Add member" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+            <Modal
+                title="Add member"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={null}
+            >
                 <InputSearchMember
                     memberFiltered={memberFiltered}
                     setMemberFiltered={setMemberFiltered}
@@ -185,7 +180,6 @@ function GroupDB(props) {
                                 }}
                             >
                                 {group.name}
-                               
                             </Typography.Title>
 
                             <div className={styles.box_2}>
@@ -223,7 +217,8 @@ function GroupDB(props) {
                         onChange={onChange}
                         activeKey={feature}
                         data={item}
-                        config={(() => feature === "time-line" || feature === "general" ? false : true)()}
+                        config={(() =>
+                            feature === "time-line" || feature === "general" ? false : true)()}
                     />
                 </div>
             )}

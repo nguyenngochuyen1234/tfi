@@ -2,13 +2,13 @@ import { DeleteOutlined, LeftOutlined, UsergroupAddOutlined } from "@ant-design/
 import { Button, Input, notification, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import groupApi from "../../api/groupApi";
 import BarItem from "../../components/BarItem";
 import TabBar from "../../components/TabBar";
 import CreateGroup from "./components/CreateGroup";
 import FilterGroups from "./components/FilterGroups";
 import JoinGroup from "./components/JoinGroup";
-import { getAll } from "./groupSlice";
 import styles from "./styles.module.css";
 
 FeatureGroup.propTypes = {};
@@ -39,21 +39,29 @@ function FeatureGroup(props) {
         (async () => {
             try {
                
-               const response= await dispatch(getAll());
-                const data=response.payload
-                console.log({data})
+               const data= await groupApi.getAllGroupUser();
+                
+                
                 setAllGroups(data);
                 setFilterGroups(data.groupMade);
             } catch (error) {
                 console.log(error);
             }
         })();
-    }, [dispatch, setAllGroups,isCreateJoin]);
+    }, [dispatch,isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
        
     };
     const handleClick = (key, idGroup) => {
+        if(key==="link"){
+            navigator.clipboard.writeText(window.location.href+"/"+idGroup)
+            api.success({
+                message: `Copy thành công`,
+                description: "Đã copy link group",
+                duration:2,
+              });
+        }
         if (key === "delete") {
             (async () => {
                 try {
@@ -69,6 +77,8 @@ function FeatureGroup(props) {
                         icon:< DeleteOutlined style={{ color: "var(--color--df-mess)"}}/>
                       });
                     setFilterGroups(cloneFilterGroups);
+                    const cloneAllGroup={...allGroups,groupMade:cloneFilterGroups};
+                    setAllGroups(cloneAllGroup)
                     
                 } catch (error) {
                     console.log(error);

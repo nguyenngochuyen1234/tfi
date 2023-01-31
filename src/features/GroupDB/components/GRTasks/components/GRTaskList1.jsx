@@ -101,7 +101,7 @@ function GRTaskList1({ tasks, handleTask, group, handleDelete }) {
                                         <Tag color="magenta">Uncomplete</Tag>
                                     )}
                                     {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
-                                    {task.status === "completet" && (
+                                    {task.status === "completed" && (
                                         <Tag color="green">Completed</Tag>
                                     )}
                                 </Col>

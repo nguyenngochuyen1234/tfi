@@ -198,7 +198,6 @@ function Notification(props) {
             console.log(err.message);
         }
     };
-    console.log(menuProps);
     return (
         <Dropdown
             menu={menuProps}

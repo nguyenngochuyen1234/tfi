@@ -38,7 +38,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData }) => 
         setUsers(prev => [...prev, member])
     }
     return (
-        <div>
+        <div style={{flex:"1 1"}}>
             {memberFiltered.length > 0 && <div className='search-member-filtered'>
                 {memberFiltered.map(member => {
                     return (
@@ -58,8 +58,8 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData }) => 
                     )
                 })}
             </div>}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
-                <div style={{ position: "relative", width: "80%" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ position: "relative", width: "95%" }}>
                     <Input
                         onChange={onChangeHandle}
                         value={valueInput}
