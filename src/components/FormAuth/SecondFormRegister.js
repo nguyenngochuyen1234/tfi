@@ -12,7 +12,7 @@ const config = {
 }
 const SecondFormRegister = ({ current, steps, prev, dataFirstForm }) => {
     const [avatar, setAvatar] = useState(null)
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [api, contextHolder] = notification.useNotification();
     const [loading, setLoading] = useState(false);
     const normFile = (e) => {
@@ -37,15 +37,23 @@ const SecondFormRegister = ({ current, steps, prev, dataFirstForm }) => {
                 ...values
             }
             await userApi.updateAccount(data)
-            navigate('/')
+            api.error({
+                message: `Đăng kí thành công`,
+                description: "Chờ 2 giây để tự động sang cửa sổ đăng nhập",
+                duration: 2,
+            });
+
             setLoading(false)
-           
+            setTimeout(() => navigate('/login'), 2000)
+
         } catch (err) {
-            console.log(err.message)
+
+            setLoading(false)
+
             api.error({
                 message: `Đăng kí thất bại`,
                 description: "Hãy kiểm tra lại các trường thông tin",
-                duration:2,
+                duration: 2,
             });
         }
         //post ,..

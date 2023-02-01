@@ -19,7 +19,7 @@ function TaskLog({ task }) {
                 </div>
 
                 <Typography.Text style={{ color: "var(--color--text-drop)" }} className="text-df">
-                    Due on {dayjs(task.deadline).format("DD-MM-YYYY")} at {dayjs(task.deadline).format("HH:MM")}
+                    Due on {dayjs(task.deadline).format("MMM D, YYYY h:mm A")}  
                 </Typography.Text>
             </div>
 
@@ -33,7 +33,7 @@ function TaskLog({ task }) {
             </div>
             <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
                 <Typography.Paragraph style={{ marginBottom: "10px" }}>
-                    {task.description}
+                    {task.description||"Không có mô tả"}
                 </Typography.Paragraph>
             </div>
         </div>

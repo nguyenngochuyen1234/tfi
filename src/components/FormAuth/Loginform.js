@@ -15,7 +15,7 @@ const Loginform = () => {
         const resultAction = await dispatch(action);
         setLoading(false)
         if(resultAction.payload.success){
-          navigate("/home");
+          navigate("/");
           
         }else{
         }

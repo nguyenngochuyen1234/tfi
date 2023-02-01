@@ -23,7 +23,7 @@ ModalPost.defaultProps = {
     setIsModalOpen: null,
 };
 
-function ModalPost({ isModalOpen,group,  setPost, setIsModalOpen }) {
+function ModalPost({ isModalOpen, group, setPost, setIsModalOpen }) {
     const [dataPost, setDataPost] = useState("")
     let socket = useSelector(state => state.socket.socket)
 
@@ -48,16 +48,17 @@ function ModalPost({ isModalOpen,group,  setPost, setIsModalOpen }) {
                         type: "group",
                         title: `${leaderName || "Có người"} đã thêm 1 bài viết mới`,
                         description: group.name,
-                        link: `groups`,
+                        link: `groups/${idGroup}`,
                     }
                     console.log(notification)
                     const resultNotificaton = await notificationApi.createNotification(notification)
-                    if(resultNotificaton.success){
+                    if (resultNotificaton.success) {
+                        console.log(resultNotificaton)
                         socket.emit("send-notification", resultNotificaton.data)
                     }
                 }
                 const titleTimeline = `Bạn đã thêm bài viết ${group.name}`
-                await timelineDashboardApi.createTimelineDashboard({titleTimeline})
+                await timelineDashboardApi.createTimelineDashboard({ titleTimeline })
                 setPost(true)
                 setTimeout(() => {
                     setLoad(false)
@@ -66,7 +67,6 @@ function ModalPost({ isModalOpen,group,  setPost, setIsModalOpen }) {
             }
         } catch (err) {
             console.log(err.message)
-
         }
 
     };

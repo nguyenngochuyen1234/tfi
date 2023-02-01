@@ -14,6 +14,11 @@
     width:110px;
     height:90px;
 }
+.flex{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
 .box_1{
     flex-direction:column;
 

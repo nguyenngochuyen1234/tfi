@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import GroupAvatar from "../../../../../components/Avatar/GroupAvatar";
+import StatusInterval from "../../DetailTask/StatusInterval";
 import styles from "./styles.module.css";
 
 
@@ -12,6 +13,7 @@ function TaskItem({ task, marginItem, widthItem }) {
     const userId =
         useSelector((state) => state.user.current?.account._id) || localStorage.getItem("user_id");
     const [open, setOpen] = useState(false);
+    const [status, setStatusTask] = useState(task.status)
     const onlyShowName = (!!(Math.abs(widthItem) < 220))
     console.log({ onlyShowName, widthItem })
     const showModal = () => {
@@ -42,11 +44,9 @@ function TaskItem({ task, marginItem, widthItem }) {
             className={styles.body}
         >
 
-            {onlyShowName ? <Col className={styles.box_1} style={{position:"absolute"}} span={6}>
+            {onlyShowName ? <Col className={styles.box_1} style={{ position: "absolute" }} span={6}>
                 <Typography.Paragraph
                     strong
-                    // style={{ margin: 0 }}
-                    // ellipsis={{ rows: 2 }}
                 >
                     {task.name}{" "}
                 </Typography.Paragraph>
@@ -60,13 +60,7 @@ function TaskItem({ task, marginItem, widthItem }) {
                 </Typography.Paragraph>
             </Col>
                 <Col className={styles.box_1} span={3}>
-                    {task.status === "uncomplete" && (
-                        <Tag color="magenta">Uncomplete</Tag>
-                    )}
-                    {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
-                    {task.status === "completet" && (
-                        <Tag color="green">Completed</Tag>
-                    )}
+                    <StatusInterval status={status} setStatusTask={setStatusTask} time={task.deadline} />
                 </Col>
                 <Col className={styles.box_1} span={5}>
                     <Typography.Paragraph

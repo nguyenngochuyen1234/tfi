@@ -27,7 +27,6 @@ function FeatureTaskList(props) {
         const myTasks = [...tasksBase];
         console.log(myTasks)
         const filterTasks = myTasks.filter((item) => item.status === key || key === "all");
-        console.log(filterTasks)
         setTasks(filterTasks);
     }, [location.search,tasksBase]);
     useEffect(() => {
@@ -63,8 +62,13 @@ function FeatureTaskList(props) {
             children: <Tasks tasks={tasks} />,
         },
         {
-            label: <BarItem label="Complete Tasks" />,
-            key: "complete",
+            label: <BarItem label="Completed Tasks" />,
+            key: "completed",
+            children: <Tasks tasks={tasks} />,
+        },
+        {
+            label: <BarItem label="Pending Tasks" />,
+            key: "pending",
             children: <Tasks tasks={tasks} />,
         },
     ];

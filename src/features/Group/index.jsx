@@ -2,6 +2,7 @@ import { DeleteOutlined, LeftOutlined, UsergroupAddOutlined } from "@ant-design/
 import { Button, Input, notification, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import groupApi from "../../api/groupApi";
 import BarItem from "../../components/BarItem";
 import TabBar from "../../components/TabBar";
@@ -9,7 +10,6 @@ import CreateGroup from "./components/CreateGroup";
 import FilterGroups from "./components/FilterGroups";
 import JoinGroup from "./components/JoinGroup";
 import notificationApi from "../../api/notificationApi";
-import { getAll } from "./groupSlice";
 
 import styles from "./styles.module.css";
 import timelineDashboardApi from "../../api/timelineDashboardApi";
@@ -43,22 +43,30 @@ function FeatureGroup(props) {
     useEffect(() => {
         (async () => {
             try {
-
-                const response = await dispatch(getAll());
-                const data = response.payload
-                console.log({ data })
+               
+               const data= await groupApi.getAllGroupUser();
+                
+                
                 setAllGroups(data);
                 setFilterGroups(data.groupMade);
             } catch (error) {
                 console.log(error);
             }
         })();
-    }, [dispatch, setAllGroups, isCreateJoin]);
+    }, [dispatch,isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
 
     };
     const handleClick = async (key, idGroup) => {
+        if(key==="link"){
+            navigator.clipboard.writeText(window.location.href+idGroup)
+            api.success({
+                message: `Copy thành công`,
+                description: "Đã copy link group",
+                duration:2,
+              });
+        }
         if (key === "delete") {
             try {
                 const delGroup = await groupApi.delGroup(idGroup);

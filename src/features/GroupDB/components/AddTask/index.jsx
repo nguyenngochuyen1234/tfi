@@ -66,7 +66,9 @@ function AddTask(props) {
                 ...values,
                 member: memberId
             };
-            console.log("Success:", result);
+            const data = await taskApi.createTask(idGroup, result)
+            console.log("Success:",data);
+            
             for (let i = 0; i < memberId.length; i++) {
                 let notification = {
                     receiver: memberId[i],
@@ -76,9 +78,10 @@ function AddTask(props) {
                     link: `groups/${idGroup}/tasks`,
                 }
                 const resultNoti = await notificationApi.createNotification(notification)
-                socket.emit("send-notification", resultNoti.data)
+                if(resultNoti.success){
+                    socket.emit("send-notification", resultNoti.data)
+                }
             }
-            const data = await taskApi.createTask(idGroup, result)
             if (data.success) {
                 alert("create task done")
                 navigate(-1);
@@ -134,7 +137,7 @@ function AddTask(props) {
                             <DatePicker
                                 disabledDate={(current) => {
                                     let customDate = moment().format("DD-MM-YYYY");
-                                    return current && current <= moment(customDate, "DD-MM-YYYY");
+                                    return current && current <= moment(customDate, "DD-MM-YYYY HH:MM:SS");
                                 }}
                                 showTime
                                 format="DD-MM-YYYY HH:mm"

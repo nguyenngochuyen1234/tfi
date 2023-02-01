@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Modal, Typography } from "antd";
+import { Button, Modal, Spin, Typography } from "antd";
 import groupApi from "../../../../api/groupApi";
 import { useSelector } from "react-redux";
 import InputSearchMember from "../../../../components/InputSearchMember/InputSearchMember";
@@ -13,20 +13,18 @@ import timelineDashboardApi from "../../../../api/timelineDashboardApi";
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
 function CreateGroup(props) {
-
-    let socket = useSelector(state => state.socket.socket)
+    let socket = useSelector((state) => state.socket.socket);
     const user = useSelector((state) => state.user.current?.account);
     const idUser = user._id || localStorage.getItem("user_id");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
-    const [leader, setLeader] = useState()
-    const [usersData, setUsersData] = useState([])
+    const [leader, setLeader] = useState();
+    const [usersData, setUsersData] = useState([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [dataGroup, setDataGroup] = useState({});
     const [step, setStep] = useState(1);
-
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -43,7 +41,7 @@ function CreateGroup(props) {
         console.log(`selected ${value}`);
     };
     const handleAdd = async () => {
-        const memberid = memberFiltered.map(member => member._id)
+        const memberid = memberFiltered.map((member) => member._id);
         const updateMember = { member: [...dataGroup.member, ...memberid] };
         try {
             const idGroup = dataGroup._id
@@ -58,41 +56,41 @@ function CreateGroup(props) {
                     title: `${leader ? leader.name : "Có người"} đã thêm bạn vào nhóm`,
                     description: nameGroup,
                     link: `groups`,
-                }
-                const resultNotificaton = await notificationApi.createNotification(notification)
-                socket.emit("send-notification", resultNotificaton.data)
+                };
+                const resultNotificaton = await notificationApi.createNotification(notification);
+                console.log(resultNotificaton)
+                socket.emit("send-notification", resultNotificaton.data);
             }
-            handleCancel()
+            handleCancel();
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
-    }
+    };
     const fechAllUser = async () => {
         try {
-            const data = await userApi.getAllUser()
+            const data = await userApi.getAllUser();
             if (data.success) {
-                const dataFilter = data.allUser.filter(dt => dt._id !== idUser)
-                const leader = data.allUser.find(dt => dt._id === idUser)
-                setLeader(leader)
-                setUsersData(dataFilter)
+                const dataFilter = data.allUser.filter((dt) => dt._id !== idUser);
+                const leader = data.allUser.find((dt) => dt._id === idUser);
+                setLeader(leader);
+                setUsersData(dataFilter);
             }
         } catch (err) {
-            alert(err.message)
+            alert(err.message);
         }
-    }
+    };
     useEffect(() => {
-        fechAllUser()
-    }, [])
+        fechAllUser();
+    }, []);
 
     const onFinish = (values) => {
         const Notificaton = { name: values.groupname, description: values.description, member: [] };
         async function post() {
             try {
+                setStep(3);
                 const response = await groupApi.createGroup(Notificaton);
-                alert(response.message);
                 setDataGroup(response.group);
                 nextStep();
-
             } catch (error) {
                 alert(error);
             }
@@ -138,7 +136,16 @@ function CreateGroup(props) {
                             handleChange={handleChange}
                         />
                     )}
-
+                    {step === 3 && (
+                        <div style={{ height: "300px", display: "flex",alignItems:"center",justifyContent:"center" }}>
+                            <Spin tip="Tạo group..." size="large"></Spin>
+                        </div>
+                    )}
+                    {step === 4 && (
+                        <div style={{ height: "300px", display: "flex",alignItems:"center",justifyContent:"center" }}>
+                            <Spin tip="Thêm thành viên..." size="large"></Spin>
+                        </div>
+                    )}
                     {step === 2 && (
                         <div>
                             <Typography.Text>
@@ -146,20 +153,25 @@ function CreateGroup(props) {
                                 your team. You can also add people outside your organisation as
                                 guests by typing their email addresses.
                             </Typography.Text>
-                            <InputSearchMember
-                                memberFiltered={memberFiltered}
-                                setMemberFiltered={setMemberFiltered}
-                                usersData={usersData}
-                            />
-                            <Button type="primary" onClick={handleAdd}>
-                                Add
-                            </Button>
+                            <div className={styles.flex}>
+                                <InputSearchMember
+                                    memberFiltered={memberFiltered}
+                                    setMemberFiltered={setMemberFiltered}
+                                    usersData={usersData}
+                                />
+                                <Button type="primary" onClick={handleAdd}>
+                                    Add
+                                </Button>
+                            </div>
                             <div className={styles["btn-form"]}>
-                                <Button type="default" onClick={handleCancel} style={{ marginTop: "50px" }}>
+                                <Button
+                                    type="default"
+                                    onClick={handleCancel}
+                                    style={{ marginTop: "50px" }}
+                                >
                                     Skip
                                 </Button>
                             </div>
-
                         </div>
                     )}
                 </Modal>

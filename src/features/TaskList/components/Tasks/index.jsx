@@ -32,9 +32,9 @@ function Tasks({ tasks }) {
                                     })}
                                 >
                                     {task.group?.name} • Due on{" "}
-                                    {dayjs(task?.deadline).format("DD/MM/YYYY HH:MM")}
+                                    {dayjs(task?.deadline).format("MMM D, YYYY h:mm A")}
                                 </div>
-                                {task?.status === "complete" && (
+                                {task?.status === "completed" && (
                                     <span className={styles.status} style={{ color: "blue" }}>
                                         Completed
                                     </span>
@@ -42,6 +42,11 @@ function Tasks({ tasks }) {
                                 {task?.status === "past-due" && (
                                     <span className={styles.status} style={{ color: "red" }}>
                                         Past due
+                                    </span>
+                                )}
+                                {task?.status === "pending" && (
+                                    <span className={styles.status} style={{ color: "orange" }}>
+                                        Pending
                                     </span>
                                 )}
                             </div>

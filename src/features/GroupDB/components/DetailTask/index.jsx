@@ -6,7 +6,8 @@ import {
     LinkOutlined,
     PaperClipOutlined,
     PlusOutlined,
-    UploadOutlined,
+    UndoOutlined,
+    UploadOutlined
 } from "@ant-design/icons";
 import {
     Button,
@@ -19,20 +20,22 @@ import {
     Row,
     Tag,
     Typography,
-    Upload,
+    Upload
 } from "antd";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import exerciseApi from "../../../../api/exerciseApi";
 import groupApi from "../../../../api/groupApi";
 import taskApi from "../../../../api/taskApi";
 import uploadApi from "../../../../api/uploadApi";
 import Options from "../../../../components/Options";
 import TaskLog from "../../../../components/TaskLog";
+import StatusInterval from "./StatusInterval";
 import styles from "./styles.module.css";
+import notificationApi from "../../../../api/notificationApi";
 DetailTask.propTypes = {
     leader: PropTypes.string,
 };
@@ -52,6 +55,11 @@ const items = [
 function DetailTask({ leader }) {
     const params = useParams();
     const idTask = params.idTask;
+    const idGroup = params.idGroup
+    let socket = useSelector(state => state.socket.socket)
+
+    const nameUser = localStorage.getItem("name_user")
+
     const [admin, setAdmin] = useState(leader);
     const user =
         useSelector((state) => state.user.current.account) ||
@@ -63,34 +71,38 @@ function DetailTask({ leader }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModal2Open, setIsModal2Open] = useState(false);
     const [comment, setComment] = useState("");
-
+    const [statusTask, setStatusTask] = useState("");
     const [task, setTask] = useState();
+    
+
+    
+
     const handleSetCompleted = async (e) => {
         try {
-
             const tg = e.target;
-            const status = (tg.checked ? "complete" : "uncomplete");
-            await taskApi.updateTaskPatch(idTask, { status })
+            const status = tg.checked ? "completed" : "uncomplete";
+            setStatusTask(status);
+            await taskApi.updateTaskPatch(idTask, { status });
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     };
     const showModal = () => {
         setIsModalOpen(true);
     };
     const onFinish = (value) => {
-            setIsModalOpen(false);
-            const rs={...value,type:"link"};
-            setInitData(rs);
+        setIsModalOpen(false);
+        const rs = { ...value, type: "link" };
+        setInitData(rs);
     };
     const onFinishComment = async (value) => {
         try {
-            const comment = value.comment
-            await taskApi.updateTaskPatch(idTask, {comment})
+            const comment = value.comment;
+            await taskApi.updateTaskPatch(idTask, { comment });
             setIsModal2Open(false);
-            setComment(value.comment)
+            setComment(value.comment);
         } catch (err) {
-            console.log(err.message)
+            console.log(err.message);
         }
     };
     const onFinishFailed = (e) => {
@@ -123,7 +135,8 @@ function DetailTask({ leader }) {
             try {
                 const { task } = await taskApi.getOnlyTask(idTask);
                 setTask(task);
-                setComment(task?.comment || "")
+                setComment(task?.comment || "");
+                setStatusTask(task?.status || "uncomplete");
             } catch (error) {
                 console.log(error);
             }
@@ -139,9 +152,23 @@ function DetailTask({ leader }) {
             })();
         }
     }, []);
+    console.log(task);
+
     const handleSubmit = () => {
-        console.log(initData);
-        if (initData.type === "file") {
+        if (task?.exercise?.data) {
+            (async () => {
+                try {
+                    const res = await exerciseApi.delExecrcise(task?.exercise._id);
+                    console.log(res);
+                    const cloneTask = { ...task, exercise: null, status: "uncomplete" };
+                    setTask(cloneTask);
+                    setStatusTask("uncomplete");
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+        }
+        if (initData?.type === "file" && !task?.exercise?.data) {
             (async () => {
                 try {
                     let formData = new FormData();
@@ -153,17 +180,32 @@ function DetailTask({ leader }) {
                         type: "file",
                         title: "",
                     });
+                    setStatusTask("pending");
+                    await taskApi.updateTaskPatch(idTask, { status: "pending" });
                     setLoading({ status: "done", load: false });
                     const { task } = await taskApi.getOnlyTask(idTask);
                     setTask(task);
                     setComment(task?.comment || "");
+
+                    let notification = {
+                        receiver: admin,
+                        type: "task",
+                        title: `${nameUser || "Có người"} đã nộp nhiệm vụ`,
+                        description: task.name,
+                        link: `groups/${idGroup}/tasks/${idTask}`,
+                    }
+                    const resultNoti = await notificationApi.createNotification(notification)
+                    if(resultNoti.success){
+                        socket.emit("send-notification", resultNoti.data)
+                    }
+
                     console.log(response);
                 } catch (error) {
                     console.log(error);
                 }
             })();
         }
-        if (initData.type === "link") {
+        if (initData?.type === "link" && !task?.exercise?.data) {
             (async () => {
                 try {
                     setLoading({ ...loading, load: true });
@@ -172,9 +214,12 @@ function DetailTask({ leader }) {
                         type: "link",
                         title: initData.title,
                     });
+                    setStatusTask("pending");
+                    await taskApi.updateTaskPatch(idTask, { status: "pending" });
                     setLoading({ status: "done", load: false });
 
                     console.log(response);
+
                     const { task } = await taskApi.getOnlyTask(idTask);
                     setTask(task);
                     setComment(task?.comment || "");
@@ -198,33 +243,41 @@ function DetailTask({ leader }) {
                             Back
                         </Button>
                         <div>
-                            {task.status === "uncomplete" && <Tag color="magenta">Uncomplete</Tag>}
-                            {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
-                            {task.status === "complete" && <Tag color="green">Completed</Tag>}
+                            
+                            <StatusInterval status={statusTask} setStatusTask={setStatusTask} time={task.deadline} />
                             {task.member.includes(user._id) ? (
                                 <Tag icon={<CheckCircleOutlined />} color="success">
-                                    {admin === user._id ? "Trưởng nhóm" : "Thành viên"}
+                                    Thành viên task
                                 </Tag>
                             ) : (
                                 <Tag icon={<CloseCircleOutlined />} color="error">
-                                    Không là thành viên
+                                    Không là thành viên task
                                 </Tag>
                             )}
+                            {admin === user._id && (
+                                <Tag icon={<CheckCircleOutlined />} color="success">
+                                    Trưởng nhóm
+                                </Tag>
+                            ) }
                             <Button
                                 style={{ margin: "0px 20px" }}
                                 onClick={handleSubmit}
                                 type="primary"
-                                icon={!task?.exercise?.data && <CloudUploadOutlined />}
+                                icon={!task?.exercise?.data ? <CloudUploadOutlined />:<UndoOutlined />}
                                 loading={loading.load}
                                 disabled={
+                                    !loading.load &&
                                     task.member.includes(user._id) &&
-                                        ((initData?.link || initData?.data.length) !== 0 ||
-                                            task?.exercise?.data)
+                                    ((initData?.link || initData?.data.length) !== 0 ||
+                                        task?.exercise?.data)
                                         ? false
                                         : true
                                 }
                             >
-                                {task?.exercise?.data ? "Undo" : "Submit"}
+                                {task?.exercise?.data && "Undo" }
+                                {!task?.exercise?.data && statusTask!=="past-due" && "Submit"}
+                                {!task?.exercise?.data && statusTask==="past-due" && "Submit late"}
+
                             </Button>
                         </div>
                     </div>
@@ -250,39 +303,43 @@ function DetailTask({ leader }) {
                                 </Typography.Text>
                             </div>
 
-                            <Dropdown
-                                overlayClassName={styles.main}
-                                menu={{
-                                    items,
-                                    onClick,
-                                }}
-                                placement="bottomLeft"
-                                arrow={false}
-                                trigger={["click"]}
-                            >
-                                <div
-                                    style={{
-                                        cursor: "pointer",
-                                        color: "var(--color--df-mess)",
-                                        width: "fit-content",
-                                        marginTop: "5px",
+                            {!task?.exercise?.data &&task.member.includes(user._id) && (
+                                <Dropdown
+                                    overlayClassName={styles.main}
+                                    menu={{
+                                        items,
+                                        onClick,
                                     }}
+                                    placement="bottomLeft"
+                                    arrow={false}
+                                    trigger={["click"]}
                                 >
-                                    <PaperClipOutlined style={{ marginRight: "5px" }} />
-                                    Attach
-                                </div>
-                            </Dropdown>
-                            <Upload
-                                onChange={handleChange}
-                                maxCount={1}
-                                listType="picture"
-                                className="uploadTask"
-                                onRemove={handleRemove}
-                                beforeUpload={() => false}
-                            >
-                                <span className={styles.upload} ref={upload}></span>
-                            </Upload>
-                            {initData?.link && (
+                                    <div
+                                        style={{
+                                            cursor: "pointer",
+                                            color: "var(--color--df-mess)",
+                                            width: "fit-content",
+                                            marginTop: "5px",
+                                        }}
+                                    >
+                                        <PaperClipOutlined style={{ marginRight: "5px" }} />
+                                        Attach
+                                    </div>
+                                </Dropdown>
+                            )}
+                            {!task?.exercise?.data &&task.member.includes(user._id) && (
+                                <Upload
+                                    onChange={handleChange}
+                                    maxCount={1}
+                                    listType="picture"
+                                    className="uploadTask"
+                                    onRemove={handleRemove}
+                                    beforeUpload={() => false}
+                                >
+                                    <span className={styles.upload} ref={upload}></span>
+                                </Upload>
+                            )}
+                            {initData?.link && !task?.exercise?.data &&task.member.includes(user._id) && (
                                 <div style={{ marginTop: "-10px" }}>
                                     <a
                                         style={{ textDecoration: "underline" }}
@@ -350,7 +407,7 @@ function DetailTask({ leader }) {
                                         style={{
                                             color: "var(--color--text-drop)",
                                             fontWeight: 500,
-                                            display: "flex"
+                                            display: "flex",
                                         }}
                                         className="text-sm"
                                     >
@@ -382,12 +439,21 @@ function DetailTask({ leader }) {
                                                         <Form.Item label="Comment" name="comment">
                                                             <Input.TextArea
                                                                 rows={4}
-                                                                style={{ maxHeight: "250px", overflow: "hidden auto" }}
+                                                                style={{
+                                                                    maxHeight: "250px",
+                                                                    overflow: "hidden auto",
+                                                                }}
                                                                 placeholder="Type your comment"
                                                             ></Input.TextArea>
                                                         </Form.Item>
                                                         <Form.Item>
-                                                            <div className={styles["btn-form"]} style={{ padding: "0px", marginBottom: "-15px" }}>
+                                                            <div
+                                                                className={styles["btn-form"]}
+                                                                style={{
+                                                                    padding: "0px",
+                                                                    marginBottom: "-15px",
+                                                                }}
+                                                            >
                                                                 <Button
                                                                     type="primary"
                                                                     htmlType="submit"
@@ -424,7 +490,7 @@ function DetailTask({ leader }) {
                                     <div>
                                         <Checkbox
                                             onChange={handleSetCompleted}
-                                            checked={task.status === "complete" ? true : false}
+                                            checked={statusTask === "completed" ? true : false}
                                         >
                                             Completed
                                         </Checkbox>

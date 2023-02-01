@@ -28,6 +28,25 @@ function Stats(props) {
         "Total Groups Created:",
     ];
     const { userName, star, groupJoin, groupCreated, totalSubmited } = props;
+    const Points=(totalSubmited*3+star*5+groupJoin+groupCreated)
+    const percentPoints =(()=>{
+        if (Points>300){
+            return 100
+        }
+        if (Points>200){
+            return 80
+        }
+        if(Points>100){
+            return 50
+        }
+        if(Points>50){
+            return 33
+        }
+        if(Points<20){
+            return 10
+        }
+
+    })()
     return (
         <div>
             <div className={styles["stats-container"]}>
@@ -80,7 +99,7 @@ function Stats(props) {
                             </li>
                         </ul>
                     </div>
-                    <GradeRate />
+                    <GradeRate percent={percentPoints} />
                 </div>
             </div>
         </div>

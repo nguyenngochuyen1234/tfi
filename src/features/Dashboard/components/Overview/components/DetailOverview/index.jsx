@@ -7,6 +7,7 @@ DeltailOverview.propTypes = {
 };
 
 function DeltailOverview({data}) {
+    
     return (
         <div className={styles.root}>
             <ItemDetail _thisColor="#6600CC" _thisName="Total Tasks" _thisCount={data.length} />

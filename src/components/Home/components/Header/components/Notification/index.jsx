@@ -62,6 +62,7 @@ function Notification(props) {
     const fetchNotification = async () => {
         try {
             const data = await notificationApi.getAllNotification();
+            
             if (data.success) {
                 const countSeen = data.notifications?.filter((dt) => dt.seen === false);
                 setCountSeen(countSeen.length || 0);
@@ -166,7 +167,7 @@ function Notification(props) {
                 let id = uuidv4();
                 return {
                     items: [
-                        ...prevNotification,
+                        
                         {
                             key: id,
                             label: (
@@ -194,12 +195,13 @@ function Notification(props) {
                                 </div>
                             ),
                         },
+                        ...prevNotification,
                     ],
                 };
             });
         }
     }, [notificationSocket]);
-    console.log(menuProps);
+
     return (
         <Dropdown
             menu={menuProps}
