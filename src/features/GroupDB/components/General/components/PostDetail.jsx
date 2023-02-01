@@ -27,11 +27,11 @@ function PostDetail({ post, arrName }) {
             key: "comment",
         },
         {
-            label: <Options icon={<EditOutlined />} label="Manage Group" config="sm" />,
+            label: <Options icon={<EditOutlined />} label="Chỉnh sửa bài viết" config="sm" />,
             key: "edit",
         },
         {
-            label: <Options icon={<DeleteOutlined />} label="Get link to group" config="sm" />,
+            label: <Options icon={<DeleteOutlined />} label="Xóa bài viết" config="sm" />,
             key: "del",
         },
     ];
