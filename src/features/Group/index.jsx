@@ -53,7 +53,7 @@ function FeatureGroup(props) {
                 console.log(error);
             }
         })();
-    }, [dispatch,isCreateJoin]);
+    }, [isCreateJoin]);
     const onChange = (key) => {
         setFilterGroups(allGroups[key]);
 

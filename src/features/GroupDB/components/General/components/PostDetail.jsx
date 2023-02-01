@@ -1,9 +1,17 @@
-import { HeartFilled, HeartOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Collapse, Tooltip } from "antd";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    EyeInvisibleOutlined,
+    HeartFilled,
+    HeartOutlined,
+    MoreOutlined,
+} from "@ant-design/icons";
+import { Button, Collapse, Dropdown, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import reactApi from "../../../../../api/reactApi";
+import Options from "../../../../../components/Options";
 import tick from "../../../../../Effects/assets_Effect_click.ogg";
 import CommentPost from "./CommentPost";
 import styles from "./styles.module.css";
@@ -13,12 +21,27 @@ PostDetail.propTypes = {
 };
 
 function PostDetail({ post, arrName }) {
+    const items = [
+        {
+            label: <Options icon={<EyeInvisibleOutlined />} label="Tắt bình luận" config="sm" />,
+            key: "comment",
+        },
+        {
+            label: <Options icon={<EditOutlined />} label="Chỉnh sửa bài viết" config="sm" />,
+            key: "edit",
+        },
+        {
+            label: <Options icon={<DeleteOutlined />} label="Xóa bài viết" config="sm" />,
+            key: "del",
+        },
+    ];
+
     const user =
         useSelector((state) => state.user.current?.account) || localStorage.getItem("user");
-        const userName = user.name;
+    const userName = user.name;
     const userId = user._id;
-    
-    const reacted = post.react.find(item=>item._id === userId)
+    console.log(post);
+    const reacted = post.react.find((item) => item._id === userId);
 
     const [love, setLove] = useState(!!reacted);
     const [react, setReact] = useState(post.react);
@@ -27,12 +50,12 @@ function PostDetail({ post, arrName }) {
             const sound = new Audio(tick);
             sound.play();
             if (!love) {
-                const resultCreate = await reactApi.createReact(post.idPost)
+                const resultCreate = await reactApi.createReact(post.idPost);
                 if (resultCreate.success) {
                     setReact([...react, { _id: userId, name: userName }]);
                 }
             } else {
-                const resultDelete = await reactApi.deleteReact(post.idPost)
+                const resultDelete = await reactApi.deleteReact(post.idPost);
                 if (resultDelete.success) {
                     const reactClone = [...react];
                     const reactFilter = reactClone.filter((item) => item._id !== userId);
@@ -40,13 +63,15 @@ function PostDetail({ post, arrName }) {
                 }
             }
             setLove(!love);
-
         } catch (err) {
-            console.log(err.message)
+            console.log(err.message);
         }
     };
     const [comment, setComment] = useState(post.comment);
     const [collapse, setCollapse] = useState(false);
+    const onClick = ({key}) => {
+        console.log(key);
+    };
     return (
         <div id={post.idPost} className={styles.post}>
             <div className={styles.post_header}>
@@ -77,23 +102,50 @@ function PostDetail({ post, arrName }) {
                             )
                         }
                     />
-                    <Button
-                        type="text"
-                        className={styles.Tdot}
-                        shape="circle"
-                        icon={<MoreOutlined className="text-md" />}
-                    />
+                    {post.idPeoplePost === userId && (
+                        <Dropdown
+                            overlayClassName={styles.main}
+                            menu={{
+                                items,
+                                onClick,
+                            }}
+                            placement="bottomRight"
+                            arrow={false}
+                            trigger={["click"]}
+                        >
+                            <Button
+                                type="text"
+                                className={styles.Tdot}
+                                shape="circle"
+                                icon={<MoreOutlined className="text-md" />}
+                            />
+                        </Dropdown>
+                    )}
                 </div>
             </div>
 
             <div className={styles.post_body} dangerouslySetInnerHTML={{ __html: post.about }} />
             {react.length > 0 && (
                 <div style={{ display: "flex", alignItems: "center", margin: "5px 0px 0px 0px" }}>
-                    <Tooltip arrow={false} color="var(--color--tooltip)" title={<ul style={{ listStyleType: "none" }}>
-                        {react.map((item, idx) => (idx < 20 && <li key={item._id} className="text-ssm">{item.name}</li>))}
-                        {react.length > 20 && <li className="text-ssm">{react.length - 20} other peoples</li>}
-                    </ul>}>
-
+                    <Tooltip
+                        arrow={false}
+                        color="var(--color--tooltip)"
+                        title={
+                            <ul style={{ listStyleType: "none" }}>
+                                {react.map(
+                                    (item, idx) =>
+                                        idx < 20 && (
+                                            <li key={item._id} className="text-ssm">
+                                                {item.name}
+                                            </li>
+                                        )
+                                )}
+                                {react.length > 20 && (
+                                    <li className="text-ssm">{react.length - 20} other peoples</li>
+                                )}
+                            </ul>
+                        }
+                    >
                         <div
                             style={{
                                 border: "1px solid var(--color-bd-primary)",
@@ -106,7 +158,6 @@ function PostDetail({ post, arrName }) {
                             <span style={{ fontSize: "15px", marginLeft: "1px" }}>❤</span>
                         </div>
                     </Tooltip>
-
                 </div>
             )}
             <div className={styles.post_footer}>
@@ -125,7 +176,11 @@ function PostDetail({ post, arrName }) {
                         }
                     >
                         <CommentPost comment={comment} />
-                        <TypeComment idPost={post.idPost} setComment={setComment} arrName={arrName}/>
+                        <TypeComment
+                            idPost={post.idPost}
+                            setComment={setComment}
+                            arrName={arrName}
+                        />
                     </Collapse.Panel>
                 </Collapse>
             </div>

@@ -244,7 +244,7 @@ function DetailTask({ leader }) {
                         </Button>
                         <div>
                             
-                            <StatusInterval status={statusTask} setStatusTask={setStatusTask} time={task.deadline} />
+                            <StatusInterval status={statusTask} setStatusTask={setStatusTask} time={task.deadline} idTask={task._id}/>
                             {task.member.includes(user._id) ? (
                                 <Tag icon={<CheckCircleOutlined />} color="success">
                                     Thành viên task

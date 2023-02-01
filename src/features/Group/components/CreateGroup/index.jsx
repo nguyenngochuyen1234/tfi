@@ -41,6 +41,7 @@ function CreateGroup(props) {
         console.log(`selected ${value}`);
     };
     const handleAdd = async () => {
+        console.log({dataGroup})
         const memberid = memberFiltered.map((member) => member._id);
         const updateMember = { member: [...dataGroup.member, ...memberid] };
         try {
