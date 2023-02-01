@@ -90,6 +90,7 @@ function General({ group }) {
                     {initData.map((data) => (
                         <PostDetail key={data.idPost} post={data} arrName={arrName} />
                     ))}
+                    {initData.length===0 && <div style={{textAlign:"center"}}>Chưa có bài đăng nào hãy trở thành người đầu tiên</div>}
                 </div>
             ) : (
                 <div className={styles.general_body}>

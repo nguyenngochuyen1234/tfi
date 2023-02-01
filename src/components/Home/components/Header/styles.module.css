@@ -88,3 +88,14 @@
 .main li{
     border-radius: 10px !important;
 }
+.noti ul{
+    padding:5px 10px;
+    color: var( --color--text-default)!important;
+    background-color: var(--color--default) !important;
+}
+.noti ul li:hover{
+    background-color: var(--color--hover-li) !important;
+}
+.noti li{
+    border-radius: 10px !important;
+}

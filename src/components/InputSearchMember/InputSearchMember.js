@@ -58,7 +58,7 @@ const InputSearchMember = ({ memberFiltered, setMemberFiltered, usersData }) => 
                     )
                 })}
             </div>}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 <div style={{ position: "relative", width: "95%" }}>
                     <Input
                         onChange={onChangeHandle}

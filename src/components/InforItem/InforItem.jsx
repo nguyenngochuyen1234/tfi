@@ -60,7 +60,7 @@ function InforItem({ label,name, data, edit, config = {} }) {
                             text:editable
                         }}
 
-                        style={{ ...config ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
+                        style={{ ...config ,display:"flex",alignItems:"center",justifyContent:"space-between",color:"var(--color--text-drop)"}}
                     >{editable}</Typography.Text>
                 </Col>
             </Row>

@@ -109,19 +109,19 @@ function CreateGroup(props) {
                     src="https://ik.imagekit.io/TLIT/Thang/team1.png?ik-sdk-version=javascript-1.4.3&updatedAt=1673205148869"
                     alt="thang"
                 />
-                <Typography.Text className="text-md" style={{ fontWeight: "500" }}>
+                <Typography.Text className="text-md" style={{ fontWeight: "500", color:"var(--color--text-default)" }}>
                     Create a group
                 </Typography.Text>
             </div>
 
             <div>
-                <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+                <Button type="primary" onClick={showModal}  icon={<PlusOutlined />}>
                     Create a group
                 </Button>
                 <Modal
                     className={styles.form}
                     title={
-                        <Typography.Title level={3}>
+                        <Typography.Title level={3} style={{color:"var(--color--text-default)"}}>
                             {step === 1 ? "Create your group" : "Add members to group"}
                         </Typography.Title>
                     }
@@ -149,7 +149,7 @@ function CreateGroup(props) {
                     )}
                     {step === 2 && (
                         <div>
-                            <Typography.Text>
+                            <Typography.Text style={{color:"var(--color--text-default)"}}>
                                 Start typing a name, distribution list, or security group to add to
                                 your team. You can also add people outside your organisation as
                                 guests by typing their email addresses.

@@ -202,8 +202,8 @@ function GroupDB(props) {
                         </div>
                         <Typography.Text
                             style={{
-                                fontSize: "12px",
-                                color: "#555",
+                                fontSize: "13px",
+                                color: "var(--color--text-drop)",
                                 margin: "5px 0px 0px 15px",
                                 width: "70%",
                                 minWidth: "250px",

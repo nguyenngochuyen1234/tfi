@@ -58,15 +58,15 @@ function TaskLogGR({ leader, task, handleDelete,handleTask}) {
                 </Modal>
             )}
             <Col className={styles.box_1} span={6}>
-                <Typography.Paragraph strong style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
-                    {task.name}{" "}
+                <Typography.Paragraph strong style={{ margin: 0 ,color:"var(--color--text--default)"}} ellipsis={{ rows: 2 }}>
+                    {task.name}
                 </Typography.Paragraph>
             </Col>
             <Col className={styles.box_1} span={3}>
                 <StatusInterval status={statusTask} setStatusTask={setStatusTask} time={task.deadline} idTask={task._id}/>
             </Col>
             <Col className={styles.box_1} span={5}>
-                <Typography.Paragraph style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
+                <Typography.Paragraph style={{ margin: 0,color:"var(--color--text--default)" }} ellipsis={{ rows: 2 }}>
                     {task.description}
                 </Typography.Paragraph>
             </Col>
@@ -86,7 +86,7 @@ function TaskLogGR({ leader, task, handleDelete,handleTask}) {
                         size="large"
                         shape="circle"
                         onClick={showModal}
-                        icon={<DeleteOutlined />}
+                        icon={<DeleteOutlined style={{color:"var(--color--text-default)"}}/>}
                     />
                 )}
             </Col>

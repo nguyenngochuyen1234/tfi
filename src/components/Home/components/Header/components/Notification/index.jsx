@@ -204,6 +204,8 @@ function Notification(props) {
 
     return (
         <Dropdown
+        overlayClassName={styles.noti}
+            
             menu={menuProps}
             open={show}
             placement="bottomRight"
