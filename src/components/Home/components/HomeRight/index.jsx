@@ -7,6 +7,7 @@ import FeatureGroup from "../../../../features/Group";
 import GroupDB from "../../../../features/GroupDB";
 import AddTask from "../../../../features/GroupDB/components/AddTask";
 import DetailTask from "../../../../features/GroupDB/components/DetailTask";
+import Manager from "../../../../features/GroupDB/components/Manager";
 import FeatureInfor from "../../../../features/Infor";
 import FeaturePassword from "../../../../features/Password";
 import FeatureTaskList from "../../../../features/TaskList";
@@ -28,6 +29,7 @@ function HomeRight({ feature }) {
             <Route path="/groups" element={<FeatureGroup />} />
             <Route path="/groups/:idGroup/tasks/:idTask" element={<DetailTask />} />
             <Route path="/groups/:idGroup/tasks/add" element={<AddTask />} />
+            <Route path="/groups/:idGroup/setting" element={<Manager />} />
 
             <Route path="/groups/:idGroup/*" element={<GroupDB />} />
             <Route path="/tasklist" element={<FeatureTaskList />} />

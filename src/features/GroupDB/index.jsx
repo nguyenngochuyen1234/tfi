@@ -194,6 +194,7 @@ function GroupDB(props) {
                                 <Button
                                     style={{ marginLeft: "20px" }}
                                     size="large"
+                                    onClick={()=>navigate("./setting")}
                                     shape="circle"
                                     icon={<SettingOutlined />}
                                 />

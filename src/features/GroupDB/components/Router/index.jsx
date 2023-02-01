@@ -5,6 +5,7 @@ import General from "../General";
 import GRTasks from "../GRTasks";
 import TimeLine from "../TimeLine";
 import Files from "../Files";
+import Manager from "../Manager";
 
 GRRouter.propTypes = {
     handleTask: PropTypes.func,
@@ -20,7 +21,10 @@ GRRouter.defaultProps = {
 function GRRouter({ handleTask, idGroup, group }) {
     return (
         <Routes>
+            <Route path="/setting" element={<Manager group={group} />} />
+
             <Route path="/general" element={<General group={group} />} />
+
             <Route
                 path="/tasks"
                 element={<GRTasks handleTask={handleTask} idGroup={idGroup} group={group} />}
