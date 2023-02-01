@@ -13,7 +13,7 @@ function TaskLog({ task }) {
         <div className={styles.main}>
             <div style={{ marginBottom: "40px" }}>
                 <div>
-                    <Typography.Title level={3} style={{ margin: 0 }}>
+                    <Typography.Title level={3} style={{ margin: 0,color:"var(--color--text-default" }}>
                         {task.name}
                     </Typography.Title>
                 </div>
@@ -32,7 +32,7 @@ function TaskLog({ task }) {
                 </Typography.Text>
             </div>
             <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
-                <Typography.Paragraph style={{ marginBottom: "10px" }}>
+                <Typography.Paragraph style={{ marginBottom: "10px",color:"var(--color--text-default" }}>
                     {task.description||"Không có mô tả"}
                 </Typography.Paragraph>
             </div>

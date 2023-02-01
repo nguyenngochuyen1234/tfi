@@ -451,7 +451,7 @@ function DetailTask({ leader }) {
                                     </Typography.Text>
                                 </div>
                                 <div>
-                                    <Typography.Paragraph>
+                                    <Typography.Paragraph style={{color:"var(--color--text-default"}}>
                                         {comment || "No comment"}
                                     </Typography.Paragraph>
                                 </div>
@@ -472,6 +472,7 @@ function DetailTask({ leader }) {
                                     <div>
                                         <Checkbox
                                             onChange={handleSetCompleted}
+                                            style={{color:"var(--color--text-default"}}
                                             checked={statusTask === "completed" ? true : false}
                                         >
                                             Completed

@@ -140,7 +140,7 @@ function FeatureGroup(props) {
                     </div>
                     <Typography.Text
                         className="text-xxl"
-                        style={{ fontWeight: "300", margin: "0px 15px " }}
+                        style={{ fontWeight: "300", margin: "0px 15px ", color:"var(--color--text-default)" }}
                     >
                         Join or create a group
                     </Typography.Text>

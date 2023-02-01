@@ -21,17 +21,17 @@ function FormGroup({ onFinish, handleChange, onFinishFailed }) {
             autoComplete="off"
         >
             <Form.Item
-                label="Group name"
+                label={<span style={{color:"var(--color--text-default)"}}>Group name</span>}
                 name="groupname"
                 rules={[{ required: true, message: "Please input your group name!" }]}
             >
                 <Input placeholder="Your group name" />
             </Form.Item>
 
-            <Form.Item label="Description" name="description">
+            <Form.Item label={<span style={{color:"var(--color--text-default)"}}>Description</span>} name="description">
                 <Input placeholder="Let people know what this group is all about" />
             </Form.Item>
-            <Form.Item label="Privacy" name="privacy" initialValue="Private">
+            <Form.Item label={<span style={{color:"var(--color--text-default)"}}>Privacy</span>} name="privacy" initialValue="Private">
                 <Select
                     defaultActiveFirstOption={true}
                     style={{

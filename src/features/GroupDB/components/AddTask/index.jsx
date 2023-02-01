@@ -86,8 +86,7 @@ function AddTask(props) {
                 description: "Chờ 3 giây để tự động trở về task overview",
                 duration: 2.5,
             });
-            setTimeout(()=>navigate(-1),3000)
-            
+            setTimeout(() => navigate(-1), 3000);
         } catch (err) {
             console.log(err.message);
             api.success({
@@ -103,7 +102,7 @@ function AddTask(props) {
     return (
         <div className={styles["add-task"]}>
             {contextHolder}
-            <Spin spinning={loading} tip="Tạo Task...">
+            <Spin style={{ height: "100%" }} spinning={loading} tip="Tạo Task...">
                 <div>
                     <Button
                         type="link"
@@ -127,7 +126,11 @@ function AddTask(props) {
                             autoComplete="off"
                         >
                             <Form.Item
-                                label="Task name"
+                                label={
+                                    <span style={{ color: "var(--color--text-default)" }}>
+                                        Task name
+                                    </span>
+                                }
                                 name="name"
                                 rules={[
                                     { required: true, message: "Please input your task name!" },
@@ -136,7 +139,7 @@ function AddTask(props) {
                                 <Input placeholder="Your task name" />
                             </Form.Item>
 
-                            <Form.Item name="description" label="About">
+                            <Form.Item name="description" label={<span style={{color:"var(--color--text-default)"}}>About</span>}>
                                 <Input.TextArea placeholder="Let talk about description this task" />
                             </Form.Item>
                             <InputSearchMember
@@ -144,7 +147,7 @@ function AddTask(props) {
                                 setMemberFiltered={setMemberFiltered}
                                 usersData={usersData}
                             />
-                            <Form.Item name="deadline" label="Due on" {...config}>
+                            <Form.Item name="deadline" label={<span style={{color:"var(--color--text-default)"}}>Due on</span>} {...config}>
                                 <DatePicker
                                     disabledDate={(current) => {
                                         let customDate = moment().format("DD-MM-YYYY");

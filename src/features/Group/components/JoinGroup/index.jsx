@@ -35,7 +35,7 @@ function JoinGroup(props) {
                     src="https://ik.imagekit.io/TLIT/Thang/team2.png?ik-sdk-version=javascript-1.4.3&updatedAt=1673205685609"
                     alt="thang"
                 />
-                <Typography.Text className="text-md" style={{ fontWeight: "500" }}>
+                <Typography.Text className="text-md" style={{ fontWeight: "500" , color:"var(--color--text-default)"}}>
                     Join a group with code
                 </Typography.Text>
             </div>
