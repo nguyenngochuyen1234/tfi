@@ -8,6 +8,10 @@ const exerciseApi = {
         const url = `/exercise/${idTask}`
         return axiosClient.post(url, data)
     },
+    delExecrcise(idEx) {
+        const url = `/exercise/${idEx}`
+        return axiosClient.delete(url)
+    }
 
 }
 export default exerciseApi;

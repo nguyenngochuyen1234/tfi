@@ -66,6 +66,11 @@ function FeatureTaskList(props) {
             key: "completed",
             children: <Tasks tasks={tasks} />,
         },
+        {
+            label: <BarItem label="Pending Tasks" />,
+            key: "pending",
+            children: <Tasks tasks={tasks} />,
+        },
     ];
 
     return (

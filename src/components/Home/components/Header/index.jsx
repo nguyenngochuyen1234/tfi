@@ -34,7 +34,7 @@ function Header({setOpenSetting,setOpenScreen}) {
         <div className={styles.root}>
             <div className={styles["flex-container"]}>
                 <Link to="/home/dashboard"><img  className={styles.logo} src="../../../../img/logo.png" alt="Logo" /></Link>
-                <span className={styles.project}>Task managerment</span>
+                <span className={styles.project}>Task management</span>
             </div>
             <div className={styles["flex-container"]}>
                 <Notification />

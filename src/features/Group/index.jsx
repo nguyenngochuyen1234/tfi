@@ -55,7 +55,7 @@ function FeatureGroup(props) {
     };
     const handleClick = (key, idGroup) => {
         if(key==="link"){
-            navigator.clipboard.writeText(window.location.href+"/"+idGroup)
+            navigator.clipboard.writeText(window.location.href+idGroup)
             api.success({
                 message: `Copy thành công`,
                 description: "Đã copy link group",

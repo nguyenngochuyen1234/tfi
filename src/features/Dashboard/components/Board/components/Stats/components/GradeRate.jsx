@@ -2,9 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Progress } from "antd";
 
-GradeRate.propTypes = {};
+GradeRate.propTypes = {
+    percent: PropTypes.number.isRequired,
+};
 
-function GradeRate(props) {
+function GradeRate({ percent }) {
     return (
         <div>
             <Progress
@@ -15,9 +17,27 @@ function GradeRate(props) {
                 }}
                 width={80}
                 type="circle"
-                percent={75}
+                percent={percent}
                 format={(percent) => (
-                    <span style={{ color: "var(--color--text-default)" }}>A +</span>
+                    <span style={{ color: "var(--color--text-default)" }}>
+                        {(() => {
+                            if (percent > 90) {
+                                return "S+";
+                            }
+                            if (percent > 70) {
+                                return "S";
+                            }
+                            if (percent > 40) {
+                                return "A+";
+                            }
+                            if (percent > 20) {
+                                return "A";
+                            }
+                            if (percent > 0) {
+                                return "C";
+                            }
+                        })()}
+                    </span>
                 )}
             />
         </div>
