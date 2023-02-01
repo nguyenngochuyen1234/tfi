@@ -15,7 +15,7 @@ FilterGroups.defaultProps = {
 
 function FilterGroups({ data, status, handleClick }) {
 
-
+    console.log(data);
     const handleFeatureClick = (key, idGroup) => {
         if (handleClick) handleClick(key, idGroup);
     }
@@ -40,6 +40,7 @@ function FilterGroups({ data, status, handleClick }) {
                             handleFeatures={handleFeatureClick}
                             nameGroup={item.name}
                             members={item.member}
+                            describe={item.description}
 
                         />
                     </Col>

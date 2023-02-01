@@ -9,14 +9,14 @@ StatusInterval.propTypes = {
     status: PropTypes.string.isRequired,
     setStatusTask: PropTypes.func.isRequired,
     time: PropTypes.string.isRequired,
+    idTask:PropTypes.string.isRequired
 };
 
-function StatusInterval({ status, setStatusTask, time }) {
+function StatusInterval({ status, setStatusTask, time ,idTask}) {
     const timeFormat = dayjs(time).format("YYYY-MM-DDTHH:mm:ss.sssZ");
-    const { idTask } = useParams();
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (status === "past-due") {
+            if (status === "past-due" || status === "completed") {
                 clearInterval(intervalId);
             }
             const now = dayjs().format("YYYY-MM-DDTHH:mm:ss.sssZ");

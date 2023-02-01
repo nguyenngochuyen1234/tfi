@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import GroupAvatar from "../../../../../components/Avatar/GroupAvatar";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import StatusInterval from "../../DetailTask/StatusInterval";
 TaskLogGR.propTypes = {
     leader: PropTypes.string.isRequired,
     task: PropTypes.object.isRequired,
@@ -17,6 +18,7 @@ function TaskLogGR({ leader, task, handleDelete,handleTask}) {
     const userId =
         useSelector((state) => state.user.current?.account._id) || localStorage.getItem("user_id");
     const [open, setOpen] = useState(false);
+    const [statusTask, setStatusTask] = useState(task.status);
 
     const showModal = () => {
         setOpen(true);
@@ -61,10 +63,7 @@ function TaskLogGR({ leader, task, handleDelete,handleTask}) {
                 </Typography.Paragraph>
             </Col>
             <Col className={styles.box_1} span={3}>
-                {task.status === "uncomplete" && <Tag color="magenta">Uncomplete</Tag>}
-                {task.status === "past-due" && <Tag color="red">Past Due</Tag>}
-                {task.status === "completed" && <Tag color="green">Completed</Tag>}
-                {task.status === "pending" && <Tag color="orange">Pending</Tag>}
+                <StatusInterval status={statusTask} setStatusTask={setStatusTask} time={task.deadline} idTask={task._id}/>
             </Col>
             <Col className={styles.box_1} span={5}>
                 <Typography.Paragraph style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
