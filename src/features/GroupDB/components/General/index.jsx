@@ -82,7 +82,7 @@ function General({group}) {
                 </Button>
                 <ModalPost
                     setPost={setPost}
-                    
+                    group={group}
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                 />

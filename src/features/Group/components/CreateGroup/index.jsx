@@ -8,6 +8,7 @@ import FormGroup from "./components/FormGroup";
 import notificationApi from "../../../../api/notificationApi";
 import styles from "./styles.module.css";
 import userApi from "../../../../api/userApi";
+import timelineDashboardApi from "../../../../api/timelineDashboardApi";
 
 CreateGroup.propTypes = {};
 CreateGroup.defaultProps = {};
@@ -47,7 +48,9 @@ function CreateGroup(props) {
         try {
             const idGroup = dataGroup._id
             const nameGroup = dataGroup.name
+            const titleTimeline = `Bạn đã tạo group ${nameGroup}`
             await groupApi.updateGroup(idGroup, updateMember)
+            await timelineDashboardApi.createTimelineDashboard({titleTimeline})
             for (let i = 0; i < memberid.length; i++) {
                 let notification = {
                     receiver: memberid[i],

@@ -107,6 +107,44 @@ function Notification(props) {
             console.log(err);
         }
     };
+    const handleClickNotification = async (dt, key) => {
+        try {
+            const id = dt._id;
+            if (!dt.seen) {
+                setCountSeen((prev) => (prev - 1 < 0 ? 0 : prev - 1));
+                await notificationApi.updateNotification(id, { seen: "true" });
+                console.log({ dt, menuProps, key })
+                setMenuProps((prev) => {
+                    return {
+                        items: prev.items.map((item) =>
+                            item.key == key
+                                ? {
+                                    key: item.key,
+                                    label: (
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                backgroundColor: "#fff",
+                                            }}
+                                            onClick={() => handleClickNotification(dt, item.key)}
+                                        >
+                                            <Notification data={dt} />
+                                        </div>
+                                    ),
+                                }
+                                : item
+                        ),
+                    };
+                });
+            }
+            navigate(dt.link);
+            setShow(false);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
     useEffect(() => {
         fetchNotification();
     }, []);
@@ -161,43 +199,6 @@ function Notification(props) {
             });
         }
     }, [notificationSocket]);
-    const handleClickNotification = async (dt, key) => {
-        console.log({ dt, key });
-        try {
-            const id = dt._id;
-            if (!dt.seen) {
-                setCountSeen((prev) => (prev - 1 < 0 ? 0 : prev - 1));
-                await notificationApi.updateNotification(id, { seen: "true" });
-                setMenuProps((prev) => {
-                    return {
-                        items: prev.items.map((item) =>
-                            item.key == key
-                                ? {
-                                      key: item.key,
-                                      label: (
-                                          <div
-                                              style={{
-                                                  display: "flex",
-                                                  flexDirection: "row",
-                                                  backgroundColor: "#fff",
-                                              }}
-                                              onClick={() => handleClickNotification(dt, item.key)}
-                                          >
-                                              <Notification data={item} />
-                                          </div>
-                                      ),
-                                  }
-                                : item
-                        ),
-                    };
-                });
-            }
-            navigate(dt.link);
-            setShow(false);
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
     console.log(menuProps);
     return (
         <Dropdown
