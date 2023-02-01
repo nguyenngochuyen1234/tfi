@@ -10,7 +10,6 @@
 }
 .box_1{
     padding:0px 10px;
-
 }
 .content{
     height: calc(100vh - 300px);
@@ -24,7 +23,6 @@
     font-size: 16px;
     font-weight: 500;
     border-bottom:1px solid var(--color-bd-primary);
-
 }
 .del{
     position: absolute;

@@ -7,13 +7,13 @@ DeltailOverview.propTypes = {
 };
 
 function DeltailOverview({data}) {
-    
+    console.log(data)
     return (
         <div className={styles.root}>
             <ItemDetail _thisColor="#6600CC" _thisName="Total Tasks" _thisCount={data.length} />
-            <ItemDetail _thisColor="red" _thisName="Completed" _thisCount={data.map((item)=>item.status==="complete").length} />
-            <ItemDetail _thisColor="orange" _thisName="In progress" _thisCount={data.map((item)=>item.status==="uncomplete").length} />
-            <ItemDetail _thisColor="brown" _thisName="Out of schedule" _thisCount={data.map((item)=>item.status==="past-due").length} />
+            <ItemDetail _thisColor="red" _thisName="Completed" _thisCount={data.filter((item)=>item.status==="completed").length} />
+            <ItemDetail _thisColor="orange" _thisName="In progress" _thisCount={data.filter((item)=>item.status==="uncomplete").length} />
+            <ItemDetail _thisColor="brown" _thisName="Out of schedule" _thisCount={data.filter((item)=>item.status==="past-due").length} />
 
         </div>
     );

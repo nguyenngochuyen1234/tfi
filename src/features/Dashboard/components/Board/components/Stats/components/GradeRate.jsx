@@ -27,11 +27,17 @@ function GradeRate({ percent }) {
                             if (percent > 70) {
                                 return "S";
                             }
-                            if (percent > 40) {
+                            if (percent > 45) {
                                 return "A+";
                             }
-                            if (percent > 20) {
-                                return "A";
+                            if (percent > 35) {
+                                return "A+";
+                            }
+                            if (percent > 25) {
+                                return "B+";
+                            }
+                            if (percent > 15) {
+                                return "B";
                             }
                             if (percent > 0) {
                                 return "C";

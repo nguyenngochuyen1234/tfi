@@ -3,3 +3,21 @@
     flex:1 1;
     height: 100%;
 }
+.box{
+    margin-top: 10px;
+    padding:0px 15px;
+}
+.box_1{
+    padding:5px 10px;
+}
+.item{
+    background-color: var(--color--default);
+    margin-bottom: 2px;
+    padding:5px 10px;
+    display: flex;
+    align-items: center;
+}
+.header{
+    padding:5px 10px;
+
+}

@@ -7,6 +7,7 @@ import Board from "./components/Board";
 import Overview from "./components/Overview";
 import userApi from "../../api/userApi";
 import { useSelector } from "react-redux";
+import taskApi from "../../api/taskApi";
 FeatureDashBoard.propTypes = {};
 
 function FeatureDashBoard(props) {
@@ -18,7 +19,9 @@ function FeatureDashBoard(props) {
         (async () => {
             try {
                 const { user } = await userApi.getOnlyUser(_id);
-                setUser(user);
+                const { tasks } = await taskApi.getAllTaskOfUser();
+                const configUser={...user,tasks}
+                setUser(configUser);
             } catch (error) {
                 console.log(error);
             }

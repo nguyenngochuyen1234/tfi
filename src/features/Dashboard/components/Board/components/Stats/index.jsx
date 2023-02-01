@@ -37,10 +37,16 @@ function Stats(props) {
             return 80
         }
         if(Points>100){
-            return 50
+            return 60
         }
         if(Points>50){
-            return 33
+            return 45
+        }
+        if(Points>35){
+            return 35
+        }
+        if(Points>20){
+            return 20
         }
         if(Points<20){
             return 10
