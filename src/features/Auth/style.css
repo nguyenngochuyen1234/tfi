@@ -1,21 +1,42 @@
 .auth-body{
     height: 100vh;
-    display: flex;
+    width: 100vw;
+    overflow: hidden;
     flex-direction: row;
+    background: url("https://ik.imagekit.io/TLIT/task_i46LqHspO.png?ik-sdk-version=javascript-1.4.3&updatedAt=1675349856643");
+    background-position: center;
+    background-size: cover;
+    position: relative;
 }
 a{
     color: rgb(111, 157, 241);
 }
+
+
+
 a:hover {
     cursor: pointer;
     color: rgb(50, 81, 253);
 }
 .form-container{
-    height: 100%;
+    background-color: #fff;
     width: 100%;
+    max-width: 500px;
+    min-width: 450px;
+    min-height: 450px;
+    position: absolute;
+    top:50%;
+    left: 10%;
+    transform: translateY(-50%);
+    padding:10px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
+}
+.form-container .ant-row{
+    justify-content: center;
 }

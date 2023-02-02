@@ -33,12 +33,12 @@ function TimeLine(props) {
                         "text-md": true,
                     })}
                 >
-                    Timeline for this week
+                    Timeline
                 </span>
                 <Timeline className={styles["time-list"]} mode="right">
                     {
                         dataTimeline.map(data => {
-                            return <Timeline.Item label={dayjs(data.time).format("DD/MM/YYYY HH:mm")}>{data.title}</Timeline.Item>
+                            return <Timeline.Item key={data._id} label={dayjs(data.time).format("DD/MM/YYYY HH:mm")}>{data.title}</Timeline.Item>
                         })
                     }
                 </Timeline>

@@ -77,7 +77,10 @@ const Loginform = () => {
           <Input.Password />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">Đăng nhập</Button>
+          <div style={{width:"100%",textAlign:"center"}}>
+          <Button type="primary"  htmlType="submit">Đăng nhập</Button>
+
+          </div>
         </Form.Item>
       </Form>
     </Spin>

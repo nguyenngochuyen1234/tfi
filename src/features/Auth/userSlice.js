@@ -41,6 +41,11 @@ const userSlice = createSlice({
       // set state
       state.current = {}
 
+    },
+    updateInfor(state,action){
+      const clone={...state.current.account,...action.payload}
+      localStorage.setItem("user",JSON.stringify(clone))
+      state.current.account ={...clone} 
     }
   },
   extraReducers: builder => {
@@ -58,5 +63,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice
-export const { logOut } = actions
+export const { logOut,updateInfor } = actions
 export default reducer; 

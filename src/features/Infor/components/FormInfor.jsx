@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import styles from "../styles.module.css";
 import userApi from '../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { updateInfor } from '../../Auth/userSlice';
 FormInfor.propTypes = {
     data: PropTypes.object.isRequired,
     handleOk: PropTypes.func.isRequired,
 };
 
 function FormInfor({ data, handleOk }) {
+    const dispatch=useDispatch()
     const onFinish = async (value) => {
         try {
             await userApi.updatePatchAccount(value)
-            alert("update done!")
-            handleOk()
+        
+            dispatch(updateInfor({...value}))
+            handleOk({...value})
         } catch (err) {
             console.log(err.message)
         }
