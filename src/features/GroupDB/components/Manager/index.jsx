@@ -1,23 +1,78 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
-import { Button, Collapse, Input, Skeleton, Typography } from "antd";
+import { Button, Collapse, Input, Modal, Skeleton, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { CaretRightOutlined, LeftOutlined, UserAddOutlined } from "@ant-design/icons";
 import groupApi from "../../../../api/groupApi";
 import THeader from "./components/THeader";
 import TItem from "./components/TItem";
+import InputSearchMember from "../../../../components/InputSearchMember/InputSearchMember";
+import notificationApi from "../../../../api/notificationApi";
+import { useSelector } from "react-redux";
+import userApi from "../../../../api/userApi";
 Manager.propTypes = {};
 
 function Manager(props) {
+    let socket = useSelector((state) => state.socket.socket);
+
     const navigate = useNavigate();
     const [usersInGR, setUsersInGR] = useState();
     const [group, setgroup] = useState();
     const [admin, setAdmin] = useState();
+    const { idGroup } = useParams();
+    const user =
+        useSelector((state) => state.user.current?.account) ||
+        JSON.parse(localStorage.getItem("user"));
+    const leader =
+        useSelector((state) => state.user.current?.account.name) ||
+        localStorage.getItem("name_user");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [memberFiltered, setMemberFiltered] = useState([]);
+    const [usersData, setUsersData] = useState();
+    const [oldMember, setOldMember] = useState([]);
     const handleClickBack = () => {
         navigate(-1);
     };
-    const { idGroup } = useParams();
+    const showModal = () => {
+        const oldUsers = group.member;
+        setOldMember(oldUsers);
+        (async () => {
+            try {
+                const { allUser } = await userApi.getAllUser();
+                const newUsers = allUser?.filter((user) => !oldUsers.includes(user._id));
+                setUsersData(newUsers);
+                setIsModalOpen(true);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleAdd = async () => {
+        const memberid = memberFiltered.map((member) => member._id);
+        const updateMember = { member: [...oldMember, ...memberid] };
+        try {
+            await groupApi.updateGroup(idGroup, updateMember);
+            for (let i = 0; i < memberid.length; i++) {
+                let notification = {
+                    receiver: memberid[i],
+                    type: "group",
+                    title: `${leader || "Có người"} đã thêm bạn vào nhóm`,
+                    description: group.name,
+                    link: `groups`,
+                };
+                const result = await notificationApi.createNotification(notification);
+                socket.emit("send-notification", result);
+            }
+            alert("Add member done");
+            handleCancel();
+        } catch (err) {
+            console.log(err);
+        }
+    };
     useEffect(() => {
         (async () => {
             try {
@@ -81,9 +136,33 @@ function Manager(props) {
                             />
                         </Input.Group>
                     </div>
-                    <Button type="primary" icon={<UserAddOutlined />}>
-                        Add Members
-                    </Button>
+                    {group?.leader === user._id && (
+                        <Button type="primary" icon={<UserAddOutlined />} onClick={showModal}>
+                            Add Members
+                        </Button>
+                    )}
+                    <Modal
+                        title="Add member"
+                        open={isModalOpen}
+                        onCancel={handleCancel}
+                        footer={null}
+                    >
+                        <Typography.Text style={{ color: "var(--color--text-default)" }}>
+                            Start typing a name, distribution list, or security group to add to your
+                            team. You can also add people outside your organisation as guests by
+                            typing their email addresses.
+                        </Typography.Text>
+                        <div className={styles.flex}>
+                            <InputSearchMember
+                                memberFiltered={memberFiltered}
+                                setMemberFiltered={setMemberFiltered}
+                                usersData={usersData}
+                            />
+                            <Button type="primary" onClick={handleAdd}>
+                                Add
+                            </Button>
+                        </div>
+                    </Modal>
                 </div>
 
                 <div

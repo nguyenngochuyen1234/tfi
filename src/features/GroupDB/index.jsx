@@ -20,15 +20,15 @@ function GroupDB(props) {
     const location = useLocation();
     const navigate = useNavigate();
     const id = location.pathname.split("/")[3];
-    const leader = localStorage.getItem("name_user");
+    const leader =useSelector(state=>state.user.current?.account.name) || localStorage.getItem("name_user");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
-    const [usersData, setUsersData] = useState([]);
+    const [usersData, setUsersData] = useState();
     const [allUser, setAllUser] = useState([]);
     const [feature, setFeature] = useState();
     const [oldMember, setOldMember] = useState([]);
 
-    const user = useSelector((state) => state.user.current?.account);
+    const user = useSelector((state) => state.user.current?.account) || JSON.parse(localStorage.getItem("user"));
     const idUser = user?._id || localStorage.getItem("user_id");
     const [group, setGroup] = useState(null);
 
@@ -73,11 +73,6 @@ function GroupDB(props) {
         setUsersData(newUsers);
         setIsModalOpen(true);
     };
-
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
     const handleCancel = () => {
         setIsModalOpen(false);
     };
@@ -139,13 +134,20 @@ function GroupDB(props) {
 
     return (
         <div className="feature-container_right">
-            <Modal
+            {usersData &&<Modal
                 title="Add member"
                 open={isModalOpen}
-                onOk={handleOk}
                 onCancel={handleCancel}
                 footer={null}
             >
+               
+
+               <Typography.Text style={{ color: "var(--color--text-default)" }}>
+                    Start typing a name, distribution list, or security group to add to your team.
+                    You can also add people outside your organisation as guests by typing their
+                    email addresses.
+                </Typography.Text>
+                <div className={styles.flex}>
                 <InputSearchMember
                     memberFiltered={memberFiltered}
                     setMemberFiltered={setMemberFiltered}
@@ -154,7 +156,9 @@ function GroupDB(props) {
                 <Button type="primary" onClick={handleAdd}>
                     Add
                 </Button>
+                </div>
             </Modal>
+             }
             {group && (
                 <div id={group._id} style={{ backgroundColor: "var(--color--default)" }}>
                     <div className={styles["group-header"]}>
@@ -184,17 +188,17 @@ function GroupDB(props) {
 
                             <div className={styles.box_2}>
                                 <GroupAvatar arrayId={group.member} size="large" />
-                                <Button
+                                {group.leader===user._id &&<Button
                                     style={{ marginLeft: "40px" }}
                                     size="large"
                                     shape="circle"
                                     icon={<UserAddOutlined />}
                                     onClick={showModal}
-                                />
+                                />}
                                 <Button
                                     style={{ marginLeft: "20px" }}
                                     size="large"
-                                    onClick={()=>navigate("./setting")}
+                                    onClick={() => navigate("./setting")}
                                     shape="circle"
                                     icon={<SettingOutlined />}
                                 />

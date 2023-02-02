@@ -23,7 +23,11 @@
     display: flex;
     align-items: center;
 }
-
+.flex{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
 .des{
     margin-top: 5px;
     margin-left: 15px;

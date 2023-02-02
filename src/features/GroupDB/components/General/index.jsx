@@ -105,7 +105,6 @@ function General({ group }) {
                     <Skeleton
                         avatar
                         active
-
                         className={styles.skeleton_post}
                         paragraph={{
                             rows: 2,
