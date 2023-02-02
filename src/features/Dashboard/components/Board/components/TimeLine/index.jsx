@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Timeline } from "antd";
 import styles from "./styles.module.css";
 import classNames from "classnames";
+import timelineDashboardApi from "../../../../../../api/timelineDashboardApi";
+import dayjs from "dayjs";
+import { useState } from "react";
 TimeLine.propTypes = {};
 
 function TimeLine(props) {
+    const [dataTimeline, setDataTimeline] = useState([])
+    const fetchData = async () => {
+        try {
+            const data = await timelineDashboardApi.getTimelineDashboard()
+            if (data.success) {
+                setDataTimeline(data.timelineDashboard)
+                console.log(data.timelineDashboard)
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+    useEffect(() => {
+        fetchData()
+    }, [])
     return (
         <div className={styles.root}>
             <div className={styles["time-line"]}>
@@ -18,21 +36,11 @@ function TimeLine(props) {
                     Timeline for this week
                 </span>
                 <Timeline className={styles["time-list"]} mode="right">
-                    <Timeline.Item label="25-12-2022 07:20:25">Task submitted successfully
-                    </Timeline.Item>
-                    <Timeline.Item label="25-12-2022 09:12:11">Task submitted successfully</Timeline.Item>
-                    <Timeline.Item label="24-12-2022 20:12:11">
-                        Task submitted successfully
-                    </Timeline.Item>
-                    <Timeline.Item label="24-12-2022 09:12:11">
-                        You Joined TT34H2 team
-                    </Timeline.Item>
-                    <Timeline.Item label="24-12-2022 09:12:11">
-                        You Joined TT34H2 team
-                    </Timeline.Item>
-                    <Timeline.Item label="24-12-2022 09:12:11">
-                        You Joined TT34H2 team
-                    </Timeline.Item>
+                    {
+                        dataTimeline.map(data => {
+                            return <Timeline.Item label={dayjs(data.time).format("DD/MM/YYYY HH:mm")}>{data.title}</Timeline.Item>
+                        })
+                    }
                 </Timeline>
             </div>
         </div>

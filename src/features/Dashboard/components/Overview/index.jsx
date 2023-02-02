@@ -25,7 +25,7 @@ function Overview({user}) {
                 </Text>
             </div>
             <DeltailOverview data={user.tasks}/>
-            <TaskPinned />
+            {/* <TaskPinned /> */}
         </div>
     );
 }
