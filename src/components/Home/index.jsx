@@ -3,7 +3,7 @@ import AppBar from "./components/AppBar";
 import Header from "./components/Header";
 import styles from "./styles.module.css";
 import { io } from "socket.io-client";
-import { STATIC_HOST } from "../../constants/common";
+import { STATIC_HOST, HOST } from "../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import { socketActions } from "../socketSlice";
 import PropTypes from "prop-types";
@@ -66,7 +66,7 @@ function Home({ theme }) {
     }, [pathname]);
     useEffect(() => {
         if (idUser) {
-            socket.current = io(STATIC_HOST);
+            socket.current = io(STATIC_HOST,{origins:HOST});
             socket.current.emit("add-user", idUser);
             dispatch(socketActions.setSocket(socket.current));
         }
