@@ -41,12 +41,13 @@ function CreateGroup(props) {
         console.log(`selected ${value}`);
     };
     const handleAdd = async () => {
-        console.log({dataGroup})
+        // console.log({dataGroup})
         const memberid = memberFiltered.map((member) => member._id);
         const updateMember = { member: [...dataGroup.member, ...memberid] };
         try {
             const idGroup = dataGroup._id
             const nameGroup = dataGroup.name
+            setStep(4)
             const titleTimeline = `Bạn đã tạo group ${nameGroup}`
             await groupApi.updateGroup(idGroup, updateMember)
             await timelineDashboardApi.createTimelineDashboard({titleTimeline})

@@ -48,7 +48,7 @@ function ModalPost({ isModalOpen, group, setPost, setIsModalOpen }) {
                         type: "group",
                         title: `${leaderName || "Có người"} đã thêm 1 bài viết mới`,
                         description: group.name,
-                        link: `groups/${idGroup}`,
+                        link: `groups/${idGroup}/general`,
                     }
                     console.log(notification)
                     const resultNotificaton = await notificationApi.createNotification(notification)

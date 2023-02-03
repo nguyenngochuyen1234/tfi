@@ -20,7 +20,7 @@ function GroupDB(props) {
     const location = useLocation();
     const navigate = useNavigate();
     const id = location.pathname.split("/")[3];
-    const leader =useSelector(state=>state.user.current?.account.name) || localStorage.getItem("name_user");
+    const leader = useSelector(state => state.user.current?.account.name) || localStorage.getItem("name_user");
 
     const [memberFiltered, setMemberFiltered] = useState([]);
     const [usersData, setUsersData] = useState();
@@ -90,7 +90,8 @@ function GroupDB(props) {
         const memberid = memberFiltered.map((member) => member._id);
         const updateMember = { member: [...oldMember, ...memberid] };
         try {
-            await groupApi.updateGroup(id, updateMember);
+            const groupUpdate = await groupApi.updateGroup(id, updateMember);
+            console.log(memberid)
             for (let i = 0; i < memberid.length; i++) {
                 let notification = {
                     receiver: memberid[i],
@@ -101,6 +102,10 @@ function GroupDB(props) {
                 };
                 const result = await notificationApi.createNotification(notification);
                 socket.emit("send-notification", result);
+            }
+            if (groupUpdate.success) {
+                console.log(groupUpdate)
+                // setGroup(groupUpdate.group.member)
             }
             alert("Add member done");
             handleCancel();
@@ -134,31 +139,31 @@ function GroupDB(props) {
 
     return (
         <div className="feature-container_right">
-            {usersData &&<Modal
+            {usersData && <Modal
                 title="Add member"
                 open={isModalOpen}
                 onCancel={handleCancel}
                 footer={null}
             >
-               
 
-               <Typography.Text style={{ color: "var(--color--text-default)" }}>
+
+                <Typography.Text style={{ color: "var(--color--text-default)" }}>
                     Start typing a name, distribution list, or security group to add to your team.
                     You can also add people outside your organisation as guests by typing their
                     email addresses.
                 </Typography.Text>
                 <div className={styles.flex}>
-                <InputSearchMember
-                    memberFiltered={memberFiltered}
-                    setMemberFiltered={setMemberFiltered}
-                    usersData={usersData}
-                />
-                <Button type="primary" onClick={handleAdd}>
-                    Add
-                </Button>
+                    <InputSearchMember
+                        memberFiltered={memberFiltered}
+                        setMemberFiltered={setMemberFiltered}
+                        usersData={usersData}
+                    />
+                    <Button type="primary" onClick={handleAdd}>
+                        Add
+                    </Button>
                 </div>
             </Modal>
-             }
+            }
             {group && (
                 <div id={group._id} style={{ backgroundColor: "var(--color--default)" }}>
                     <div className={styles["group-header"]}>
@@ -188,7 +193,7 @@ function GroupDB(props) {
 
                             <div className={styles.box_2}>
                                 <GroupAvatar arrayId={group.member} size="large" />
-                                {group.leader===user._id &&<Button
+                                {group.leader === user._id && <Button
                                     style={{ marginLeft: "40px" }}
                                     size="large"
                                     shape="circle"
