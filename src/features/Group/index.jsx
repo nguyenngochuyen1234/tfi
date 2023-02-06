@@ -17,7 +17,7 @@ import timelineDashboardApi from "../../api/timelineDashboardApi";
 FeatureGroup.propTypes = {};
 
 function FeatureGroup(props) {
-    const dispatch = useDispatch()
+    const navigate=useNavigate()
     let socket = useSelector(state => state.socket.socket)
     const [api, contextHolder] = notification.useNotification();
     const leaderName = localStorage.getItem("name_user")
@@ -59,6 +59,9 @@ function FeatureGroup(props) {
 
     };
     const handleClick = async (key, idGroup) => {
+        if(key==="manage"){
+            navigate(`./${idGroup}/setting`)
+        }
         if(key==="link"){
             navigator.clipboard.writeText(window.location.href+idGroup)
             api.success({

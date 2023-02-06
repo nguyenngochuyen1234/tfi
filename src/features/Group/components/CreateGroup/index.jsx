@@ -47,6 +47,7 @@ function CreateGroup(props) {
         try {
             const idGroup = dataGroup._id
             const nameGroup = dataGroup.name
+            setStep(4)
             const titleTimeline = `Bạn đã tạo group ${nameGroup}`
             await groupApi.updateGroup(idGroup, updateMember)
             await timelineDashboardApi.createTimelineDashboard({titleTimeline})

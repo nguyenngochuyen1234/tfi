@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.css";
-import { Button, Collapse, Input, Modal, Skeleton, Typography } from "antd";
+import { Badge, Button, Collapse, Input, Modal, Skeleton, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { CaretRightOutlined, LeftOutlined, UserAddOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, FrownOutlined, IdcardOutlined, LeftOutlined, PlusOutlined, StopOutlined, UserAddOutlined } from "@ant-design/icons";
 import groupApi from "../../../../api/groupApi";
 import THeader from "./components/THeader";
 import TItem from "./components/TItem";
@@ -11,8 +11,75 @@ import InputSearchMember from "../../../../components/InputSearchMember/InputSea
 import notificationApi from "../../../../api/notificationApi";
 import { useSelector } from "react-redux";
 import userApi from "../../../../api/userApi";
+import Options from "../../../../components/Options";
 Manager.propTypes = {};
 
+const fakeData = [
+    {
+        avatar: "https://firebasestorage.googleapis.com/v0/b/storageapp-13725.appspot.com/o/1675352632284.b35d7780b7a811cf31556f341c9091a2.jpg?alt=media",
+        createAt: "2023-02-02T15:43:55.312Z",
+        gmail: "linh@gmail.com",
+        groupJoin: ["63dcbebbd99db97f37771cef"],
+        groupMade: [],
+        major: "khoa học máy tính",
+        name: "xxxxx",
+        _id:"12312321",
+        password:
+            "$argon2id$v=19$m=65536,t=3,p=4$lpbfspaMb0BYOMLyn1SNEg$n1HhedkigWcKDoKHPOC1iQgQIjDYAe67rmchMyHFiDo",
+        phoneNumber: "012354875",
+        school: "Đại học Thăng Long",
+        tasks: [],
+        username: "linh",
+    },
+    {
+        avatar: "https://firebasestorage.googleapis.com/v0/b/storageapp-13725.appspot.com/o/1675352632284.b35d7780b7a811cf31556f341c9091a2.jpg?alt=media",
+        createAt: "2023-02-02T15:43:55.312Z",
+        gmail: "linh@gmail.com",
+        _id:"12312323",
+
+        groupJoin: ["63dcbebbd99db97f37771cef"],
+        groupMade: [],
+        major: "khoa học máy tính",
+        name: "xxxxx",
+        password:
+            "$argon2id$v=19$m=65536,t=3,p=4$lpbfspaMb0BYOMLyn1SNEg$n1HhedkigWcKDoKHPOC1iQgQIjDYAe67rmchMyHFiDo",
+        phoneNumber: "012354875",
+        school: "Đại học Thăng Long",
+        tasks: [],
+        username: "linh",
+    },
+];
+const item1 = [
+    {
+        label: <Options icon={<IdcardOutlined />} label="Xem chi tiết" config="sm" />,
+        key: "infor",
+    },
+    {
+        label: <Options icon={<PlusOutlined />} label="Xác nhận thêm" config="sm" />,
+        key: "add",
+    },
+    {
+        label: <Options icon={<StopOutlined />} label="Từ chối" config="sm" />,
+        key: "deny",
+    },
+];
+const item2 = [
+    {
+        label: <Options icon={<IdcardOutlined />} label="Xem chi tiết" config="sm" />,
+        key: "infor",
+    },
+    {
+        label: <Options icon={<FrownOutlined />} label="Đuổi khỏi nhóm" config="sm" />,
+        key: "kick",
+    },
+];
+const item3 = [
+    {
+        label: <Options icon={<IdcardOutlined />} label="Xem chi tiết" config="sm" />,
+        key: "infor",
+    },
+
+];
 function Manager(props) {
     let socket = useSelector((state) => state.socket.socket);
 
@@ -73,7 +140,11 @@ function Manager(props) {
             console.log(err);
         }
     };
+    const handleClick= (key, value) => {
+        console.log(key, value);
+    }
     useEffect(() => {
+
         (async () => {
             try {
                 const { users } = await groupApi.getUsersByIds(idGroup);
@@ -90,6 +161,7 @@ function Manager(props) {
             }
         })();
     }, []);
+
     return (
         <div className={styles.managerGroup}>
             <div>
@@ -193,7 +265,7 @@ function Manager(props) {
                         >
                             <THeader />
                             {admin ? (
-                                <TItem key={admin._id} data={admin} />
+                                <TItem key={admin._id} data={admin} items={item3} handleClick={handleClick} />
                             ) : (
                                 <Skeleton active paragraph={{ rows: 1, width: "100%" }} />
                             )}
@@ -212,13 +284,37 @@ function Manager(props) {
                             {usersInGR ? (
                                 <>
                                     {usersInGR.map((item) => (
-                                        <TItem key={item._id} data={item} />
+                                        <TItem key={item._id} data={item} items={group?.leader === user._id?item2:item3} handleClick={handleClick} />
                                     ))}
                                 </>
                             ) : (
                                 <Skeleton active paragraph={{ rows: 4, width: "100%" }} />
                             )}
                         </Collapse.Panel>
+                        {group?.leader === user._id &&<Collapse.Panel
+                            header={
+                                <span
+                                    style={{ color: "var(--color--text-default)", fontWeight: 500 }}
+                                >
+                                     <Badge dot={(fakeData && fakeData.length>0)?true:false} offset={[10, 13]} color="rgb(52,141,255)"  >
+                                     Pending({fakeData && fakeData.length})
+
+                                     </Badge>
+                                </span>
+                            }
+                            key="pending"
+                        >
+                            <THeader />
+                            {fakeData ? (
+                                <>
+                                    {fakeData.map((item) => (
+                                        <TItem key={item._id} data={item} items={item1} handleClick={handleClick} />
+                                    ))}
+                                </>
+                            ) : (
+                                <Skeleton active paragraph={{ rows: 4, width: "100%" }} />
+                            )}
+                        </Collapse.Panel>}
                     </Collapse>
                 </div>
             </div>

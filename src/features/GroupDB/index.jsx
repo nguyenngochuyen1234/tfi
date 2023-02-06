@@ -1,5 +1,5 @@
 import { LeftOutlined, SettingOutlined, UserAddOutlined, CopyOutlined } from "@ant-design/icons";
-import { Button, Typography, Modal } from "antd";
+import { Button, Typography, Modal, Badge } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -195,6 +195,7 @@ function GroupDB(props) {
                                     icon={<UserAddOutlined />}
                                     onClick={showModal}
                                 />}
+                                <Badge count={2} offset={[-5, 5]} color="rgb(52,141,255)"  overflowCount={20}>
                                 <Button
                                     style={{ marginLeft: "20px" }}
                                     size="large"
@@ -202,6 +203,8 @@ function GroupDB(props) {
                                     shape="circle"
                                     icon={<SettingOutlined />}
                                 />
+                                </Badge>
+                                
                             </div>
                         </div>
                         <Typography.Text
