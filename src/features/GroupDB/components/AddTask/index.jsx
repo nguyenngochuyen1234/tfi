@@ -86,12 +86,7 @@ function AddTask(props) {
                 alert("create task done")
                 navigate(-1);
             };
-            //     console.log(notification);
-            //     (async () => {
-            //         const resultNoti = await notificationApi.createNotification(notification);
-            //         socket.emit("send-notification", resultNoti.data);
-            //     })();
-            // }
+
             setLoading(false);
             api.success({
                 message: `Tạo task thành công`,

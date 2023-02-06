@@ -1,3 +1,3 @@
-export const STATIC_HOST="http://localhost:8000/"
-export const HOST="http://localhost:3000/"
+export const STATIC_HOST="https://manager-app-uef5.onrender.com/"
+export const HOST="https://tfi-git-main-nguyenngochuyen1234.vercel.app/"
 
