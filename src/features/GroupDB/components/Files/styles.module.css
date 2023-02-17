@@ -1,0 +1,15 @@
+.resultContent{
+    margin-top: 10px;
+    width: 100%;
+    border:1px solid var(--color-bd-primary);
+    border-radius: 10px;
+    padding:5px 10px;
+
+}
+.resultContent >*{
+    align-items: center;
+}
+.file{
+    height: calc(100vh - 260px);
+    overflow: hidden auto;
+}

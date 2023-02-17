@@ -77,7 +77,7 @@ function TaskLogGR({ leader, task, handleDelete,handleTask}) {
                 {task.member.length === 0 && "No member"}
             </Col>
             <Col className={styles.box_1} span={3}>
-                {dayjs(task.deadline).format("DD-MM-YYYY")}
+                {dayjs(task.deadline).format("MMM D, YYYY")}
             </Col>
             <Col span={2}>
                 {leader === userId && (

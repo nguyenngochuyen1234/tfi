@@ -37,7 +37,7 @@ const SecondFormRegister = ({ current, steps, prev, dataFirstForm }) => {
                 ...values
             }
             await userApi.updateAccount(data)
-            api.error({
+            api.success({
                 message: `Đăng kí thành công`,
                 description: "Chờ 2 giây để tự động sang cửa sổ đăng nhập",
                 duration: 2,

@@ -12,43 +12,9 @@ import notificationApi from "../../../../api/notificationApi";
 import { useSelector } from "react-redux";
 import userApi from "../../../../api/userApi";
 import Options from "../../../../components/Options";
+import pendingMemberApi from "../../../../api/pendingMemeberApi";
 Manager.propTypes = {};
 
-const fakeData = [
-    {
-        avatar: "https://firebasestorage.googleapis.com/v0/b/storageapp-13725.appspot.com/o/1675352632284.b35d7780b7a811cf31556f341c9091a2.jpg?alt=media",
-        createAt: "2023-02-02T15:43:55.312Z",
-        gmail: "linh@gmail.com",
-        groupJoin: ["63dcbebbd99db97f37771cef"],
-        groupMade: [],
-        major: "khoa học máy tính",
-        name: "xxxxx",
-        _id:"12312321",
-        password:
-            "$argon2id$v=19$m=65536,t=3,p=4$lpbfspaMb0BYOMLyn1SNEg$n1HhedkigWcKDoKHPOC1iQgQIjDYAe67rmchMyHFiDo",
-        phoneNumber: "012354875",
-        school: "Đại học Thăng Long",
-        tasks: [],
-        username: "linh",
-    },
-    {
-        avatar: "https://firebasestorage.googleapis.com/v0/b/storageapp-13725.appspot.com/o/1675352632284.b35d7780b7a811cf31556f341c9091a2.jpg?alt=media",
-        createAt: "2023-02-02T15:43:55.312Z",
-        gmail: "linh@gmail.com",
-        _id:"12312323",
-
-        groupJoin: ["63dcbebbd99db97f37771cef"],
-        groupMade: [],
-        major: "khoa học máy tính",
-        name: "xxxxx",
-        password:
-            "$argon2id$v=19$m=65536,t=3,p=4$lpbfspaMb0BYOMLyn1SNEg$n1HhedkigWcKDoKHPOC1iQgQIjDYAe67rmchMyHFiDo",
-        phoneNumber: "012354875",
-        school: "Đại học Thăng Long",
-        tasks: [],
-        username: "linh",
-    },
-];
 const item1 = [
     {
         label: <Options icon={<IdcardOutlined />} label="Xem chi tiết" config="sm" />,
@@ -87,6 +53,7 @@ function Manager(props) {
     const [usersInGR, setUsersInGR] = useState();
     const [group, setgroup] = useState();
     const [admin, setAdmin] = useState();
+    const [memberPending, setMemberPending] = useState([])
     const { idGroup } = useParams();
     const user =
         useSelector((state) => state.user.current?.account) ||
@@ -140,8 +107,16 @@ function Manager(props) {
             console.log(err);
         }
     };
-    const handleClick= (key, value) => {
-        console.log(key, value);
+    const handleClick = async (key, value) => {
+        try {
+            if (key !== "infor") {
+                console.log(key, value);
+                const { newPendingMembers } = await pendingMemberApi.updatePendingMember(idGroup, value._id, { key })
+                setMemberPending(newPendingMembers.member)
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
     }
     useEffect(() => {
 
@@ -149,9 +124,12 @@ function Manager(props) {
             try {
                 const { users } = await groupApi.getUsersByIds(idGroup);
                 const { group } = await groupApi.getOnlyGroup(idGroup);
+                const { pendingMembers } = await pendingMemberApi.getPendingMember(idGroup)
                 const configUserInGr = users.filter((item) => item._id !== group.leader);
                 const configAdmin = users.find((item) => item._id === group.leader);
-
+                if (pendingMembers) {
+                    setMemberPending(pendingMembers.member)
+                }
                 setUsersInGR(configUserInGr);
                 setAdmin(configAdmin);
                 setgroup(group);
@@ -284,30 +262,30 @@ function Manager(props) {
                             {usersInGR ? (
                                 <>
                                     {usersInGR.map((item) => (
-                                        <TItem key={item._id} data={item} items={group?.leader === user._id?item2:item3} handleClick={handleClick} />
+                                        <TItem key={item._id} data={item} items={group?.leader === user._id ? item2 : item3} handleClick={handleClick} />
                                     ))}
                                 </>
                             ) : (
                                 <Skeleton active paragraph={{ rows: 4, width: "100%" }} />
                             )}
                         </Collapse.Panel>
-                        {group?.leader === user._id &&<Collapse.Panel
+                        {group?.leader === user._id && <Collapse.Panel
                             header={
                                 <span
                                     style={{ color: "var(--color--text-default)", fontWeight: 500 }}
                                 >
-                                     <Badge dot={(fakeData && fakeData.length>0)?true:false} offset={[10, 13]} color="rgb(52,141,255)"  >
-                                     Pending({fakeData && fakeData.length})
+                                    <Badge dot={(memberPending && memberPending.length > 0) ? true : false} offset={[10, 13]} color="rgb(52,141,255)"  >
+                                        Pending({memberPending && memberPending.length})
 
-                                     </Badge>
+                                    </Badge>
                                 </span>
                             }
                             key="pending"
                         >
                             <THeader />
-                            {fakeData ? (
+                            {memberPending ? (
                                 <>
-                                    {fakeData.map((item) => (
+                                    {memberPending.map((item) => (
                                         <TItem key={item._id} data={item} items={item1} handleClick={handleClick} />
                                     ))}
                                 </>

@@ -113,7 +113,13 @@ function GroupDB(props) {
             console.log(err);
         }
     };
-
+    const copyCode = (e) => {
+        navigator.clipboard.writeText(group.code).then(() => {
+            // Alert the user that the action took place.
+            // Nobody likes hidden stuff being done under the hood!
+            alert("Copied !");
+        });
+    }
     const item = [
         {
             label: <BarItem typeSize={"sm"} label="General" />,
@@ -189,6 +195,12 @@ function GroupDB(props) {
                                 }}
                             >
                                 {group.name}
+                                <Button
+                                    style={{ outline: "none", border: "none" }}
+                                    size="large"
+                                    icon={<CopyOutlined />}
+                                    onClick={copyCode}
+                                />
                             </Typography.Title>
 
                             <div className={styles.box_2}>
